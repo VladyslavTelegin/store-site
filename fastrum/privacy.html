@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Privacy Policy — Fastrum</title>
+  <meta name="description" content="Fastrum Privacy Policy. Your data stays on your device. No servers. No accounts. No tracking.">
+  <meta name="theme-color" content="#000000">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --bg: #000000;
+      --bg-card: #111113;
+      --text: #FFFFFF;
+      --text-secondary: #8E8E93;
+      --text-tertiary: #636366;
+      --green: #30D158;
+      --teal: #2DD4BF;
+      --radius-xl: 20px;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    .container {
+      max-width: 760px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      padding: 16px 0;
+      background: rgba(0, 0, 0, 0.85);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-bottom: 1px solid rgba(48, 209, 88, 0.08);
+    }
+    nav .nav-inner {
+      max-width: 760px;
+      margin: 0 auto;
+      padding: 0 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .nav-brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+    }
+    .nav-logo {
+      width: 36px; height: 36px;
+      background: linear-gradient(135deg, var(--green), #28B84C);
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      font-weight: 800;
+      color: #000;
+    }
+    .nav-wordmark {
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--text);
+      letter-spacing: -0.5px;
+    }
+    .nav-back {
+      color: var(--green);
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 500;
+      transition: opacity 0.2s;
+    }
+    .nav-back:hover { opacity: 0.7; }
+
+    .page-header {
+      padding-top: 120px;
+      padding-bottom: 48px;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+    }
+    .page-header h1 {
+      font-size: 40px;
+      font-weight: 800;
+      letter-spacing: -1.5px;
+      margin-bottom: 12px;
+    }
+    .page-header .subtitle {
+      font-size: 18px;
+      color: var(--text-secondary);
+      line-height: 1.6;
+    }
+    .page-header .effective {
+      margin-top: 16px;
+      font-size: 13px;
+      color: var(--text-tertiary);
+      font-weight: 500;
+    }
+
+    .privacy-content {
+      padding: 48px 0 100px;
+    }
+
+    .privacy-content h2 {
+      font-size: 24px;
+      font-weight: 700;
+      letter-spacing: -0.5px;
+      margin-top: 48px;
+      margin-bottom: 16px;
+      padding-top: 32px;
+      border-top: 1px solid rgba(255,255,255,0.04);
+    }
+    .privacy-content h2:first-child {
+      margin-top: 0;
+      padding-top: 0;
+      border-top: none;
+    }
+
+    .privacy-content h3 {
+      font-size: 17px;
+      font-weight: 600;
+      margin-top: 28px;
+      margin-bottom: 10px;
+      color: var(--green);
+    }
+
+    .privacy-content p {
+      font-size: 15px;
+      color: var(--text-secondary);
+      line-height: 1.75;
+      margin-bottom: 16px;
+    }
+
+    .privacy-content ul {
+      list-style: none;
+      margin-bottom: 16px;
+      padding-left: 0;
+    }
+    .privacy-content ul li {
+      font-size: 15px;
+      color: var(--text-secondary);
+      line-height: 1.75;
+      padding-left: 20px;
+      position: relative;
+      margin-bottom: 4px;
+    }
+    .privacy-content ul li::before {
+      content: '';
+      width: 6px; height: 6px;
+      background: var(--green);
+      border-radius: 50%;
+      position: absolute;
+      left: 0;
+      top: 10px;
+    }
+
+    .privacy-content strong {
+      color: var(--text);
+      font-weight: 600;
+    }
+
+    .highlight-box {
+      background: var(--bg-card);
+      border: 1px solid rgba(48, 209, 88, 0.15);
+      border-radius: 16px;
+      padding: 24px 28px;
+      margin: 24px 0;
+    }
+    .highlight-box p {
+      margin-bottom: 0;
+      color: var(--text);
+      font-weight: 500;
+    }
+
+    .data-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 20px 0 24px;
+      border-radius: 12px;
+      overflow: hidden;
+    }
+    .data-table thead th {
+      background: var(--bg-card);
+      text-align: left;
+      padding: 12px 16px;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text);
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+    }
+    .data-table tbody td {
+      padding: 12px 16px;
+      font-size: 14px;
+      color: var(--text-secondary);
+      border-bottom: 1px solid rgba(255,255,255,0.03);
+    }
+    .data-table tbody tr:last-child td { border-bottom: none; }
+    .data-table .badge-no {
+      display: inline-block;
+      padding: 2px 10px;
+      background: rgba(48, 209, 88, 0.12);
+      color: var(--green);
+      border-radius: 100px;
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    .toc {
+      background: var(--bg-card);
+      border-radius: 16px;
+      padding: 24px 28px;
+      margin-bottom: 32px;
+    }
+    .toc-title {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom: 12px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+    .toc ol {
+      list-style: none;
+      counter-reset: toc;
+      padding: 0;
+    }
+    .toc ol li {
+      counter-increment: toc;
+      margin-bottom: 6px;
+    }
+    .toc ol li a {
+      font-size: 14px;
+      color: var(--text-secondary);
+      text-decoration: none;
+      transition: color 0.2s;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .toc ol li a::before {
+      content: counter(toc) ".";
+      color: var(--text-tertiary);
+      font-weight: 600;
+      font-size: 12px;
+      min-width: 20px;
+    }
+    .toc ol li a:hover { color: var(--green); }
+
+    footer {
+      padding: 32px 0;
+      border-top: 1px solid rgba(255,255,255,0.04);
+      text-align: center;
+    }
+    .footer-copy {
+      font-size: 13px;
+      color: var(--text-tertiary);
+    }
+    .footer-copy a {
+      color: var(--text-secondary);
+      text-decoration: none;
+    }
+
+    @media (max-width: 640px) {
+      .page-header h1 { font-size: 28px; }
+      .privacy-content h2 { font-size: 20px; }
+      .data-table { font-size: 13px; }
+      .data-table thead th, .data-table tbody td { padding: 10px 12px; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <div class="nav-inner">
+      <a href="index.html" class="nav-brand">
+        <div class="nav-logo">F</div>
+        <span class="nav-wordmark">Fastrum</span>
+      </a>
+      <a href="index.html" class="nav-back">&larr; Back to home</a>
+    </div>
+  </nav>
+
+  <div class="container">
+
+    <div class="page-header">
+      <h1>Privacy Policy</h1>
+      <p class="subtitle">
+        Fastrum was built with a zero-server architecture. Your fasting data never leaves your device. This policy explains exactly what we access, why, and what we don't do.
+      </p>
+      <p class="effective">Effective Date: January 1, 2026 &middot; Last Updated: January 1, 2026</p>
+    </div>
+
+    <div class="privacy-content">
+
+      <div class="toc">
+        <div class="toc-title">Contents</div>
+        <ol>
+          <li><a href="#philosophy">Our Privacy Philosophy</a></li>
+          <li><a href="#data-collected">Data We Access</a></li>
+          <li><a href="#data-not-collected">Data We Do Not Collect</a></li>
+          <li><a href="#healthkit">Apple HealthKit</a></li>
+          <li><a href="#processing">How Data Is Processed</a></li>
+          <li><a href="#storage">Data Storage</a></li>
+          <li><a href="#third-parties">Third Parties</a></li>
+          <li><a href="#subscriptions">Subscriptions &amp; Payments</a></li>
+          <li><a href="#children">Children's Privacy</a></li>
+          <li><a href="#your-rights">Your Rights</a></li>
+          <li><a href="#changes">Changes to This Policy</a></li>
+          <li><a href="#contact">Contact</a></li>
+        </ol>
+      </div>
+
+      <h2 id="philosophy">1. Our Privacy Philosophy</h2>
+
+      <div class="highlight-box">
+        <p>Fastrum processes everything on your device. We operate zero servers. We have zero access to your data. Privacy is not a feature we added &mdash; it is the architecture we chose.</p>
+      </div>
+
+      <p>
+        We believe your health and fasting data is deeply personal. It reveals your eating patterns, your physical activity, your sleep habits, and your daily rhythms. That is why we built Fastrum with a strict on-device-only architecture. There is no backend. There are no analytics endpoints. There is no way for us to see, access, or retrieve your data &mdash; because it simply never leaves your device.
+      </p>
+
+      <h2 id="data-collected">2. Data We Access</h2>
+
+      <p>Fastrum accesses the following data categories, only with your explicit permission:</p>
+
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Data Type</th>
+            <th>Purpose</th>
+            <th>Leaves Device?</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Sleep Analysis</td>
+            <td>Adaptive fasting window recommendations</td>
+            <td><span class="badge-no">No</span></td>
+          </tr>
+          <tr>
+            <td>Workouts</td>
+            <td>Training-aware window adjustments</td>
+            <td><span class="badge-no">No</span></td>
+          </tr>
+          <tr>
+            <td>Fasting Sessions</td>
+            <td>Timer, history, insights, and streaks</td>
+            <td><span class="badge-no">No</span></td>
+          </tr>
+          <tr>
+            <td>Check-Ins</td>
+            <td>Mood, energy, hunger tracking for personalization</td>
+            <td><span class="badge-no">No</span></td>
+          </tr>
+          <tr>
+            <td>Weight Entries</td>
+            <td>Trend analysis and progress tracking</td>
+            <td><span class="badge-no">No</span></td>
+          </tr>
+          <tr>
+            <td>Journal Entries</td>
+            <td>Personal notes and reflections</td>
+            <td><span class="badge-no">No</span></td>
+          </tr>
+          <tr>
+            <td>Hydration Logs</td>
+            <td>Daily water intake tracking</td>
+            <td><span class="badge-no">No</span></td>
+          </tr>
+        </tbody>
+      </table>
+
+      <p>All of this data is stored locally on your device using Apple's SwiftData framework. None of it is transmitted anywhere.</p>
+
+      <h2 id="data-not-collected">3. Data We Do Not Collect</h2>
+
+      <p>To be absolutely clear, Fastrum does <strong>not</strong> collect, transmit, or have access to:</p>
+
+      <ul>
+        <li>Your name, email address, or any personal identifiers</li>
+        <li>Device identifiers, advertising IDs, or fingerprints</li>
+        <li>Location data</li>
+        <li>Usage analytics or behavioral telemetry</li>
+        <li>Crash reports (we do not use any crash reporting SDK)</li>
+        <li>Any data from other apps on your device</li>
+        <li>Your HealthKit data via any network transmission</li>
+      </ul>
+
+      <div class="highlight-box">
+        <p>We have no analytics SDK, no tracking pixels, no server logs, and no user database. We literally cannot identify you.</p>
+      </div>
+
+      <h2 id="healthkit">4. Apple HealthKit</h2>
+
+      <p>Fastrum integrates with Apple HealthKit under Apple's strict guidelines:</p>
+
+      <ul>
+        <li><strong>Read and write access.</strong> Fastrum reads sleep and workout data. It can write fasting session data to HealthKit with your permission.</li>
+        <li><strong>Explicit permission.</strong> You grant or deny access to each data type individually through the standard iOS Health permissions dialog.</li>
+        <li><strong>Revocable at any time.</strong> You can revoke Fastrum's HealthKit access in Settings &gt; Health &gt; Data Access &amp; Devices &gt; Fastrum.</li>
+        <li><strong>Not shared.</strong> In compliance with Apple's HealthKit rules, HealthKit data is never shared with third parties, used for advertising, or sold.</li>
+        <li><strong>Not transferred.</strong> HealthKit data accessed by Fastrum is processed entirely on-device and is never transmitted over any network.</li>
+      </ul>
+
+      <h2 id="processing">5. How Data Is Processed</h2>
+
+      <p>All data processing in Fastrum happens locally on your iPhone or Apple Watch:</p>
+
+      <h3>Adaptive Recommendations</h3>
+      <p>
+        Fastrum's Adaptive Engine analyzes your recent sleep quality, workout intensity, energy check-ins, and fasting history to calculate your recommended daily fasting window. This uses deterministic algorithms with day-of-week, fatigue, and sleep modifiers &mdash; no cloud AI.
+      </p>
+
+      <h3>Burnout Detection</h3>
+      <p>
+        The Burnout Detector analyzes trends in your fasting completion rates, early endings, and energy patterns to proactively alert you before a streak break occurs. All trend analysis runs on-device.
+      </p>
+
+      <h3>Metabolic Phase Tracking</h3>
+      <p>
+        Fastrum calculates your current metabolic phase (Anabolic, Catabolic, Fat Burning, Ketosis, Autophagy) based on elapsed fasting time. This is a simple time-based calculation done locally.
+      </p>
+
+      <div class="highlight-box">
+        <p>There are no network calls for data processing. Fastrum works fully offline after installation.</p>
+      </div>
+
+      <h2 id="storage">6. Data Storage</h2>
+
+      <p>All app data is stored using Apple's SwiftData framework in a local database on your device. This data is:</p>
+
+      <ul>
+        <li><strong>Encrypted at rest</strong> by iOS Data Protection (tied to your device passcode)</li>
+        <li><strong>Sandboxed</strong> within the Fastrum app container &mdash; inaccessible to other apps</li>
+        <li><strong>Included in iCloud backups</strong> only if you have iCloud backup enabled on your device (managed by iOS, not by Fastrum)</li>
+        <li><strong>Deleted entirely</strong> when you uninstall Fastrum from your device</li>
+      </ul>
+
+      <p>We do not operate any servers, databases, or cloud storage. There is no "account" to delete because no account exists.</p>
+
+      <h2 id="third-parties">7. Third Parties</h2>
+
+      <p>Fastrum does not share data with any third parties. Specifically:</p>
+
+      <ul>
+        <li><strong>No analytics providers</strong> (no Google Analytics, Mixpanel, Amplitude, or similar)</li>
+        <li><strong>No advertising networks</strong> (no ads of any kind)</li>
+        <li><strong>No crash reporting services</strong> (no Firebase Crashlytics, Sentry, or similar)</li>
+        <li><strong>No social integrations</strong> (no Facebook SDK, no social login)</li>
+        <li><strong>No data brokers</strong></li>
+      </ul>
+
+      <p>The only external service Fastrum communicates with is the <strong>Apple App Store</strong> for subscription verification, which is handled entirely by Apple's StoreKit 2 framework and subject to <a href="https://www.apple.com/legal/privacy/" style="color:var(--green)">Apple's Privacy Policy</a>.</p>
+
+      <h2 id="subscriptions">8. Subscriptions &amp; Payments</h2>
+
+      <p>Fastrum offers optional Pro subscriptions through the Apple App Store. All payment processing is handled by Apple. We do not have access to your payment information, credit card number, or Apple ID.</p>
+
+      <ul>
+        <li>Payments are processed by Apple through your App Store account</li>
+        <li>Subscription status is verified on-device using Apple's StoreKit 2</li>
+        <li>No purchase data is transmitted to our servers (we have no servers)</li>
+        <li>Manage or cancel subscriptions through Settings &gt; Apple ID &gt; Subscriptions</li>
+      </ul>
+
+      <h2 id="children">9. Children's Privacy</h2>
+
+      <p>
+        Fastrum is not directed at children under 13 (or the applicable age in your jurisdiction). We do not knowingly collect personal information from children. Since Fastrum collects no personal information from any user, this concern is inherently mitigated by our architecture.
+      </p>
+
+      <h2 id="your-rights">10. Your Rights</h2>
+
+      <p>Because Fastrum operates with a zero-server, on-device-only architecture:</p>
+
+      <ul>
+        <li><strong>Access:</strong> All your data is on your device. You already have complete access.</li>
+        <li><strong>Deletion:</strong> Uninstall Fastrum to delete all app data. Alternatively, revoke HealthKit permissions to stop data access.</li>
+        <li><strong>Portability:</strong> Your health data remains in Apple Health and is portable through Apple's ecosystem.</li>
+        <li><strong>Restriction:</strong> You can restrict specific data types through Health &gt; Data Access.</li>
+        <li><strong>Objection:</strong> You can stop all processing by simply closing or uninstalling the app.</li>
+      </ul>
+
+      <p>
+        For users in the European Union, California, or other jurisdictions with specific privacy regulations (GDPR, CCPA, etc.): Fastrum's architecture means we are not a data controller or processor of your personal data in any networked sense. All data remains under your control on your device.
+      </p>
+
+      <h2 id="changes">11. Changes to This Policy</h2>
+
+      <p>
+        If we make material changes to this privacy policy, we will update this page and the "Last Updated" date above. Since Fastrum does not collect email addresses, we cannot notify you via email. We encourage you to review this policy periodically.
+      </p>
+
+      <p>
+        Our core commitment &mdash; that your data stays on your device and is never transmitted to us or any third party &mdash; will not change. If we ever change our architecture in a way that affects this commitment, we will require your explicit consent through an in-app prompt before any data leaves your device.
+      </p>
+
+      <h2 id="contact">12. Contact</h2>
+
+      <p>If you have questions about this privacy policy or Fastrum's data practices, please reach out:</p>
+
+      <ul>
+        <li><strong>Developer:</strong> vtsoft</li>
+        <li><strong>GitHub:</strong> github.com/VladyslavTelegin/fastrum</li>
+      </ul>
+
+      <p style="margin-top:40px;font-size:13px;color:var(--text-tertiary)">
+        This privacy policy is effective as of January 1, 2026.
+      </p>
+
+    </div>
+  </div>
+
+  <footer>
+    <div class="container">
+      <p class="footer-copy">
+        &copy; 2026 vtsoft. All rights reserved. &middot; <a href="index.html">Fastrum Home</a> &middot; <a href="../">vtsoft</a>
+      </p>
+    </div>
+  </footer>
+
+</body>
+</html>

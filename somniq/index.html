@@ -1,0 +1,1431 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Somniq — Understand Your Sleep. Decide Better.</title>
+  <meta name="description" content="Somniq transforms raw sleep data into actionable intelligence. Know why your sleep changed, what caused it, and what to do today. 100% on-device. No accounts. No cloud.">
+  <meta name="theme-color" content="#0D0D1A">
+  <meta property="og:title" content="Somniq — Sleep Intelligence">
+  <meta property="og:description" content="Understand your sleep. Decide better. 100% private, on-device sleep intelligence for iPhone & Apple Watch.">
+  <meta property="og:type" content="website">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --bg-deep: #0D0D1A;
+      --bg-elevated: #151525;
+      --bg-card: #1E1E32;
+      --bg-interactive: #252540;
+      --text-primary: #FFFFFF;
+      --text-secondary: #A0A0B0;
+      --text-tertiary: #606070;
+      --accent: #8AC1FA;
+      --accent-glow: rgba(138, 193, 250, 0.15);
+      --teal: #2DD4BF;
+      --amber: #FBBF24;
+      --coral: #FB7185;
+      --radius-md: 12px;
+      --radius-lg: 16px;
+      --radius-xl: 20px;
+      --radius-xxl: 24px;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: var(--bg-deep);
+      color: var(--text-primary);
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    /* ── Ambient background ── */
+    .ambient-bg {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+      overflow: hidden;
+    }
+    .ambient-bg .orb {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(120px);
+      opacity: 0.3;
+      animation: float 20s ease-in-out infinite;
+    }
+    .ambient-bg .orb-1 {
+      width: 600px; height: 600px;
+      background: radial-gradient(circle, rgba(138,193,250,0.25), transparent 70%);
+      top: -200px; left: -100px;
+      animation-delay: 0s;
+    }
+    .ambient-bg .orb-2 {
+      width: 500px; height: 500px;
+      background: radial-gradient(circle, rgba(45,212,191,0.2), transparent 70%);
+      top: 40%; right: -150px;
+      animation-delay: -7s;
+      animation-duration: 25s;
+    }
+    .ambient-bg .orb-3 {
+      width: 400px; height: 400px;
+      background: radial-gradient(circle, rgba(251,191,36,0.12), transparent 70%);
+      bottom: 10%; left: 20%;
+      animation-delay: -14s;
+      animation-duration: 30s;
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translate(0, 0) scale(1); }
+      33% { transform: translate(30px, -40px) scale(1.05); }
+      66% { transform: translate(-20px, 20px) scale(0.95); }
+    }
+
+    /* ── Layout ── */
+    .content { position: relative; z-index: 1; }
+
+    .container {
+      max-width: 1120px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    section {
+      padding: 100px 0;
+    }
+
+    /* ── Navigation ── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      padding: 16px 0;
+      background: rgba(13, 13, 26, 0.8);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-bottom: 1px solid rgba(138, 193, 250, 0.08);
+      transition: background 0.3s;
+    }
+    nav .container {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .nav-brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+    }
+    .nav-logo {
+      width: 36px; height: 36px;
+      background: linear-gradient(135deg, var(--accent), var(--teal));
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+    }
+    .nav-wordmark {
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--text-primary);
+      letter-spacing: -0.5px;
+    }
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 32px;
+      list-style: none;
+    }
+    .nav-links a {
+      color: var(--text-secondary);
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 500;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--text-primary); }
+    .nav-cta {
+      background: var(--accent) !important;
+      color: var(--bg-deep) !important;
+      padding: 8px 20px;
+      border-radius: 100px;
+      font-weight: 600 !important;
+      transition: transform 0.2s, box-shadow 0.2s !important;
+    }
+    .nav-cta:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 4px 20px rgba(138, 193, 250, 0.3);
+    }
+
+    /* ── Hero ── */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      padding-top: 80px;
+      text-align: center;
+    }
+    .hero .container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 16px 6px 8px;
+      background: rgba(138, 193, 250, 0.1);
+      border: 1px solid rgba(138, 193, 250, 0.2);
+      border-radius: 100px;
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--accent);
+      margin-bottom: 32px;
+      animation: fadeUp 0.8s ease both;
+    }
+    .hero-badge .dot {
+      width: 8px; height: 8px;
+      background: var(--teal);
+      border-radius: 50%;
+      animation: pulse 2s ease-in-out infinite;
+    }
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.5; transform: scale(0.8); }
+    }
+
+    .hero h1 {
+      font-size: clamp(42px, 7vw, 72px);
+      font-weight: 800;
+      line-height: 1.05;
+      letter-spacing: -2px;
+      max-width: 800px;
+      animation: fadeUp 0.8s ease 0.1s both;
+    }
+    .hero h1 .gradient-text {
+      background: linear-gradient(135deg, var(--accent) 0%, var(--teal) 50%, var(--accent) 100%);
+      background-size: 200% auto;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      animation: shimmer 4s linear infinite;
+    }
+    @keyframes shimmer {
+      0% { background-position: 0% center; }
+      100% { background-position: 200% center; }
+    }
+
+    .hero-sub {
+      font-size: clamp(17px, 2.2vw, 20px);
+      color: var(--text-secondary);
+      max-width: 560px;
+      line-height: 1.6;
+      margin-top: 24px;
+      animation: fadeUp 0.8s ease 0.2s both;
+    }
+
+    .hero-actions {
+      display: flex;
+      gap: 16px;
+      margin-top: 48px;
+      animation: fadeUp 0.8s ease 0.3s both;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 14px 28px;
+      border-radius: 14px;
+      font-size: 16px;
+      font-weight: 600;
+      text-decoration: none;
+      border: none;
+      cursor: pointer;
+      transition: all 0.25s ease;
+    }
+    .btn-primary {
+      background: var(--accent);
+      color: var(--bg-deep);
+      box-shadow: 0 4px 24px rgba(138, 193, 250, 0.25);
+    }
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 32px rgba(138, 193, 250, 0.35);
+    }
+    .btn-secondary {
+      background: var(--bg-card);
+      color: var(--text-primary);
+      border: 1px solid rgba(255,255,255,0.08);
+    }
+    .btn-secondary:hover {
+      background: var(--bg-interactive);
+      transform: translateY(-2px);
+    }
+
+    .hero-visual {
+      margin-top: 72px;
+      width: 100%;
+      max-width: 380px;
+      animation: fadeUp 0.8s ease 0.4s both;
+    }
+
+    /* ── Phone Mockup ── */
+    .phone-mockup {
+      position: relative;
+      width: 280px;
+      margin: 0 auto;
+      perspective: 1000px;
+    }
+    .phone-frame {
+      background: #1a1a2e;
+      border-radius: 40px;
+      padding: 12px;
+      border: 2px solid rgba(255,255,255,0.1);
+      box-shadow:
+        0 0 0 1px rgba(0,0,0,0.3),
+        0 25px 80px rgba(0,0,0,0.5),
+        0 0 60px rgba(138, 193, 250, 0.08);
+      animation: phoneFloat 6s ease-in-out infinite;
+    }
+    @keyframes phoneFloat {
+      0%, 100% { transform: translateY(0) rotateX(0); }
+      50% { transform: translateY(-12px) rotateX(1deg); }
+    }
+    .phone-notch {
+      width: 120px;
+      height: 28px;
+      background: #1a1a2e;
+      border-radius: 0 0 16px 16px;
+      margin: 0 auto;
+      position: relative;
+      top: -1px;
+      z-index: 2;
+    }
+    .phone-screen {
+      background: var(--bg-deep);
+      border-radius: 30px;
+      overflow: hidden;
+      padding: 20px 16px;
+      min-height: 500px;
+    }
+
+    /* ── Screen Content ── */
+    .screen-greeting {
+      font-size: 13px;
+      color: var(--text-secondary);
+      margin-bottom: 4px;
+    }
+    .screen-title {
+      font-size: 22px;
+      font-weight: 700;
+      margin-bottom: 16px;
+    }
+
+    .readiness-card-mock {
+      background: linear-gradient(135deg, rgba(45,212,191,0.15), rgba(138,193,250,0.1));
+      border: 1px solid rgba(45,212,191,0.25);
+      border-radius: 16px;
+      padding: 20px;
+      margin-bottom: 12px;
+      text-align: center;
+    }
+    .readiness-label {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      color: var(--text-secondary);
+      margin-bottom: 8px;
+    }
+    .readiness-score {
+      font-size: 48px;
+      font-weight: 300;
+      color: var(--teal);
+      line-height: 1;
+    }
+    .readiness-level {
+      display: inline-block;
+      margin-top: 8px;
+      padding: 4px 12px;
+      background: rgba(45,212,191,0.15);
+      color: var(--teal);
+      border-radius: 100px;
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+    }
+
+    .mini-card {
+      background: var(--bg-card);
+      border-radius: 12px;
+      padding: 14px;
+      margin-bottom: 8px;
+      border: 1px solid rgba(255,255,255,0.04);
+    }
+    .mini-card-header {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 6px;
+    }
+    .mini-card-icon {
+      width: 28px; height: 28px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+    }
+    .mini-card-title {
+      font-size: 13px;
+      font-weight: 600;
+    }
+    .mini-card-text {
+      font-size: 12px;
+      color: var(--text-secondary);
+      line-height: 1.4;
+    }
+
+    /* ── Stats Bar ── */
+    .stats-bar {
+      display: flex;
+      justify-content: center;
+      gap: 48px;
+      margin-top: 64px;
+      padding: 32px;
+      animation: fadeUp 0.8s ease 0.5s both;
+    }
+    .stat {
+      text-align: center;
+    }
+    .stat-value {
+      font-size: 32px;
+      font-weight: 700;
+      letter-spacing: -1px;
+      background: linear-gradient(135deg, var(--accent), var(--teal));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .stat-label {
+      font-size: 13px;
+      color: var(--text-tertiary);
+      margin-top: 4px;
+      font-weight: 500;
+    }
+
+    /* ── Section Headers ── */
+    .section-label {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 13px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      color: var(--accent);
+      margin-bottom: 16px;
+    }
+    .section-label::before {
+      content: '';
+      width: 24px;
+      height: 2px;
+      background: var(--accent);
+      border-radius: 1px;
+    }
+
+    .section-title {
+      font-size: clamp(32px, 4.5vw, 48px);
+      font-weight: 800;
+      letter-spacing: -1.5px;
+      line-height: 1.1;
+      margin-bottom: 16px;
+    }
+
+    .section-desc {
+      font-size: 18px;
+      color: var(--text-secondary);
+      line-height: 1.6;
+      max-width: 560px;
+    }
+
+    /* ── Questions Section ── */
+    .questions {
+      background: var(--bg-elevated);
+      border-top: 1px solid rgba(255,255,255,0.04);
+      border-bottom: 1px solid rgba(255,255,255,0.04);
+    }
+    .questions-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 24px;
+      margin-top: 64px;
+    }
+    .question-card {
+      padding: 32px 24px;
+      background: var(--bg-card);
+      border: 1px solid rgba(255,255,255,0.04);
+      border-radius: var(--radius-xl);
+      text-align: center;
+      transition: all 0.3s ease;
+    }
+    .question-card:hover {
+      transform: translateY(-4px);
+      border-color: rgba(138, 193, 250, 0.15);
+      box-shadow: 0 12px 40px rgba(0,0,0,0.3);
+    }
+    .question-emoji {
+      font-size: 36px;
+      margin-bottom: 16px;
+      display: block;
+    }
+    .question-q {
+      font-size: 18px;
+      font-weight: 700;
+      margin-bottom: 8px;
+      letter-spacing: -0.3px;
+    }
+    .question-a {
+      font-size: 14px;
+      color: var(--text-secondary);
+      line-height: 1.5;
+    }
+
+    /* ── Features ── */
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+      margin-top: 64px;
+    }
+    .feature-card {
+      padding: 36px 28px;
+      background: var(--bg-card);
+      border: 1px solid rgba(255,255,255,0.04);
+      border-radius: var(--radius-xl);
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+    .feature-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, var(--accent), transparent);
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+    .feature-card:hover::before { opacity: 1; }
+    .feature-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 16px 48px rgba(0,0,0,0.3);
+    }
+
+    .feature-icon {
+      width: 48px; height: 48px;
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 22px;
+      margin-bottom: 20px;
+    }
+    .feature-icon.teal { background: rgba(45,212,191,0.12); }
+    .feature-icon.blue { background: rgba(138,193,250,0.12); }
+    .feature-icon.amber { background: rgba(251,191,36,0.12); }
+    .feature-icon.coral { background: rgba(251,113,133,0.12); }
+    .feature-icon.purple { background: rgba(168,85,247,0.12); }
+    .feature-icon.green { background: rgba(74,222,128,0.12); }
+
+    .feature-title {
+      font-size: 18px;
+      font-weight: 700;
+      margin-bottom: 8px;
+      letter-spacing: -0.3px;
+    }
+    .feature-desc {
+      font-size: 14px;
+      color: var(--text-secondary);
+      line-height: 1.6;
+    }
+
+    /* ── How It Works ── */
+    .how-it-works {
+      background: var(--bg-elevated);
+      border-top: 1px solid rgba(255,255,255,0.04);
+      border-bottom: 1px solid rgba(255,255,255,0.04);
+    }
+    .steps {
+      display: flex;
+      gap: 32px;
+      margin-top: 64px;
+      position: relative;
+    }
+    .steps::before {
+      content: '';
+      position: absolute;
+      top: 36px;
+      left: 60px;
+      right: 60px;
+      height: 2px;
+      background: linear-gradient(90deg, var(--accent), var(--teal), var(--amber));
+      opacity: 0.2;
+    }
+    .step {
+      flex: 1;
+      text-align: center;
+      position: relative;
+    }
+    .step-number {
+      width: 72px; height: 72px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 20px;
+      font-size: 28px;
+      font-weight: 700;
+      position: relative;
+      z-index: 1;
+    }
+    .step:nth-child(1) .step-number {
+      background: linear-gradient(135deg, rgba(138,193,250,0.15), rgba(138,193,250,0.05));
+      border: 2px solid rgba(138,193,250,0.3);
+      color: var(--accent);
+    }
+    .step:nth-child(2) .step-number {
+      background: linear-gradient(135deg, rgba(45,212,191,0.15), rgba(45,212,191,0.05));
+      border: 2px solid rgba(45,212,191,0.3);
+      color: var(--teal);
+    }
+    .step:nth-child(3) .step-number {
+      background: linear-gradient(135deg, rgba(251,191,36,0.15), rgba(251,191,36,0.05));
+      border: 2px solid rgba(251,191,36,0.3);
+      color: var(--amber);
+    }
+    .step-title {
+      font-size: 18px;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+    .step-desc {
+      font-size: 14px;
+      color: var(--text-secondary);
+      line-height: 1.6;
+      max-width: 260px;
+      margin: 0 auto;
+    }
+
+    /* ── Privacy ── */
+    .privacy-section { text-align: center; }
+    .privacy-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+      margin-top: 64px;
+    }
+    .privacy-card {
+      padding: 36px 28px;
+      background: var(--bg-card);
+      border: 1px solid rgba(255,255,255,0.04);
+      border-radius: var(--radius-xl);
+      text-align: center;
+    }
+    .privacy-icon {
+      font-size: 40px;
+      margin-bottom: 16px;
+      display: block;
+    }
+    .privacy-title {
+      font-size: 18px;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+    .privacy-desc {
+      font-size: 14px;
+      color: var(--text-secondary);
+      line-height: 1.6;
+    }
+
+    /* ── Pricing ── */
+    .pricing { text-align: center; }
+    .pricing-cards {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 24px;
+      margin-top: 64px;
+      max-width: 720px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .pricing-card {
+      padding: 40px 32px;
+      background: var(--bg-card);
+      border: 1px solid rgba(255,255,255,0.06);
+      border-radius: var(--radius-xxl);
+      text-align: left;
+      transition: all 0.3s ease;
+      position: relative;
+    }
+    .pricing-card.featured {
+      border-color: rgba(138, 193, 250, 0.3);
+      background: linear-gradient(180deg, rgba(138,193,250,0.06) 0%, var(--bg-card) 100%);
+    }
+    .pricing-card.featured::before {
+      content: 'Most Popular';
+      position: absolute;
+      top: -12px;
+      left: 50%;
+      transform: translateX(-50%);
+      padding: 4px 16px;
+      background: var(--accent);
+      color: var(--bg-deep);
+      border-radius: 100px;
+      font-size: 12px;
+      font-weight: 700;
+    }
+    .pricing-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 16px 48px rgba(0,0,0,0.3);
+    }
+    .pricing-tier {
+      font-size: 14px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--text-secondary);
+      margin-bottom: 8px;
+    }
+    .pricing-price {
+      font-size: 40px;
+      font-weight: 800;
+      letter-spacing: -2px;
+      margin-bottom: 4px;
+    }
+    .pricing-period {
+      font-size: 14px;
+      color: var(--text-tertiary);
+      margin-bottom: 24px;
+    }
+    .pricing-features {
+      list-style: none;
+      margin-bottom: 32px;
+    }
+    .pricing-features li {
+      font-size: 14px;
+      color: var(--text-secondary);
+      padding: 8px 0;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .pricing-features li::before {
+      content: '';
+      width: 18px; height: 18px;
+      border-radius: 50%;
+      background: rgba(45,212,191,0.15);
+      flex-shrink: 0;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%232DD4BF' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='20 6 9 17 4 12'%3E%3C/polyline%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: center;
+    }
+    .pricing-btn {
+      display: block;
+      width: 100%;
+      text-align: center;
+    }
+    .pricing-card .btn-secondary { width: 100%; justify-content: center; }
+    .pricing-card.featured .btn-primary { width: 100%; justify-content: center; }
+    .pricing-save {
+      display: inline-block;
+      padding: 2px 8px;
+      background: rgba(45,212,191,0.15);
+      color: var(--teal);
+      border-radius: 6px;
+      font-size: 12px;
+      font-weight: 600;
+      margin-left: 8px;
+    }
+
+    /* ── Watch Section ── */
+    .watch-section {
+      background: var(--bg-elevated);
+      border-top: 1px solid rgba(255,255,255,0.04);
+      border-bottom: 1px solid rgba(255,255,255,0.04);
+    }
+    .watch-layout {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 64px;
+      align-items: center;
+    }
+    .watch-content .section-desc { margin-top: 16px; }
+    .watch-features {
+      list-style: none;
+      margin-top: 32px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+    .watch-features li {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      font-size: 15px;
+      color: var(--text-secondary);
+    }
+    .watch-features li .wf-icon {
+      width: 32px; height: 32px;
+      border-radius: 8px;
+      background: rgba(138,193,250,0.1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+
+    .watch-mockup {
+      display: flex;
+      justify-content: center;
+    }
+    .watch-frame {
+      width: 200px;
+      height: 240px;
+      background: #1a1a2e;
+      border-radius: 52px;
+      padding: 16px;
+      border: 2px solid rgba(255,255,255,0.1);
+      box-shadow: 0 25px 60px rgba(0,0,0,0.4);
+      animation: watchFloat 5s ease-in-out infinite;
+    }
+    @keyframes watchFloat {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-8px); }
+    }
+    .watch-screen {
+      background: var(--bg-deep);
+      border-radius: 40px;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+      text-align: center;
+    }
+    .watch-readiness-label {
+      font-size: 9px;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      color: var(--text-secondary);
+      margin-bottom: 4px;
+    }
+    .watch-readiness-score {
+      font-size: 44px;
+      font-weight: 300;
+      color: var(--teal);
+      line-height: 1;
+    }
+    .watch-readiness-badge {
+      margin-top: 6px;
+      padding: 3px 10px;
+      background: rgba(45,212,191,0.15);
+      color: var(--teal);
+      border-radius: 100px;
+      font-size: 10px;
+      font-weight: 600;
+    }
+    .watch-action {
+      margin-top: 12px;
+      font-size: 10px;
+      color: var(--text-secondary);
+      padding: 6px 10px;
+      background: var(--bg-card);
+      border-radius: 8px;
+      line-height: 1.3;
+    }
+
+    /* ── CTA Section ── */
+    .cta-section {
+      text-align: center;
+      padding: 120px 0;
+    }
+    .cta-section .section-title {
+      max-width: 600px;
+      margin: 0 auto 16px;
+    }
+    .cta-section .section-desc {
+      max-width: 480px;
+      margin: 0 auto 48px;
+    }
+    .cta-visual {
+      margin-top: 64px;
+      display: flex;
+      justify-content: center;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+    .cta-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 20px;
+      background: var(--bg-card);
+      border: 1px solid rgba(255,255,255,0.06);
+      border-radius: 100px;
+      font-size: 14px;
+      color: var(--text-secondary);
+    }
+    .cta-pill span { font-size: 16px; }
+
+    /* ── Footer ── */
+    footer {
+      padding: 48px 0;
+      border-top: 1px solid rgba(255,255,255,0.04);
+    }
+    .footer-inner {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .footer-brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .footer-wordmark {
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--text-secondary);
+    }
+    .footer-copy {
+      font-size: 13px;
+      color: var(--text-tertiary);
+    }
+    .footer-links {
+      display: flex;
+      gap: 24px;
+      list-style: none;
+    }
+    .footer-links a {
+      font-size: 13px;
+      color: var(--text-tertiary);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .footer-links a:hover { color: var(--text-secondary); }
+
+    /* ── Animations ── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(32px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ── Mobile Menu ── */
+    .mobile-toggle {
+      display: none;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 8px;
+    }
+    .mobile-toggle span {
+      display: block;
+      width: 22px;
+      height: 2px;
+      background: var(--text-primary);
+      margin: 5px 0;
+      border-radius: 1px;
+      transition: all 0.3s;
+    }
+
+    /* ── Responsive ── */
+    @media (max-width: 900px) {
+      .questions-grid { grid-template-columns: repeat(2, 1fr); }
+      .features-grid { grid-template-columns: repeat(2, 1fr); }
+      .steps { flex-direction: column; gap: 48px; }
+      .steps::before { display: none; }
+      .watch-layout { grid-template-columns: 1fr; text-align: center; }
+      .watch-content .section-desc { margin-left: auto; margin-right: auto; }
+      .watch-features { align-items: center; }
+      .watch-mockup { order: -1; }
+      .stats-bar { gap: 32px; }
+    }
+
+    @media (max-width: 640px) {
+      section { padding: 72px 0; }
+      .nav-links { display: none; }
+      .mobile-toggle { display: block; }
+      .nav-links.open {
+        display: flex;
+        flex-direction: column;
+        position: absolute;
+        top: 100%;
+        left: 0; right: 0;
+        background: rgba(13, 13, 26, 0.95);
+        backdrop-filter: blur(20px);
+        padding: 24px;
+        gap: 20px;
+        border-bottom: 1px solid rgba(255,255,255,0.06);
+      }
+      .questions-grid { grid-template-columns: 1fr; }
+      .features-grid { grid-template-columns: 1fr; }
+      .pricing-cards { grid-template-columns: 1fr; }
+      .privacy-grid { grid-template-columns: 1fr; }
+      .stats-bar { flex-direction: column; gap: 24px; }
+      .hero-actions { flex-direction: column; width: 100%; max-width: 320px; }
+      .hero-actions .btn { justify-content: center; }
+      .footer-inner {
+        flex-direction: column;
+        gap: 24px;
+        text-align: center;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<div class="ambient-bg">
+  <div class="orb orb-1"></div>
+  <div class="orb orb-2"></div>
+  <div class="orb orb-3"></div>
+</div>
+
+<div class="content">
+
+  <!-- Navigation -->
+  <nav>
+    <div class="container">
+      <a href="#" class="nav-brand">
+        <div class="nav-logo">&#9790;</div>
+        <span class="nav-wordmark">Somniq</span>
+      </a>
+      <button class="mobile-toggle" onclick="document.querySelector('.nav-links').classList.toggle('open')" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
+      <ul class="nav-links">
+        <li><a href="#features">Features</a></li>
+        <li><a href="#how-it-works">How It Works</a></li>
+        <li><a href="#privacy">Privacy</a></li>
+        <li><a href="#pricing">Pricing</a></li>
+        <li><a href="#download" class="nav-cta">Download</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- Hero -->
+  <section class="hero">
+    <div class="container">
+      <div class="hero-badge">
+        <span class="dot"></span>
+        iPhone &amp; Apple Watch
+      </div>
+      <h1>
+        <span class="gradient-text">Understand</span> your sleep.<br>
+        Decide better.
+      </h1>
+      <p class="hero-sub">
+        Somniq transforms raw sleep data into clear answers and actionable intelligence.
+        Not more charts &mdash; real understanding.
+      </p>
+      <div class="hero-actions">
+        <a href="#download" class="btn btn-primary">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+          Download for iOS
+        </a>
+        <a href="#features" class="btn btn-secondary">See How It Works</a>
+      </div>
+
+      <div class="hero-visual">
+        <div class="phone-mockup">
+          <div class="phone-frame">
+            <div class="phone-notch"></div>
+            <div class="phone-screen">
+              <div class="screen-greeting">Good morning, Vlad</div>
+              <div class="screen-title">Sleep Decision Hub</div>
+
+              <div class="readiness-card-mock">
+                <div class="readiness-label">Today's Readiness</div>
+                <div class="readiness-score">84</div>
+                <div class="readiness-level">HIGH</div>
+              </div>
+
+              <div class="mini-card">
+                <div class="mini-card-header">
+                  <div class="mini-card-icon" style="background:rgba(45,212,191,0.12)">&#9734;</div>
+                  <div class="mini-card-title">Why?</div>
+                </div>
+                <div class="mini-card-text">
+                  You slept 7h 42m &mdash; 23 min above your baseline. HRV was elevated at 48ms.
+                </div>
+              </div>
+
+              <div class="mini-card">
+                <div class="mini-card-header">
+                  <div class="mini-card-icon" style="background:rgba(138,193,250,0.12)">&#10003;</div>
+                  <div class="mini-card-title">What to do</div>
+                </div>
+                <div class="mini-card-text">
+                  Peak focus: 9am&ndash;12pm. Great day for challenging work.
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="stats-bar">
+        <div class="stat">
+          <div class="stat-value">100%</div>
+          <div class="stat-label">On-Device</div>
+        </div>
+        <div class="stat">
+          <div class="stat-value">0</div>
+          <div class="stat-label">Accounts Required</div>
+        </div>
+        <div class="stat">
+          <div class="stat-value">3</div>
+          <div class="stat-label">Languages</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Questions Somniq Answers -->
+  <section class="questions" id="questions">
+    <div class="container">
+      <div class="reveal" style="text-align:center">
+        <div class="section-label">The right questions</div>
+        <h2 class="section-title">Data without context is noise</h2>
+        <p class="section-desc" style="margin:0 auto">
+          Most sleep apps bury you in graphs. Somniq answers the four questions that actually matter.
+        </p>
+      </div>
+      <div class="questions-grid reveal">
+        <div class="question-card">
+          <span class="question-emoji">&#128161;</span>
+          <div class="question-q">Why did my sleep change?</div>
+          <div class="question-a">Your baseline comparison, personalized. Not population averages &mdash; your patterns.</div>
+        </div>
+        <div class="question-card">
+          <span class="question-emoji">&#128270;</span>
+          <div class="question-q">What likely caused it?</div>
+          <div class="question-a">Statistically-grounded behavior-sleep correlations using real effect-size analysis.</div>
+        </div>
+        <div class="question-card">
+          <span class="question-emoji">&#9889;</span>
+          <div class="question-q">How will I feel today?</div>
+          <div class="question-a">A readiness prediction based on sleep quality, HRV, consistency, and trends.</div>
+        </div>
+        <div class="question-card">
+          <span class="question-emoji">&#127919;</span>
+          <div class="question-q">What should I do?</div>
+          <div class="question-a">Up to 3 timed, actionable recommendations. Specific. Achievable. Personal.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Features -->
+  <section id="features">
+    <div class="container">
+      <div class="reveal" style="text-align:center">
+        <div class="section-label">Intelligence, not graphs</div>
+        <h2 class="section-title">Everything under the hood</h2>
+        <p class="section-desc" style="margin:0 auto">
+          Powered by on-device statistical analysis, not black-box AI. Every insight comes with evidence and confidence levels.
+        </p>
+      </div>
+      <div class="features-grid reveal">
+        <div class="feature-card">
+          <div class="feature-icon teal">&#9675;</div>
+          <div class="feature-title">Readiness Prediction</div>
+          <div class="feature-desc">
+            A weighted score from duration, efficiency, consistency, trends, and physiology. Know if today is a push day or a recovery day.
+          </div>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon blue">&#9678;</div>
+          <div class="feature-title">Personal Baseline</div>
+          <div class="feature-desc">
+            14-day rolling median of your sleep metrics. Outlier-resistant. Every night compared to your norm, not someone else's.
+          </div>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon amber">&#9733;</div>
+          <div class="feature-title">Behavior Impact</div>
+          <div class="feature-desc">
+            Discover how caffeine, alcohol, exercise timing, stress, and screen time affect your sleep using Cohen's d effect size.
+          </div>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon coral">&#10148;</div>
+          <div class="feature-title">Action Plans</div>
+          <div class="feature-desc">
+            Max 3 recommendations per day. Priority-ranked by impact. Time-aware &mdash; caffeine advice only appears before your cutoff.
+          </div>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon purple">&#9684;</div>
+          <div class="feature-title">Recovery Windows</div>
+          <div class="feature-desc">
+            Optimal windows for peak alertness, deep focus, physical activity, and wind-down &mdash; adapted to your sleep schedule.
+          </div>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon green">&#9829;</div>
+          <div class="feature-title">HealthKit Native</div>
+          <div class="feature-desc">
+            Deep integration with Apple Health. Sleep stages, HRV, heart rate, respiratory rate, blood oxygen, and wrist temperature.
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- How It Works -->
+  <section class="how-it-works" id="how-it-works">
+    <div class="container">
+      <div class="reveal" style="text-align:center">
+        <div class="section-label">Simple by design</div>
+        <h2 class="section-title">Three steps to clarity</h2>
+        <p class="section-desc" style="margin:0 auto">
+          No setup marathons. No manual logging. Somniq works with the data your Apple Watch already collects.
+        </p>
+      </div>
+      <div class="steps reveal">
+        <div class="step">
+          <div class="step-number">1</div>
+          <div class="step-title">Sleep</div>
+          <div class="step-desc">
+            Wear your Apple Watch to bed. It captures sleep stages, heart rate, HRV, and more automatically.
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-number">2</div>
+          <div class="step-title">Understand</div>
+          <div class="step-desc">
+            Wake up to a clear summary: what happened, why, and how it compares to your personal baseline.
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-number">3</div>
+          <div class="step-title">Decide</div>
+          <div class="step-desc">
+            Get timed, actionable recommendations. Know your peak hours. Make the most of today.
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Apple Watch -->
+  <section class="watch-section" id="watch">
+    <div class="container">
+      <div class="watch-layout reveal">
+        <div class="watch-content">
+          <div class="section-label">On your wrist</div>
+          <h2 class="section-title">Apple Watch companion</h2>
+          <p class="section-desc">
+            Glance at your readiness, check today's top action, and log how you feel &mdash; all without pulling out your phone.
+          </p>
+          <ul class="watch-features">
+            <li>
+              <div class="wf-icon">&#9201;</div>
+              <div>
+                <strong style="color:var(--text-primary)">Complications</strong><br>
+                Readiness at a glance on any watch face
+              </div>
+            </li>
+            <li>
+              <div class="wf-icon">&#9889;</div>
+              <div>
+                <strong style="color:var(--text-primary)">Quick Check-In</strong><br>
+                5-second mood and energy logging
+              </div>
+            </li>
+            <li>
+              <div class="wf-icon">&#9790;</div>
+              <div>
+                <strong style="color:var(--text-primary)">Sleep Summary</strong><br>
+                Last night at a glance, right on your wrist
+              </div>
+            </li>
+          </ul>
+        </div>
+        <div class="watch-mockup">
+          <div class="watch-frame">
+            <div class="watch-screen">
+              <div class="watch-readiness-label">Readiness</div>
+              <div class="watch-readiness-score">84</div>
+              <div class="watch-readiness-badge">HIGH</div>
+              <div class="watch-action">Peak focus: 9am&ndash;12pm</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Privacy -->
+  <section class="privacy-section" id="privacy">
+    <div class="container">
+      <div class="reveal">
+        <div class="section-label" style="justify-content:center">Your data, your device</div>
+        <h2 class="section-title">Privacy is not a feature.<br>It's the architecture.</h2>
+        <p class="section-desc" style="margin:0 auto">
+          Somniq was built from day one with zero-server architecture. Your sleep data never leaves your device.
+        </p>
+      </div>
+      <div class="privacy-grid reveal">
+        <div class="privacy-card">
+          <span class="privacy-icon">&#128274;</span>
+          <div class="privacy-title">100% On-Device</div>
+          <div class="privacy-desc">All analysis runs locally. No servers, no cloud sync, no data leaving your iPhone.</div>
+        </div>
+        <div class="privacy-card">
+          <span class="privacy-icon">&#128100;</span>
+          <div class="privacy-title">No Accounts</div>
+          <div class="privacy-desc">No email, no sign-up, no profile. Install and use. That's it.</div>
+        </div>
+        <div class="privacy-card">
+          <span class="privacy-icon">&#128065;</span>
+          <div class="privacy-title">Read-Only HealthKit</div>
+          <div class="privacy-desc">Somniq reads your health data. It never writes to or modifies your records.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Pricing -->
+  <section class="pricing" id="pricing">
+    <div class="container">
+      <div class="reveal">
+        <div class="section-label" style="justify-content:center">Simple pricing</div>
+        <h2 class="section-title">Start free. Go Pro when ready.</h2>
+        <p class="section-desc" style="margin:0 auto">
+          The free tier gives you fundamentals. Pro unlocks full intelligence &mdash; behavior analysis, action plans, and deep history.
+        </p>
+      </div>
+      <div class="pricing-cards reveal">
+        <div class="pricing-card">
+          <div class="pricing-tier">Free</div>
+          <div class="pricing-price">$0</div>
+          <div class="pricing-period">Forever</div>
+          <ul class="pricing-features">
+            <li>Basic sleep summary</li>
+            <li>Readiness band (High / Moderate / Low)</li>
+            <li>7-day history</li>
+            <li>Apple Watch glance</li>
+          </ul>
+          <a href="#download" class="btn btn-secondary pricing-btn">Get Started</a>
+        </div>
+        <div class="pricing-card featured">
+          <div class="pricing-tier">Pro</div>
+          <div class="pricing-price">$6.99<span style="font-size:16px;font-weight:400;color:var(--text-tertiary)">/mo</span></div>
+          <div class="pricing-period">
+            or $49.99/year <span class="pricing-save">Save ~40%</span>
+          </div>
+          <ul class="pricing-features">
+            <li>Everything in Free</li>
+            <li>Behavior impact analysis</li>
+            <li>Personalized action plans</li>
+            <li>Recovery window predictions</li>
+            <li>Mood &amp; energy correlations</li>
+            <li>90+ day history &amp; trends</li>
+            <li>Watch complications</li>
+          </ul>
+          <a href="#download" class="btn btn-primary pricing-btn">Start Free Trial</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Final CTA -->
+  <section class="cta-section" id="download">
+    <div class="container reveal">
+      <div class="section-label" style="justify-content:center">Ready?</div>
+      <h2 class="section-title">Wake up to answers,<br>not more questions.</h2>
+      <p class="section-desc" style="margin:0 auto">
+        Available for iPhone and Apple Watch. Requires iOS 17+ and watchOS 10+.
+      </p>
+      <div class="hero-actions" style="justify-content:center;margin-top:48px">
+        <a href="#" class="btn btn-primary" style="font-size:18px;padding:16px 36px;">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
+          Download on the App Store
+        </a>
+      </div>
+      <div class="cta-visual">
+        <div class="cta-pill"><span>&#127752;</span> English, Deutsch, &#1059;&#1082;&#1088;&#1072;&#1111;&#1085;&#1089;&#1100;&#1082;&#1072;</div>
+        <div class="cta-pill"><span>&#128274;</span> Zero-server architecture</div>
+        <div class="cta-pill"><span>&#9889;</span> Real statistical analysis</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <div class="container">
+      <div class="footer-inner">
+        <div class="footer-brand">
+          <div class="nav-logo" style="width:28px;height:28px;font-size:14px;border-radius:8px;">&#9790;</div>
+          <span class="footer-wordmark">Somniq</span>
+          <span class="footer-copy">&copy; 2026 vtsoft. All rights reserved.</span>
+        </div>
+        <ul class="footer-links">
+          <li><a href="privacy.html">Privacy Policy</a></li>
+          <li><a href="../">vtsoft</a></li>
+        </ul>
+      </div>
+    </div>
+  </footer>
+
+</div>
+
+<!-- Scroll Reveal -->
+<script>
+  const reveals = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+      }
+    });
+  }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+  reveals.forEach(el => observer.observe(el));
+
+  // Navbar scroll effect
+  window.addEventListener('scroll', () => {
+    const nav = document.querySelector('nav');
+    if (window.scrollY > 50) {
+      nav.style.background = 'rgba(13, 13, 26, 0.95)';
+    } else {
+      nav.style.background = 'rgba(13, 13, 26, 0.8)';
+    }
+  });
+</script>
+
+</body>
+</html>

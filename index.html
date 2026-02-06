@@ -1,0 +1,937 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>vtsoft — Privacy-First Health Intelligence for iOS</title>
+  <meta name="description" content="vtsoft builds premium iOS apps that put your health data to work — privately, on-device, without compromise. Explore Fastrum and Somniq.">
+  <meta name="theme-color" content="#08080C">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --bg: #08080C;
+      --bg-elevated: #111116;
+      --bg-card: #16161D;
+      --bg-card-hover: #1E1E28;
+      --text: #FFFFFF;
+      --text-secondary: #8E8E9A;
+      --text-tertiary: #56565F;
+      --border: rgba(255, 255, 255, 0.06);
+      --border-hover: rgba(255, 255, 255, 0.12);
+      --green: #30D158;
+      --cyan: #64D2FF;
+      --lavender: #8AC1FA;
+      --teal: #2DD4BF;
+      --purple: #BF5AF2;
+      --indigo: #5E5CE6;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      overflow-x: hidden;
+      line-height: 1.6;
+      min-height: 100vh;
+    }
+
+    /* ── Ambient background ── */
+    .ambient {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+      overflow: hidden;
+    }
+
+    .ambient .orb {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(140px);
+      opacity: 0.12;
+      animation: drift 25s ease-in-out infinite;
+    }
+
+    .ambient .orb-1 {
+      width: 700px; height: 700px;
+      background: var(--green);
+      top: -300px; left: -200px;
+    }
+
+    .ambient .orb-2 {
+      width: 600px; height: 600px;
+      background: var(--lavender);
+      top: 20%; right: -200px;
+      animation-delay: -8s;
+    }
+
+    .ambient .orb-3 {
+      width: 500px; height: 500px;
+      background: var(--teal);
+      bottom: -200px; left: 40%;
+      animation-delay: -16s;
+    }
+
+    @keyframes drift {
+      0%, 100% { transform: translate(0, 0) scale(1); }
+      33% { transform: translate(40px, -30px) scale(1.05); }
+      66% { transform: translate(-30px, 40px) scale(0.95); }
+    }
+
+    /* ── Content ── */
+    .content {
+      position: relative;
+      z-index: 1;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    /* ── Navigation ── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      padding: 0;
+      background: rgba(8, 8, 12, 0.75);
+      backdrop-filter: blur(24px) saturate(180%);
+      -webkit-backdrop-filter: blur(24px) saturate(180%);
+      border-bottom: 1px solid var(--border);
+    }
+
+    nav .container {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 64px;
+    }
+
+    .nav-brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+      color: var(--text);
+    }
+
+    .nav-logo {
+      width: 32px; height: 32px;
+      border-radius: 8px;
+      background: linear-gradient(135deg, var(--green), var(--teal));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      font-weight: 800;
+      color: #000;
+    }
+
+    .nav-wordmark {
+      font-size: 18px;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 28px;
+      list-style: none;
+    }
+
+    .nav-links a {
+      color: var(--text-secondary);
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 500;
+      transition: color 0.2s;
+    }
+
+    .nav-links a:hover { color: var(--text); }
+
+    /* ── Hero ── */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 120px 24px 80px;
+    }
+
+    .hero-inner {
+      max-width: 800px;
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(48, 209, 88, 0.08);
+      border: 1px solid rgba(48, 209, 88, 0.15);
+      border-radius: 100px;
+      padding: 6px 18px 6px 10px;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--green);
+      margin-bottom: 36px;
+      animation: fadeUp 0.8s ease both;
+    }
+
+    .hero-badge .dot {
+      width: 7px; height: 7px;
+      border-radius: 50%;
+      background: var(--green);
+      animation: pulse 2s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.4; transform: scale(0.7); }
+    }
+
+    .hero h1 {
+      font-size: clamp(40px, 7vw, 76px);
+      font-weight: 900;
+      line-height: 1.05;
+      letter-spacing: -0.04em;
+      margin-bottom: 24px;
+      animation: fadeUp 0.8s ease 0.1s both;
+    }
+
+    .hero h1 .g1 {
+      background: linear-gradient(135deg, var(--green), var(--cyan));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .hero h1 .g2 {
+      background: linear-gradient(135deg, var(--lavender), var(--teal));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .hero-sub {
+      font-size: clamp(17px, 2.2vw, 21px);
+      color: var(--text-secondary);
+      max-width: 580px;
+      margin: 0 auto 48px;
+      line-height: 1.65;
+      animation: fadeUp 0.8s ease 0.2s both;
+    }
+
+    .hero-pills {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      flex-wrap: wrap;
+      animation: fadeUp 0.8s ease 0.3s both;
+    }
+
+    .hero-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 20px;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 100px;
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--text-secondary);
+    }
+
+    .hero-pill span { font-size: 16px; }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(28px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ── Product Cards Section ── */
+    .products {
+      padding: 40px 0 120px;
+    }
+
+    .products-label {
+      text-align: center;
+      font-size: 13px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--text-tertiary);
+      margin-bottom: 48px;
+    }
+
+    .products-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 24px;
+    }
+
+    .product-card {
+      position: relative;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 28px;
+      padding: 48px 40px;
+      overflow: hidden;
+      transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+      text-decoration: none;
+      color: var(--text);
+      display: flex;
+      flex-direction: column;
+    }
+
+    .product-card:hover {
+      border-color: var(--border-hover);
+      transform: translateY(-8px);
+      box-shadow: 0 32px 80px rgba(0, 0, 0, 0.4);
+    }
+
+    .product-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 2px;
+      opacity: 0;
+      transition: opacity 0.5s;
+    }
+
+    .product-card:hover::before { opacity: 1; }
+
+    /* Fastrum card accent */
+    .product-card.fastrum::before {
+      background: linear-gradient(90deg, transparent, var(--green), transparent);
+    }
+    .product-card.fastrum .product-glow {
+      background: radial-gradient(ellipse at top right, rgba(48, 209, 88, 0.06), transparent 60%);
+    }
+
+    /* Somniq card accent */
+    .product-card.somniq::before {
+      background: linear-gradient(90deg, transparent, var(--lavender), transparent);
+    }
+    .product-card.somniq .product-glow {
+      background: radial-gradient(ellipse at top right, rgba(138, 193, 250, 0.06), transparent 60%);
+    }
+
+    .product-glow {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 0.5s;
+    }
+
+    .product-card:hover .product-glow { opacity: 1; }
+
+    .product-header {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 24px;
+      position: relative;
+    }
+
+    .product-icon {
+      width: 56px; height: 56px;
+      border-radius: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 26px;
+      font-weight: 800;
+      flex-shrink: 0;
+    }
+
+    .product-card.fastrum .product-icon {
+      background: linear-gradient(135deg, var(--green), #28B84C);
+      color: #000;
+      box-shadow: 0 6px 24px rgba(48, 209, 88, 0.25);
+    }
+
+    .product-card.somniq .product-icon {
+      background: linear-gradient(135deg, var(--lavender), var(--teal));
+      color: #0D0D1A;
+      box-shadow: 0 6px 24px rgba(138, 193, 250, 0.2);
+    }
+
+    .product-name {
+      font-size: 26px;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+    }
+
+    .product-tagline {
+      font-size: 14px;
+      color: var(--text-tertiary);
+      font-weight: 500;
+      margin-top: 2px;
+    }
+
+    .product-description {
+      font-size: 16px;
+      color: var(--text-secondary);
+      line-height: 1.7;
+      margin-bottom: 32px;
+      position: relative;
+    }
+
+    .product-features {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 32px;
+      position: relative;
+    }
+
+    .product-feature {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 14px;
+      background: rgba(255, 255, 255, 0.04);
+      border-radius: 100px;
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--text-secondary);
+    }
+
+    .product-feature .pf-dot {
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+
+    .product-card.fastrum .pf-dot { background: var(--green); }
+    .product-card.somniq .pf-dot { background: var(--lavender); }
+
+    /* Phone mockup inside card */
+    .product-phone {
+      margin-top: auto;
+      display: flex;
+      justify-content: center;
+      padding-top: 24px;
+      position: relative;
+    }
+
+    .product-phone-frame {
+      width: 200px;
+      height: 380px;
+      border-radius: 32px;
+      padding: 8px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .product-card.fastrum .product-phone-frame {
+      background: #1C1C1E;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4), 0 0 80px rgba(48, 209, 88, 0.06);
+    }
+
+    .product-card.somniq .product-phone-frame {
+      background: #1a1a2e;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4), 0 0 80px rgba(138, 193, 250, 0.06);
+    }
+
+    .product-phone-screen {
+      width: 100%;
+      height: 100%;
+      border-radius: 25px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 24px 12px 16px;
+    }
+
+    .product-card.fastrum .product-phone-screen {
+      background: #000;
+    }
+
+    .product-card.somniq .product-phone-screen {
+      background: #0D0D1A;
+    }
+
+    .screen-label {
+      font-size: 9px;
+      text-transform: uppercase;
+      letter-spacing: 1.2px;
+      color: var(--text-tertiary);
+      margin-bottom: 8px;
+    }
+
+    .screen-big-value {
+      font-size: 44px;
+      font-weight: 800;
+      line-height: 1;
+      margin-bottom: 4px;
+    }
+
+    .product-card.fastrum .screen-big-value {
+      background: linear-gradient(135deg, var(--green), var(--cyan));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .product-card.somniq .screen-big-value {
+      color: var(--teal);
+      font-weight: 300;
+    }
+
+    .screen-sub-badge {
+      padding: 3px 12px;
+      border-radius: 100px;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      margin-top: 6px;
+    }
+
+    .product-card.fastrum .screen-sub-badge {
+      background: rgba(48, 209, 88, 0.12);
+      color: var(--green);
+    }
+
+    .product-card.somniq .screen-sub-badge {
+      background: rgba(45, 212, 191, 0.12);
+      color: var(--teal);
+    }
+
+    .screen-mini-card {
+      width: 100%;
+      background: rgba(255, 255, 255, 0.04);
+      border-radius: 10px;
+      padding: 10px 12px;
+      margin-top: 12px;
+      font-size: 10px;
+      color: var(--text-secondary);
+      line-height: 1.4;
+    }
+
+    .screen-mini-card .smc-title {
+      color: var(--text);
+      font-weight: 600;
+      margin-bottom: 3px;
+      font-size: 11px;
+    }
+
+    .screen-btn {
+      width: 100%;
+      padding: 10px;
+      border-radius: 100px;
+      text-align: center;
+      font-weight: 700;
+      font-size: 12px;
+      margin-top: auto;
+    }
+
+    .product-card.fastrum .screen-btn {
+      background: var(--green);
+      color: #000;
+    }
+
+    .product-card.somniq .screen-btn {
+      background: var(--lavender);
+      color: #0D0D1A;
+    }
+
+    /* CTA arrow */
+    .product-cta {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 15px;
+      font-weight: 600;
+      margin-top: 28px;
+      position: relative;
+      transition: gap 0.3s ease;
+    }
+
+    .product-card:hover .product-cta { gap: 14px; }
+
+    .product-card.fastrum .product-cta { color: var(--green); }
+    .product-card.somniq .product-cta { color: var(--lavender); }
+
+    .product-cta .arrow {
+      font-size: 18px;
+      transition: transform 0.3s ease;
+    }
+
+    .product-card:hover .product-cta .arrow { transform: translateX(4px); }
+
+    /* ── Values Section ── */
+    .values {
+      padding: 80px 0 120px;
+      border-top: 1px solid var(--border);
+    }
+
+    .values-header {
+      text-align: center;
+      margin-bottom: 64px;
+    }
+
+    .values-title {
+      font-size: clamp(28px, 4vw, 40px);
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      margin-bottom: 12px;
+    }
+
+    .values-sub {
+      font-size: 17px;
+      color: var(--text-secondary);
+      max-width: 520px;
+      margin: 0 auto;
+    }
+
+    .values-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+    }
+
+    .value-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 36px 28px;
+      text-align: center;
+      transition: all 0.3s ease;
+    }
+
+    .value-card:hover {
+      border-color: var(--border-hover);
+      transform: translateY(-4px);
+    }
+
+    .value-icon {
+      font-size: 36px;
+      margin-bottom: 16px;
+      display: block;
+    }
+
+    .value-title {
+      font-size: 18px;
+      font-weight: 700;
+      margin-bottom: 8px;
+      letter-spacing: -0.01em;
+    }
+
+    .value-desc {
+      font-size: 14px;
+      color: var(--text-secondary);
+      line-height: 1.6;
+    }
+
+    /* ── Footer ── */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 40px 0;
+    }
+
+    footer .container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 20px;
+    }
+
+    .footer-left {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .footer-logo {
+      width: 24px; height: 24px;
+      border-radius: 6px;
+      background: linear-gradient(135deg, var(--green), var(--teal));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 11px;
+      font-weight: 800;
+      color: #000;
+    }
+
+    .footer-copy {
+      font-size: 13px;
+      color: var(--text-tertiary);
+    }
+
+    .footer-links {
+      display: flex;
+      gap: 24px;
+      list-style: none;
+    }
+
+    .footer-links a {
+      color: var(--text-secondary);
+      text-decoration: none;
+      font-size: 13px;
+      transition: color 0.2s;
+    }
+
+    .footer-links a:hover { color: var(--text); }
+
+    /* ── Responsive ── */
+    @media (max-width: 900px) {
+      .products-grid {
+        grid-template-columns: 1fr;
+        max-width: 560px;
+        margin: 0 auto;
+      }
+      .values-grid {
+        grid-template-columns: 1fr;
+        max-width: 400px;
+        margin: 0 auto;
+      }
+      .nav-links { display: none; }
+    }
+
+    @media (max-width: 640px) {
+      .product-card {
+        padding: 32px 24px;
+      }
+      .hero { padding-top: 100px; }
+      .hero-pills { gap: 8px; }
+      footer .container {
+        flex-direction: column;
+        text-align: center;
+      }
+    }
+
+    /* ── Scroll reveal ── */
+    .reveal {
+      opacity: 0;
+      transform: translateY(32px);
+      transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ── Noise texture ── */
+    body::after {
+      content: '';
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 9999;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.015'/%3E%3C/svg%3E");
+      background-repeat: repeat;
+      opacity: 0.35;
+    }
+  </style>
+</head>
+<body>
+
+<div class="ambient">
+  <div class="orb orb-1"></div>
+  <div class="orb orb-2"></div>
+  <div class="orb orb-3"></div>
+</div>
+
+<div class="content">
+
+  <!-- Navigation -->
+  <nav>
+    <div class="container">
+      <a href="/" class="nav-brand">
+        <div class="nav-logo">vt</div>
+        <span class="nav-wordmark">vtsoft</span>
+      </a>
+      <ul class="nav-links">
+        <li><a href="fastrum/">Fastrum</a></li>
+        <li><a href="somniq/">Somniq</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- Hero -->
+  <section class="hero">
+    <div class="hero-inner">
+      <div class="hero-badge">
+        <span class="dot"></span>
+        iOS &amp; Apple Watch
+      </div>
+      <h1>
+        Health intelligence<br>
+        that <span class="g1">adapts</span> &amp; <span class="g2">understands</span>
+      </h1>
+      <p class="hero-sub">
+        Premium iOS apps that turn your health data into clear answers and personalized guidance. 100% on-device. Zero compromise on privacy.
+      </p>
+      <div class="hero-pills">
+        <div class="hero-pill"><span>&#128274;</span> Privacy-First</div>
+        <div class="hero-pill"><span>&#128241;</span> iOS 17+</div>
+        <div class="hero-pill"><span>&#9201;</span> Apple Watch</div>
+        <div class="hero-pill"><span>&#9889;</span> On-Device AI</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Product Cards -->
+  <section class="products">
+    <div class="container">
+      <div class="products-label reveal">Our Products</div>
+      <div class="products-grid">
+
+        <!-- Fastrum -->
+        <a href="fastrum/" class="product-card fastrum reveal">
+          <div class="product-glow"></div>
+          <div class="product-header">
+            <div class="product-icon">F</div>
+            <div>
+              <div class="product-name">Fastrum</div>
+              <div class="product-tagline">Smart Fasting Timer</div>
+            </div>
+          </div>
+          <p class="product-description">
+            Adaptive intermittent fasting that adjusts to your sleep, workouts, and energy. No rigid schedules. No guilt. Just sustainable results.
+          </p>
+          <div class="product-features">
+            <div class="product-feature"><div class="pf-dot"></div>Adaptive Windows</div>
+            <div class="product-feature"><div class="pf-dot"></div>Burnout Prevention</div>
+            <div class="product-feature"><div class="pf-dot"></div>Training-Aware</div>
+            <div class="product-feature"><div class="pf-dot"></div>8 Languages</div>
+            <div class="product-feature"><div class="pf-dot"></div>Widgets</div>
+            <div class="product-feature"><div class="pf-dot"></div>8+ Protocols</div>
+          </div>
+          <div class="product-phone">
+            <div class="product-phone-frame">
+              <div class="product-phone-screen">
+                <div class="screen-label">Today's Window</div>
+                <div class="screen-big-value">15h</div>
+                <div class="screen-sub-badge">Adapted for you</div>
+                <div class="screen-mini-card">
+                  <div class="smc-title">Why this window?</div>
+                  Good sleep + strength day = optimized recovery fast.
+                </div>
+                <div class="screen-btn">Start Fast</div>
+              </div>
+            </div>
+          </div>
+          <div class="product-cta">Explore Fastrum <span class="arrow">&rarr;</span></div>
+        </a>
+
+        <!-- Somniq -->
+        <a href="somniq/" class="product-card somniq reveal">
+          <div class="product-glow"></div>
+          <div class="product-header">
+            <div class="product-icon">&#9790;</div>
+            <div>
+              <div class="product-name">Somniq</div>
+              <div class="product-tagline">Sleep Intelligence</div>
+            </div>
+          </div>
+          <p class="product-description">
+            Transforms raw sleep data into actionable intelligence. Know why your sleep changed, what caused it, and what to do today.
+          </p>
+          <div class="product-features">
+            <div class="product-feature"><div class="pf-dot"></div>Readiness Score</div>
+            <div class="product-feature"><div class="pf-dot"></div>Behavior Impact</div>
+            <div class="product-feature"><div class="pf-dot"></div>Action Plans</div>
+            <div class="product-feature"><div class="pf-dot"></div>Apple Watch</div>
+            <div class="product-feature"><div class="pf-dot"></div>HealthKit</div>
+            <div class="product-feature"><div class="pf-dot"></div>Recovery Windows</div>
+          </div>
+          <div class="product-phone">
+            <div class="product-phone-frame">
+              <div class="product-phone-screen">
+                <div class="screen-label">Today's Readiness</div>
+                <div class="screen-big-value">84</div>
+                <div class="screen-sub-badge">HIGH</div>
+                <div class="screen-mini-card">
+                  <div class="smc-title">Why?</div>
+                  7h 42m sleep, 23 min above baseline. HRV elevated at 48ms.
+                </div>
+                <div class="screen-btn">View Actions</div>
+              </div>
+            </div>
+          </div>
+          <div class="product-cta">Explore Somniq <span class="arrow">&rarr;</span></div>
+        </a>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- Values -->
+  <section class="values">
+    <div class="container">
+      <div class="values-header reveal">
+        <h2 class="values-title">What we believe</h2>
+        <p class="values-sub">Every app we build follows the same principles.</p>
+      </div>
+      <div class="values-grid reveal">
+        <div class="value-card">
+          <span class="value-icon">&#128274;</span>
+          <div class="value-title">Privacy is architecture</div>
+          <div class="value-desc">All processing happens on your device. No servers, no accounts, no cloud. Your data never leaves your phone.</div>
+        </div>
+        <div class="value-card">
+          <span class="value-icon">&#129504;</span>
+          <div class="value-title">Intelligence, not complexity</div>
+          <div class="value-desc">Deterministic, explainable algorithms. Every recommendation comes with a "why." No black-box AI.</div>
+        </div>
+        <div class="value-card">
+          <span class="value-icon">&#10084;&#65039;</span>
+          <div class="value-title">No guilt, no shame</div>
+          <div class="value-desc">Health apps should empower, not pressure. Missed goals are data points, not failures. Calm confidence over gamification anxiety.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <div class="container">
+      <div class="footer-left">
+        <div class="footer-logo">vt</div>
+        <span class="footer-copy">&copy; 2026 vtsoft. All rights reserved.</span>
+      </div>
+      <ul class="footer-links">
+        <li><a href="fastrum/">Fastrum</a></li>
+        <li><a href="somniq/">Somniq</a></li>
+        <li><a href="somniq/privacy.html">Privacy</a></li>
+      </ul>
+    </div>
+  </footer>
+
+</div>
+
+<!-- Scroll Reveal -->
+<script>
+  const reveals = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) entry.target.classList.add('visible');
+    });
+  }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
+  reveals.forEach(el => observer.observe(el));
+</script>
+
+</body>
+</html>
