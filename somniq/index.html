@@ -1004,9 +1004,188 @@
         text-align: center;
       }
     }
+
+    /* ============================================
+       SUPERMODERN 2026 ENHANCEMENTS
+       ============================================ */
+
+    /* Noise Texture (consistency with other pages) */
+    body::after {
+      content: '';
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 9999;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.015'/%3E%3C/svg%3E");
+      background-repeat: repeat;
+      opacity: .35;
+    }
+
+    /* Scroll Progress Indicator */
+    .scroll-progress {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 0%;
+      height: 2px;
+      background: linear-gradient(90deg, var(--accent), var(--teal), var(--accent));
+      background-size: 300% 100%;
+      animation: gradientFlow 4s linear infinite;
+      z-index: 10000;
+      border-radius: 0 1px 1px 0;
+      box-shadow: 0 0 12px var(--accent-glow), 0 0 4px var(--accent);
+    }
+
+    @keyframes gradientFlow {
+      0% { background-position: 0% 0; }
+      100% { background-position: 300% 0; }
+    }
+
+    /* Smooth Page Entrance */
+    body {
+      animation: pageReveal 0.8s cubic-bezier(0.16, 1, 0.3, 1) both;
+    }
+
+    @keyframes pageReveal {
+      from { opacity: 0; filter: blur(4px); }
+      to { opacity: 1; filter: blur(0); }
+    }
+
+    /* Enhanced Reveal with Blur */
+    .reveal {
+      filter: blur(6px);
+    }
+
+    .reveal.visible {
+      filter: blur(0);
+    }
+
+    /* 3D Card Tilt */
+    .feature-card,
+    .pricing-card,
+    .question-card,
+    .privacy-card {
+      transform-style: preserve-3d;
+      will-change: transform;
+    }
+
+    /* Animated Gradient Shimmer */
+    .hero h1 .gradient-text {
+      background-size: 200% auto;
+    }
+
+    /* Card Hover Enhancements */
+    .feature-card {
+      transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .feature-card:hover {
+      box-shadow: 0 24px 64px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(138, 193, 250, 0.08);
+    }
+
+    .question-card {
+      transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .pricing-card {
+      transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .privacy-card {
+      transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .privacy-card:hover {
+      transform: translateY(-4px);
+      border-color: rgba(138, 193, 250, 0.12);
+      box-shadow: 0 16px 48px rgba(0, 0, 0, 0.3);
+    }
+
+    /* Step Hover */
+    .step {
+      transition: all 0.3s ease;
+    }
+
+    .step:hover {
+      transform: translateY(-4px);
+    }
+
+    .step-number {
+      transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    .step:hover .step-number {
+      transform: scale(1.1);
+    }
+
+    /* Hero Badge Rotating Border */
+    .hero-badge {
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-badge::before {
+      content: '';
+      position: absolute;
+      inset: -1px;
+      background: conic-gradient(from 0deg, transparent, rgba(138, 193, 250, 0.4), transparent, transparent);
+      border-radius: 100px;
+      animation: badgeRotate 4s linear infinite;
+      z-index: -1;
+    }
+
+    @keyframes badgeRotate {
+      to { transform: rotate(360deg); }
+    }
+
+    /* Watch Mockup Enhanced */
+    .watch-frame {
+      transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .watch-frame:hover {
+      box-shadow: 0 25px 60px rgba(0,0,0,0.4), 0 0 40px rgba(138, 193, 250, 0.08);
+    }
+
+    /* Custom Scrollbar */
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.08); border-radius: 3px; }
+    ::-webkit-scrollbar-thumb:hover { background: rgba(255, 255, 255, 0.16); }
+
+    /* Selection */
+    ::selection { background: rgba(138, 193, 250, 0.3); color: #fff; }
+
+    /* Focus Visible */
+    *:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 4px; }
+
+    /* Elastic Buttons */
+    .btn-primary, .btn-secondary {
+      transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) !important;
+    }
+
+    .btn-primary:active, .btn-secondary:active {
+      transform: scale(0.96) !important;
+    }
+
+    /* CTA Pill Hover */
+    .cta-pill {
+      transition: all 0.3s ease;
+    }
+
+    .cta-pill:hover {
+      background: rgba(255, 255, 255, 0.06);
+      transform: translateY(-2px);
+      border-color: rgba(255, 255, 255, 0.1);
+    }
+
+    /* Smooth transitions */
+    a, button { transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1); }
   </style>
 </head>
 <body>
+
+<div class="scroll-progress"></div>
 
 <div class="ambient-bg">
   <div class="orb orb-1"></div>
@@ -1405,8 +1584,30 @@
 
 </div>
 
-<!-- Scroll Reveal -->
 <script>
+  // ============================================
+  // SUPERMODERN 2026 INTERACTIONS
+  // ============================================
+
+  // Scroll Progress Bar
+  (function() {
+    var progressBar = document.querySelector('.scroll-progress');
+    if (!progressBar) return;
+    var ticking = false;
+    window.addEventListener('scroll', function() {
+      if (!ticking) {
+        requestAnimationFrame(function() {
+          var scrollTop = window.scrollY;
+          var docHeight = document.documentElement.scrollHeight - window.innerHeight;
+          progressBar.style.width = ((scrollTop / docHeight) * 100) + '%';
+          ticking = false;
+        });
+        ticking = true;
+      }
+    }, { passive: true });
+  })();
+
+  // Scroll Reveal
   const reveals = document.querySelectorAll('.reveal');
   const observer = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
@@ -1425,7 +1626,59 @@
     } else {
       nav.style.background = 'rgba(13, 13, 26, 0.8)';
     }
-  });
+  }, { passive: true });
+
+  // Parallax on Ambient Orbs
+  (function() {
+    var orbs = document.querySelectorAll('.ambient-bg .orb');
+    if (!orbs.length) return;
+    var scrollTicking = false;
+    window.addEventListener('scroll', function() {
+      if (!scrollTicking) {
+        requestAnimationFrame(function() {
+          var scrollY = window.scrollY;
+          orbs.forEach(function(orb, i) {
+            var speed = 0.015 + (i * 0.008);
+            orb.style.transform = 'translateY(' + (scrollY * speed) + 'px)';
+          });
+          scrollTicking = false;
+        });
+        scrollTicking = true;
+      }
+    }, { passive: true });
+  })();
+
+  // 3D Card Tilt
+  (function() {
+    var cards = document.querySelectorAll('.feature-card, .pricing-card, .question-card, .privacy-card');
+    cards.forEach(function(card) {
+      card.addEventListener('mousemove', function(e) {
+        var rect = card.getBoundingClientRect();
+        var x = e.clientX - rect.left;
+        var y = e.clientY - rect.top;
+        var centerX = rect.width / 2;
+        var centerY = rect.height / 2;
+        var rotateX = ((y - centerY) / centerY) * -2;
+        var rotateY = ((x - centerX) / centerX) * 2;
+        card.style.transform = 'perspective(800px) rotateX(' + rotateX + 'deg) rotateY(' + rotateY + 'deg) translateY(-4px)';
+      });
+      card.addEventListener('mouseleave', function() {
+        card.style.transform = '';
+        card.style.transition = 'transform 0.6s cubic-bezier(0.16, 1, 0.3, 1)';
+        setTimeout(function() { card.style.transition = ''; }, 600);
+      });
+    });
+  })();
+
+  // Mobile Menu
+  (function() {
+    var toggle = document.querySelector('.mobile-toggle');
+    var navLinks = document.querySelector('.nav-links');
+    if (!toggle || !navLinks) return;
+    toggle.addEventListener('click', function() {
+      navLinks.classList.toggle('open');
+    });
+  })();
 </script>
 
 </body>
