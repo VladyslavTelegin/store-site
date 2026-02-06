@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>matchup — Guess the Secret Rule | Offline Party Game for iOS</title>
+  <meta name="description" content="matchup is the ultimate offline party game. One player makes a secret rule, others guess it. Local multiplayer via Bluetooth. No internet required.">
+  <meta name="keywords" content="party game, offline game, multiplayer, word game, guessing game, family game, local multiplayer, no wifi game, social game">
+  <meta name="theme-color" content="#0A0A14">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+    :root{
+      --bg:#0A0A14;--bg-elevated:#12121E;--bg-card:#181828;--bg-card-hover:#1E1E32;
+      --text:#FFFFFF;--text-secondary:#9999B0;--text-tertiary:#5C5C70;
+      --indigo:#4F46E5;--indigo-dim:rgba(79,70,229,0.12);--indigo-glow:rgba(79,70,229,0.08);
+      --green:#22C55E;--green-dim:rgba(34,197,94,0.12);
+      --red:#EF4444;--amber:#F59E0B;--amber-dim:rgba(245,158,11,0.12);
+      --border:rgba(255,255,255,0.06);--border-hover:rgba(255,255,255,0.12);
+      --radius-md:16px;--radius-lg:24px;--radius-xl:32px;
+    }
+    html{scroll-behavior:smooth;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}
+    body{font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;background:var(--bg);color:var(--text);overflow-x:hidden;line-height:1.6}
+    .container{max-width:1120px;margin:0 auto;padding:0 24px}
+
+    /* Ambient */
+    .ambient{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden}
+    .ambient .orb{position:absolute;border-radius:50%;filter:blur(140px);opacity:0.15;animation:drift 22s ease-in-out infinite}
+    .ambient .orb-1{width:600px;height:600px;background:var(--indigo);top:-200px;left:-100px}
+    .ambient .orb-2{width:500px;height:500px;background:var(--green);bottom:-200px;right:-150px;animation-delay:-10s}
+    .ambient .orb-3{width:350px;height:350px;background:var(--amber);top:40%;right:10%;animation-delay:-5s;opacity:0.08}
+    @keyframes drift{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(35px,-30px) scale(1.06)}}
+
+    .content{position:relative;z-index:1}
+
+    /* Nav */
+    nav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(10,10,20,0.8);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-bottom:1px solid var(--border)}
+    nav .container{display:flex;align-items:center;justify-content:space-between;height:64px}
+    .nav-brand{display:flex;align-items:center;gap:10px;text-decoration:none;color:var(--text)}
+    .nav-icon{width:36px;height:36px;border-radius:10px;background:linear-gradient(135deg,var(--indigo),#6C63FF);display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:800;color:#fff;box-shadow:0 4px 16px rgba(79,70,229,0.3)}
+    .nav-name{font-size:20px;font-weight:700;letter-spacing:-0.5px}
+    .nav-links{display:flex;align-items:center;gap:28px;list-style:none}
+    .nav-links a{color:var(--text-secondary);text-decoration:none;font-size:14px;font-weight:500;transition:color .2s}
+    .nav-links a:hover{color:var(--text)}
+    .nav-cta{background:var(--indigo)!important;color:#fff!important;padding:8px 20px;border-radius:100px;font-weight:600!important;transition:transform .2s,box-shadow .2s!important}
+    .nav-cta:hover{transform:translateY(-1px);box-shadow:0 4px 20px rgba(79,70,229,0.4)}
+    .mobile-toggle{display:none;background:none;border:none;color:var(--text);font-size:22px;cursor:pointer;padding:8px}
+
+    /* Hero */
+    .hero{min-height:100vh;display:flex;align-items:center;padding-top:80px}
+    .hero .container{display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center}
+    .hero-content{position:relative;z-index:2}
+    .hero-badge{display:inline-flex;align-items:center;gap:8px;padding:6px 16px 6px 10px;background:var(--indigo-dim);border:1px solid rgba(79,70,229,0.25);border-radius:100px;font-size:13px;font-weight:600;color:var(--indigo);margin-bottom:32px;animation:fadeUp .8s ease both}
+    .hero-badge .emoji{font-size:16px}
+    .hero h1{font-size:clamp(38px,6vw,68px);font-weight:900;line-height:1.05;letter-spacing:-3px;margin-bottom:24px;animation:fadeUp .8s ease .1s both}
+    .hero h1 .gr{background:linear-gradient(135deg,var(--indigo),#818CF8,var(--green));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+    .hero-sub{font-size:clamp(16px,2vw,19px);color:var(--text-secondary);line-height:1.7;margin-bottom:40px;max-width:480px;animation:fadeUp .8s ease .2s both}
+    .hero-actions{display:flex;gap:16px;flex-wrap:wrap;animation:fadeUp .8s ease .3s both}
+    .btn{display:inline-flex;align-items:center;gap:8px;padding:14px 28px;border-radius:14px;font-size:16px;font-weight:600;text-decoration:none;border:none;cursor:pointer;transition:all .25s ease}
+    .btn-primary{background:var(--indigo);color:#fff;box-shadow:0 4px 24px rgba(79,70,229,0.3)}
+    .btn-primary:hover{transform:translateY(-2px);box-shadow:0 8px 32px rgba(79,70,229,0.45)}
+    .btn-secondary{background:var(--bg-card);color:var(--text);border:1px solid var(--border)}
+    .btn-secondary:hover{border-color:var(--border-hover);transform:translateY(-2px)}
+    .hero-pills{display:flex;gap:12px;flex-wrap:wrap;margin-top:32px;animation:fadeUp .8s ease .4s both}
+    .hero-pill{display:inline-flex;align-items:center;gap:6px;padding:6px 14px;background:rgba(255,255,255,0.04);border-radius:100px;font-size:12px;font-weight:500;color:var(--text-tertiary)}
+    .hero-pill span{font-size:14px}
+
+    @keyframes fadeUp{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
+
+    /* Hero Phone */
+    .hero-visual{display:flex;justify-content:center;animation:fadeUp 1s ease .3s both}
+    .phone-frame{width:260px;background:#16162a;border-radius:40px;padding:10px;border:2px solid rgba(255,255,255,0.08);box-shadow:0 30px 80px rgba(0,0,0,0.5),0 0 80px var(--indigo-glow);animation:phoneFloat 6s ease-in-out infinite}
+    @keyframes phoneFloat{0%,100%{transform:translateY(0) rotate(0deg)}50%{transform:translateY(-10px) rotate(0.5deg)}}
+    .phone-screen{background:var(--bg);border-radius:32px;overflow:hidden;padding:24px 14px 16px;min-height:440px;display:flex;flex-direction:column}
+    .phone-notch{width:100px;height:24px;background:#16162a;border-radius:0 0 14px 14px;margin:-24px auto 16px;position:relative;z-index:2}
+    .game-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px}
+    .game-round{font-size:11px;color:var(--text-tertiary);text-transform:uppercase;letter-spacing:1px}
+    .game-players{font-size:11px;color:var(--text-tertiary)}
+    .game-host{text-align:center;margin-bottom:16px}
+    .game-host-label{font-size:10px;color:var(--text-tertiary);text-transform:uppercase;letter-spacing:1px}
+    .game-host-rule{font-size:13px;font-weight:600;color:var(--indigo);margin-top:4px}
+    .game-words{display:flex;flex-direction:column;gap:6px;margin-bottom:16px}
+    .game-word{display:flex;justify-content:space-between;align-items:center;padding:8px 12px;background:var(--bg-card);border-radius:10px;font-size:13px}
+    .game-word .player{color:var(--text-secondary)}
+    .game-word .word{font-weight:600}
+    .game-word .result{font-size:12px;font-weight:700;padding:2px 8px;border-radius:6px}
+    .game-word .result.yes{background:var(--green-dim);color:var(--green)}
+    .game-word .result.no{background:rgba(239,68,68,0.12);color:var(--red)}
+    .game-input{margin-top:auto;background:var(--bg-card);border-radius:12px;padding:10px 14px;display:flex;justify-content:space-between;align-items:center}
+    .game-input-text{font-size:12px;color:var(--text-tertiary)}
+    .game-input-btn{background:var(--indigo);color:#fff;border:none;padding:6px 14px;border-radius:8px;font-size:11px;font-weight:700}
+
+    /* Sections */
+    section{padding:100px 0}
+    .section-label{display:inline-flex;align-items:center;gap:8px;font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:2px;color:var(--indigo);margin-bottom:16px}
+    .section-title{font-size:clamp(30px,4.5vw,48px);font-weight:800;letter-spacing:-1.5px;line-height:1.1;margin-bottom:16px}
+    .section-desc{font-size:18px;color:var(--text-secondary);line-height:1.6;max-width:560px}
+
+    /* How It Works */
+    .how-section{background:var(--bg-elevated);border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
+    .steps-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:24px;margin-top:64px}
+    .step{text-align:center;position:relative}
+    .step-num{width:56px;height:56px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:800;margin:0 auto 16px;background:var(--indigo-dim);border:2px solid rgba(79,70,229,0.3);color:var(--indigo)}
+    .step-title{font-size:16px;font-weight:700;margin-bottom:6px}
+    .step-desc{font-size:13px;color:var(--text-secondary);line-height:1.6}
+
+    /* Features */
+    .features-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-top:64px}
+    .feature-card{padding:32px 24px;background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-lg);transition:all .3s;position:relative;overflow:hidden}
+    .feature-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--indigo),transparent);opacity:0;transition:opacity .3s}
+    .feature-card:hover::before{opacity:1}
+    .feature-card:hover{transform:translateY(-4px);box-shadow:0 16px 48px rgba(0,0,0,0.3)}
+    .feature-icon{width:48px;height:48px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:22px;margin-bottom:20px}
+    .feature-icon.indigo{background:var(--indigo-dim)}
+    .feature-icon.green{background:var(--green-dim)}
+    .feature-icon.amber{background:var(--amber-dim)}
+    .feature-title{font-size:17px;font-weight:700;margin-bottom:8px}
+    .feature-desc{font-size:14px;color:var(--text-secondary);line-height:1.6}
+    .pro-badge{display:inline-block;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;background:linear-gradient(135deg,var(--indigo),#818CF8);color:#fff;padding:3px 8px;border-radius:6px;margin-left:6px;vertical-align:middle}
+
+    /* Rule Categories */
+    .rules-section{background:var(--bg-elevated);border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
+    .rules-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:16px;margin-top:48px}
+    .rule-card{padding:24px 16px;background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-md);text-align:center;transition:all .3s}
+    .rule-card:hover{transform:translateY(-4px);border-color:var(--border-hover)}
+    .rule-emoji{font-size:32px;margin-bottom:10px;display:block}
+    .rule-name{font-size:14px;font-weight:700;margin-bottom:4px}
+    .rule-example{font-size:12px;color:var(--text-tertiary);font-style:italic}
+
+    /* Perfect For */
+    .perfect{text-align:center}
+    .perfect-grid{display:flex;flex-wrap:wrap;justify-content:center;gap:12px;margin-top:48px}
+    .perfect-pill{display:inline-flex;align-items:center;gap:8px;padding:12px 24px;background:var(--bg-card);border:1px solid var(--border);border-radius:100px;font-size:15px;font-weight:500}
+    .perfect-pill span{font-size:20px}
+
+    /* Pricing */
+    .pricing{text-align:center}
+    .pricing-cards{display:grid;grid-template-columns:repeat(2,1fr);gap:24px;max-width:720px;margin:64px auto 0}
+    .pricing-card{padding:40px 32px;background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-lg);text-align:left;transition:all .3s;position:relative}
+    .pricing-card.featured{border-color:rgba(79,70,229,0.3);background:linear-gradient(180deg,var(--indigo-glow),var(--bg-card))}
+    .pricing-card.featured::before{content:'One-Time Purchase';position:absolute;top:-12px;left:50%;transform:translateX(-50%);padding:4px 16px;background:var(--indigo);color:#fff;border-radius:100px;font-size:12px;font-weight:700}
+    .pricing-card:hover{transform:translateY(-4px);box-shadow:0 16px 48px rgba(0,0,0,0.3)}
+    .pricing-tier{font-size:14px;font-weight:600;text-transform:uppercase;letter-spacing:1px;color:var(--text-secondary);margin-bottom:8px}
+    .pricing-price{font-size:40px;font-weight:800;letter-spacing:-2px;margin-bottom:4px}
+    .pricing-period{font-size:14px;color:var(--text-tertiary);margin-bottom:24px}
+    .pricing-features{list-style:none;margin-bottom:32px}
+    .pricing-features li{font-size:14px;color:var(--text-secondary);padding:8px 0;display:flex;align-items:center;gap:10px}
+    .pricing-features li::before{content:'';width:18px;height:18px;border-radius:50%;background:var(--indigo-dim);flex-shrink:0;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%234F46E5' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='20 6 9 17 4 12'%3E%3C/polyline%3E%3C/svg%3E");background-repeat:no-repeat;background-position:center}
+    .pricing-btn{display:block;width:100%;text-align:center;padding:14px;border-radius:14px;font-size:15px;font-weight:700;text-decoration:none;transition:all .3s;border:none;cursor:pointer}
+    .pricing-btn.primary{background:var(--indigo);color:#fff;box-shadow:0 4px 20px rgba(79,70,229,0.3)}
+    .pricing-btn.primary:hover{transform:translateY(-2px);box-shadow:0 8px 32px rgba(79,70,229,0.45)}
+    .pricing-btn.outline{background:transparent;border:1px solid var(--border);color:var(--text)}
+
+    /* CTA */
+    .cta-section{text-align:center;padding:120px 0}
+    .cta-card{background:linear-gradient(135deg,var(--indigo-glow),rgba(34,197,94,0.04));border:1px solid rgba(79,70,229,0.15);border-radius:var(--radius-xl);padding:80px;position:relative;overflow:hidden}
+    .cta-card::before{content:'';position:absolute;top:-150px;left:50%;transform:translateX(-50%);width:500px;height:500px;background:radial-gradient(circle,var(--indigo-glow),transparent);border-radius:50%}
+    .cta-card .section-title,.cta-card .section-desc,.cta-card .hero-actions,.cta-card .cta-note{position:relative}
+    .cta-card .section-desc{margin:0 auto 40px}
+    .cta-note{font-size:13px;color:var(--text-tertiary);margin-top:20px}
+
+    /* Footer */
+    footer{border-top:1px solid var(--border);padding:48px 0}
+    footer .container{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:24px}
+    .footer-left{display:flex;align-items:center;gap:10px}
+    .footer-logo{width:28px;height:28px;border-radius:8px;background:linear-gradient(135deg,var(--indigo),#6C63FF);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;color:#fff}
+    .footer-copy{font-size:13px;color:var(--text-tertiary)}
+    .footer-links{display:flex;gap:24px;list-style:none}
+    .footer-links a{color:var(--text-secondary);text-decoration:none;font-size:13px;transition:color .2s}
+    .footer-links a:hover{color:var(--text)}
+
+    .reveal{opacity:0;transform:translateY(32px);transition:all .8s cubic-bezier(.16,1,.3,1)}
+    .reveal.visible{opacity:1;transform:translateY(0)}
+
+    @media(max-width:900px){.hero .container{grid-template-columns:1fr;text-align:center}.hero-sub{margin:0 auto 40px}.hero-actions{justify-content:center}.hero-pills{justify-content:center}.features-grid{grid-template-columns:repeat(2,1fr)}.steps-grid{grid-template-columns:repeat(2,1fr)}.rules-grid{grid-template-columns:repeat(3,1fr)}.pricing-cards{grid-template-columns:1fr;max-width:400px}.nav-links{display:none}.mobile-toggle{display:block}}
+    @media(max-width:640px){section{padding:72px 0}.features-grid,.steps-grid{grid-template-columns:1fr}.rules-grid{grid-template-columns:repeat(2,1fr)}.hero-actions{flex-direction:column;width:100%;max-width:320px;margin:0 auto}.hero-actions .btn{justify-content:center}.cta-card{padding:48px 24px}footer .container{flex-direction:column;text-align:center}}
+
+    body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:9999;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.015'/%3E%3C/svg%3E");background-repeat:repeat;opacity:.35}
+  </style>
+</head>
+<body>
+<div class="ambient"><div class="orb orb-1"></div><div class="orb orb-2"></div><div class="orb orb-3"></div></div>
+<div class="content">
+
+  <nav><div class="container">
+    <a href="index.html" class="nav-brand"><div class="nav-icon">M</div><span class="nav-name">matchup</span></a>
+    <button class="mobile-toggle" onclick="document.querySelector('.nav-links').classList.toggle('open')" aria-label="Menu">&#9776;</button>
+    <ul class="nav-links">
+      <li><a href="#how">How to Play</a></li>
+      <li><a href="#features">Features</a></li>
+      <li><a href="#pricing">Pricing</a></li>
+      <li><a href="#download" class="nav-cta">Download</a></li>
+    </ul>
+  </div></nav>
+
+  <!-- Hero -->
+  <section class="hero">
+    <div class="container">
+      <div class="hero-content">
+        <div class="hero-badge"><span class="emoji">&#127918;</span> Offline Party Game</div>
+        <h1>Guess the<br><span class="gr">secret rule.</span></h1>
+        <p class="hero-sub">The party game where one player makes the rules and everyone else tries to crack them. Works completely offline. No internet needed.</p>
+        <div class="hero-actions">
+          <a href="#download" class="btn btn-primary">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
+            Download Free
+          </a>
+          <a href="#how" class="btn btn-secondary">How to Play</a>
+        </div>
+        <div class="hero-pills">
+          <div class="hero-pill"><span>&#128246;</span> Bluetooth</div>
+          <div class="hero-pill"><span>&#128241;</span> Single Device</div>
+          <div class="hero-pill"><span>&#128101;</span> 2-16 Players</div>
+          <div class="hero-pill"><span>&#127881;</span> No WiFi Needed</div>
+        </div>
+      </div>
+
+      <div class="hero-visual">
+        <div class="phone-frame">
+          <div class="phone-screen">
+            <div class="phone-notch"></div>
+            <div class="game-header">
+              <div class="game-round">Round 2</div>
+              <div class="game-players">4 players</div>
+            </div>
+            <div class="game-host">
+              <div class="game-host-label">Secret Rule</div>
+              <div class="game-host-rule">&#128274; Words with double letters</div>
+            </div>
+            <div class="game-words">
+              <div class="game-word"><span class="player">Alex</span><span class="word">balloon</span><span class="result yes">YES</span></div>
+              <div class="game-word"><span class="player">Sarah</span><span class="word">phone</span><span class="result no">NO</span></div>
+              <div class="game-word"><span class="player">Mike</span><span class="word">coffee</span><span class="result yes">YES</span></div>
+              <div class="game-word"><span class="player">Lisa</span><span class="word">butter</span><span class="result yes">YES</span></div>
+            </div>
+            <div class="game-input">
+              <span class="game-input-text">Your turn...</span>
+              <button class="game-input-btn">Submit</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- How It Works -->
+  <section class="how-section" id="how">
+    <div class="container">
+      <div class="reveal" style="text-align:center">
+        <div class="section-label">Simple</div>
+        <h2 class="section-title">Learn in 30 seconds</h2>
+        <p class="section-desc" style="margin:0 auto">One round takes 2-5 minutes. Perfect for filling any social moment.</p>
+      </div>
+      <div class="steps-grid reveal">
+        <div class="step">
+          <div class="step-num">1</div>
+          <div class="step-title">Host picks a rule</div>
+          <div class="step-desc">Choose from 60 curated rules or write your own. Keep it secret.</div>
+        </div>
+        <div class="step">
+          <div class="step-num">2</div>
+          <div class="step-title">Players say words</div>
+          <div class="step-desc">Take turns saying words. Type them or just say them aloud.</div>
+        </div>
+        <div class="step">
+          <div class="step-num">3</div>
+          <div class="step-title">Host says YES or NO</div>
+          <div class="step-desc">Does the word match the secret rule? Players start seeing patterns.</div>
+        </div>
+        <div class="step">
+          <div class="step-num">4</div>
+          <div class="step-title">Guess the rule!</div>
+          <div class="step-desc">Think you've cracked it? Guess the rule for bonus points.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Rule Categories -->
+  <section class="rules-section">
+    <div class="container">
+      <div class="reveal" style="text-align:center">
+        <div class="section-label">60 curated rules</div>
+        <h2 class="section-title">Five categories of chaos</h2>
+      </div>
+      <div class="rules-grid reveal">
+        <div class="rule-card"><span class="rule-emoji">&#128300;</span><div class="rule-name">Form</div><div class="rule-example">"Double letters"</div></div>
+        <div class="rule-card"><span class="rule-emoji">&#127793;</span><div class="rule-name">Semantic</div><div class="rule-example">"Things you can eat"</div></div>
+        <div class="rule-card"><span class="rule-emoji">&#128172;</span><div class="rule-name">Context</div><div class="rule-example">"Say at work"</div></div>
+        <div class="rule-card"><span class="rule-emoji">&#129300;</span><div class="rule-name">Meta</div><div class="rule-example">"Multiple meanings"</div></div>
+        <div class="rule-card"><span class="rule-emoji">&#127881;</span><div class="rule-name">Party</div><div class="rule-example">"People argue about"</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Features -->
+  <section id="features">
+    <div class="container">
+      <div class="reveal" style="text-align:center">
+        <div class="section-label">Features</div>
+        <h2 class="section-title">Built for real parties</h2>
+        <p class="section-desc" style="margin:0 auto">No accounts. No internet. No setup friction. Just open, connect, and play.</p>
+      </div>
+      <div class="features-grid reveal">
+        <div class="feature-card">
+          <div class="feature-icon indigo">&#128246;</div>
+          <div class="feature-title">Bluetooth Multiplayer</div>
+          <div class="feature-desc">Connect via Bluetooth or peer-to-peer WiFi. No internet needed. Works in basements, cabins, and planes.</div>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon green">&#128241;</div>
+          <div class="feature-title">Single Device Mode</div>
+          <div class="feature-desc">Only one phone? Pass and play. Perfect for road trips and spontaneous games with no setup.</div>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon amber">&#9889;</div>
+          <div class="feature-title">Quick Mode</div>
+          <div class="feature-desc">Too loud to type? Say words aloud, host taps YES or NO. Made for noisy parties.</div>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon indigo">&#128276;</div>
+          <div class="feature-title">Round Timer</div>
+          <div class="feature-desc">Optional 2 or 5 minute timer per round. Keeps the energy up and games moving.</div>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon green">&#128106;</div>
+          <div class="feature-title">Family Safe Mode</div>
+          <div class="feature-desc">Filter rules for all ages. Game night with kids? No awkward moments.</div>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon amber">&#127866;</div>
+          <div class="feature-title">Drinking Mode <span class="pro-badge">Pro</span></div>
+          <div class="feature-desc">Party-friendly rule variations for adult gatherings. You know what you're signing up for.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Perfect For -->
+  <section class="perfect">
+    <div class="container reveal">
+      <div class="section-label" style="justify-content:center">Everywhere</div>
+      <h2 class="section-title">Perfect for</h2>
+      <div class="perfect-grid">
+        <div class="perfect-pill"><span>&#127968;</span> House parties</div>
+        <div class="perfect-pill"><span>&#128663;</span> Road trips</div>
+        <div class="perfect-pill"><span>&#128106;</span> Family nights</div>
+        <div class="perfect-pill"><span>&#9992;&#65039;</span> Airports</div>
+        <div class="perfect-pill"><span>&#127860;</span> Restaurants</div>
+        <div class="perfect-pill"><span>&#127956;&#65039;</span> Cabins</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Pricing -->
+  <section class="pricing" id="pricing">
+    <div class="container">
+      <div class="reveal">
+        <div class="section-label" style="justify-content:center">Fair pricing</div>
+        <h2 class="section-title">No subscriptions. Ever.</h2>
+        <p class="section-desc" style="margin:0 auto">Free is genuinely fun. Pro is a one-time purchase that unlocks everything forever.</p>
+      </div>
+      <div class="pricing-cards reveal">
+        <div class="pricing-card">
+          <div class="pricing-tier">Free</div>
+          <div class="pricing-price">$0</div>
+          <div class="pricing-period">Forever free</div>
+          <ul class="pricing-features">
+            <li>Full local multiplayer</li>
+            <li>Host-written rules</li>
+            <li>30 curated rules</li>
+            <li>Quick Mode &amp; Single Device</li>
+            <li>Up to 8 players</li>
+          </ul>
+          <a href="#download" class="pricing-btn outline">Get Started</a>
+        </div>
+        <div class="pricing-card featured">
+          <div class="pricing-tier">Pro</div>
+          <div class="pricing-price">$4.99</div>
+          <div class="pricing-period">One-time purchase. Yours forever.</div>
+          <ul class="pricing-features">
+            <li>Everything in Free</li>
+            <li>All 60 curated rules</li>
+            <li>Scoring &amp; leaderboards</li>
+            <li>Drinking mode</li>
+            <li>Save custom rules</li>
+            <li>Up to 16 players</li>
+            <li>Guess the Rule feature</li>
+          </ul>
+          <a href="#download" class="pricing-btn primary">Unlock Pro</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="cta-section" id="download">
+    <div class="container">
+      <div class="cta-card reveal">
+        <div class="section-label" style="justify-content:center">Ready to play?</div>
+        <h2 class="section-title">Your party, your rules</h2>
+        <p class="section-desc" style="margin:0 auto">Download matchup free. No account. No internet. Just fun.</p>
+        <div class="hero-actions" style="justify-content:center;margin-top:40px">
+          <a href="#" class="btn btn-primary" style="font-size:18px;padding:16px 36px">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
+            Download on the App Store
+          </a>
+        </div>
+        <p class="cta-note">iOS 17+ &middot; Free with optional Pro &middot; No internet required</p>
+      </div>
+    </div>
+  </section>
+
+  <footer><div class="container">
+    <div class="footer-left">
+      <div class="footer-logo">M</div>
+      <span class="footer-copy">&copy; 2026 vtsoft. All rights reserved.</span>
+    </div>
+    <ul class="footer-links">
+      <li><a href="privacy.html">Privacy Policy</a></li>
+      <li><a href="../">vtsoft</a></li>
+    </ul>
+  </div></footer>
+
+</div>
+<script>
+  const reveals=document.querySelectorAll('.reveal');
+  const observer=new IntersectionObserver(e=>{e.forEach(el=>{if(el.isIntersecting)el.target.classList.add('visible')})},{threshold:.1,rootMargin:'0px 0px -40px 0px'});
+  reveals.forEach(el=>observer.observe(el));
+</script>
+</body>
+</html>
