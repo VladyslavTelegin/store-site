@@ -10,5 +10,5 @@
     </linearGradient>
   </defs>
   <rect width="120" height="120" rx="28" fill="url(#bg-grad)"/>
-  <text x="50%" y="54%" dominant-baseline="middle" text-anchor="middle" font-family="Inter, -apple-system, BlinkMacSystemFont, sans-serif" font-size="42" font-weight="800" letter-spacing="-1" fill="url(#text-grad)">vt</text>
+  <text x="50%" y="54%" dominant-baseline="middle" text-anchor="middle" font-family="Inter, -apple-system, BlinkMacSystemFont, sans-serif" font-size="42" font-weight="800" letter-spacing="-1" fill="url(#text-grad)">iC</text>
 </svg>
