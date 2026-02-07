@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>iOS Craft Studio — Premium iOS Apps</title>
-  <meta name="description" content="iOS Craft Studio crafts premium, privacy-first iOS apps across health intelligence, wellness, and entertainment. Explore fastrum, somniq, stepiq, and matchup.">
+  <meta name="description" content="iOS Craft Studio crafts premium, privacy-first iOS apps across health intelligence, wellness, utilities, and entertainment. Explore fastrum, somniq, stepiq, matchup, beginr, fluxer, unison, and roomraid.">
   <meta name="theme-color" content="#08080C">
   <link rel="icon" type="image/svg+xml" href="favicon.svg">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -39,6 +39,12 @@
       --lavender-glow: rgba(138, 193, 250, 0.12);
       --sage-glow: rgba(125, 166, 125, 0.12);
       --indigo-glow: rgba(79, 70, 229, 0.15);
+      --blue: #007AFF;
+      --red: #FF3B30;
+      --orange: #FF9500;
+      --blue-glow: rgba(0, 122, 255, 0.15);
+      --amber-glow: rgba(212, 160, 86, 0.12);
+      --red-glow: rgba(255, 59, 48, 0.15);
     }
 
     html {
@@ -536,6 +542,7 @@
     .cat-icon.intelligence { background: rgba(138, 193, 250, 0.1); }
     .cat-icon.wellness { background: rgba(48, 209, 88, 0.1); }
     .cat-icon.play { background: rgba(79, 70, 229, 0.1); }
+    .cat-icon.utilities { background: rgba(0, 122, 255, 0.1); }
 
     .cat-name {
       font-size: 24px;
@@ -632,6 +639,15 @@
 
     .card-beginr::before { background: linear-gradient(90deg, transparent, #34C759, transparent); }
     .card-beginr .product-glow { background: radial-gradient(ellipse at top right, rgba(52, 199, 89, 0.06), transparent 60%); }
+
+    .card-fluxer::before { background: linear-gradient(90deg, transparent, var(--blue), transparent); }
+    .card-fluxer .product-glow { background: radial-gradient(ellipse at top right, rgba(0, 122, 255, 0.06), transparent 60%); }
+
+    .card-unison::before { background: linear-gradient(90deg, transparent, var(--amber), transparent); }
+    .card-unison .product-glow { background: radial-gradient(ellipse at top right, rgba(212, 160, 86, 0.06), transparent 60%); }
+
+    .card-roomraid::before { background: linear-gradient(90deg, transparent, var(--red), transparent); }
+    .card-roomraid .product-glow { background: radial-gradient(ellipse at top right, rgba(255, 59, 48, 0.06), transparent 60%); }
 
     /* Card top area with phone mockup */
     .product-card-top {
@@ -879,6 +895,127 @@
       margin-top: 4px;
     }
 
+    /* fluxer phone screen */
+    .screen-fluxer {
+      background: linear-gradient(180deg, #060A14, #0A1020);
+    }
+    .screen-fluxer .fluxer-arrow {
+      font-size: 28px;
+      color: var(--blue);
+      animation: fluxerPulse 2s ease-in-out infinite;
+    }
+    .screen-fluxer .fluxer-label {
+      font-size: 6px;
+      color: rgba(0, 122, 255, 0.6);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-top: 6px;
+    }
+    .screen-fluxer .fluxer-progress {
+      width: 50px;
+      height: 3px;
+      background: rgba(0, 122, 255, 0.2);
+      border-radius: 2px;
+      margin-top: 8px;
+      overflow: hidden;
+    }
+    .screen-fluxer .fluxer-progress-bar {
+      width: 65%;
+      height: 100%;
+      background: var(--blue);
+      border-radius: 2px;
+      animation: fluxerProgress 3s ease-in-out infinite;
+    }
+    @keyframes fluxerPulse {
+      0%, 100% { transform: translateY(0); opacity: 1; }
+      50% { transform: translateY(-4px); opacity: 0.7; }
+    }
+    @keyframes fluxerProgress {
+      0% { width: 0%; }
+      50% { width: 80%; }
+      100% { width: 100%; }
+    }
+
+    /* unison phone screen */
+    .screen-unison {
+      background: linear-gradient(180deg, #0A0808, #120E0C);
+    }
+    .screen-unison .unison-circle {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      border: 2px solid rgba(212, 160, 86, 0.3);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      animation: unisonBreathe 4s ease-in-out infinite;
+    }
+    .screen-unison .unison-inner {
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background: radial-gradient(circle, var(--amber), rgba(212, 160, 86, 0.3));
+      animation: unisonBreathe 4s ease-in-out infinite;
+    }
+    .screen-unison .unison-label {
+      font-size: 6px;
+      color: rgba(212, 160, 86, 0.6);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-top: 6px;
+    }
+    @keyframes unisonBreathe {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.15); }
+    }
+
+    /* roomraid phone screen */
+    .screen-roomraid {
+      background: linear-gradient(180deg, #0C0808, #1A0E0E);
+    }
+    .screen-roomraid .roomraid-crosshair {
+      width: 44px;
+      height: 44px;
+      border: 2px solid rgba(255, 59, 48, 0.4);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      animation: roomraidScan 3s ease-in-out infinite;
+    }
+    .screen-roomraid .roomraid-crosshair::before,
+    .screen-roomraid .roomraid-crosshair::after {
+      content: '';
+      position: absolute;
+      background: var(--red);
+    }
+    .screen-roomraid .roomraid-crosshair::before {
+      width: 1px;
+      height: 14px;
+    }
+    .screen-roomraid .roomraid-crosshair::after {
+      width: 14px;
+      height: 1px;
+    }
+    .screen-roomraid .roomraid-label {
+      font-size: 6px;
+      color: rgba(255, 59, 48, 0.6);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-top: 6px;
+    }
+    .screen-roomraid .roomraid-score {
+      font-size: 8px;
+      font-weight: 700;
+      color: var(--red);
+      margin-top: 2px;
+    }
+    @keyframes roomraidScan {
+      0%, 100% { transform: scale(1); border-color: rgba(255, 59, 48, 0.4); }
+      50% { transform: scale(1.1); border-color: rgba(255, 59, 48, 0.8); }
+    }
+
     /* Card info area */
     .product-card-info {
       flex: 1;
@@ -938,6 +1075,24 @@
       background: linear-gradient(135deg, #34C759, #2AAF4A);
       color: #000;
       box-shadow: 0 4px 20px rgba(52, 199, 89, 0.2);
+    }
+
+    .card-fluxer .product-icon {
+      background: linear-gradient(135deg, var(--blue), #0055D4);
+      color: #fff;
+      box-shadow: 0 4px 20px rgba(0, 122, 255, 0.2);
+    }
+
+    .card-unison .product-icon {
+      background: linear-gradient(135deg, var(--amber), #B8863A);
+      color: #1A1008;
+      box-shadow: 0 4px 20px rgba(212, 160, 86, 0.2);
+    }
+
+    .card-roomraid .product-icon {
+      background: linear-gradient(135deg, var(--red), #CC2E26);
+      color: #fff;
+      box-shadow: 0 4px 20px rgba(255, 59, 48, 0.2);
     }
 
     .product-name-group {
@@ -1008,6 +1163,9 @@
     .card-stepiq .product-star { color: var(--sage); }
     .card-matchup .product-star { color: var(--indigo); }
     .card-beginr .product-star { color: #34C759; }
+    .card-fluxer .product-star { color: var(--blue); }
+    .card-unison .product-star { color: var(--amber); }
+    .card-roomraid .product-star { color: var(--red); }
 
     .product-rating-text {
       font-size: 12px;
@@ -1060,6 +1218,9 @@
     .card-stepiq .feature-dot { background: var(--sage); }
     .card-matchup .feature-dot { background: var(--indigo); }
     .card-beginr .feature-dot { background: #34C759; }
+    .card-fluxer .feature-dot { background: var(--blue); }
+    .card-unison .feature-dot { background: var(--amber); }
+    .card-roomraid .feature-dot { background: var(--red); }
 
     /* Key differentiator */
     .product-key-diff {
@@ -1103,6 +1264,24 @@
       color: #34C759;
     }
 
+    .card-fluxer .product-key-diff {
+      background: rgba(0, 122, 255, 0.06);
+      border: 1px solid rgba(0, 122, 255, 0.1);
+      color: var(--blue);
+    }
+
+    .card-unison .product-key-diff {
+      background: rgba(212, 160, 86, 0.06);
+      border: 1px solid rgba(212, 160, 86, 0.1);
+      color: var(--amber);
+    }
+
+    .card-roomraid .product-key-diff {
+      background: rgba(255, 59, 48, 0.06);
+      border: 1px solid rgba(255, 59, 48, 0.1);
+      color: var(--red);
+    }
+
     .key-diff-icon {
       font-size: 16px;
       flex-shrink: 0;
@@ -1135,6 +1314,9 @@
     .card-stepiq .product-cta { color: var(--sage); }
     .card-matchup .product-cta { color: var(--indigo); }
     .card-beginr .product-cta { color: #34C759; }
+    .card-fluxer .product-cta { color: var(--blue); }
+    .card-unison .product-cta { color: var(--amber); }
+    .card-roomraid .product-cta { color: var(--red); }
 
     .product-cta .arrow {
       font-size: 18px;
@@ -1639,6 +1821,9 @@
     .maker-app-icon.stepiq { background: linear-gradient(135deg, var(--sage), #5C8A5C); color: #0D0D0C; }
     .maker-app-icon.matchup { background: linear-gradient(135deg, var(--indigo), #6C63FF); color: #fff; }
     .maker-app-icon.beginr { background: linear-gradient(135deg, #34C759, #2AAF4A); color: #000; }
+    .maker-app-icon.fluxer { background: linear-gradient(135deg, var(--blue), #0055D4); color: #fff; }
+    .maker-app-icon.unison { background: linear-gradient(135deg, var(--amber), #B8863A); color: #1A1008; }
+    .maker-app-icon.roomraid { background: linear-gradient(135deg, var(--red), #CC2E26); color: #fff; }
 
     /* ============================================
        FOOTER
@@ -2233,6 +2418,9 @@
         <li><a href="stepiq/">stepiq</a></li>
         <li><a href="matchup/">matchup</a></li>
         <li><a href="beginr/">beginr</a></li>
+        <li><a href="fluxer/">fluxer</a></li>
+        <li><a href="unison/">unison</a></li>
+        <li><a href="roomraid/">roomraid</a></li>
       </ul>
     </div>
   </nav>
@@ -2244,7 +2432,7 @@
     <div class="hero-inner">
       <div class="hero-badge">
         <span class="dot"></span>
-        5 Apps on the App Store
+        8 Apps on the App Store
       </div>
       <h1>
         <span class="line-top">Premium iOS apps.</span>
@@ -2253,6 +2441,7 @@
           <span class="hero-rotating-word">Intelligence.</span>
           <span class="hero-rotating-word">Wellness.</span>
           <span class="hero-rotating-word">Play.</span>
+          <span class="hero-rotating-word">Utilities.</span>
         </span>
       </h1>
       <p class="hero-sub">
@@ -2260,7 +2449,7 @@
       </p>
       <div class="hero-stats">
         <div class="hero-stat">
-          <div class="hero-stat-value"><span class="counter-animate" data-target="5">0</span></div>
+          <div class="hero-stat-value"><span class="counter-animate" data-target="8">0</span></div>
           <div class="hero-stat-label">Apps</div>
         </div>
         <div class="hero-stat-divider"></div>
@@ -2435,7 +2624,7 @@
           <div class="cat-name">Wellness</div>
           <div class="cat-desc">Tools for building healthier habits</div>
         </div>
-        <div class="products-grid single stagger-reveal">
+        <div class="products-grid stagger-reveal">
 
           <!-- fastrum -->
           <a href="fastrum/" class="product-card card-fastrum">
@@ -2492,6 +2681,64 @@
               <div class="product-card-footer">
                 <div class="product-cta">Explore fastrum <span class="arrow">&rarr;</span></div>
                 <div class="product-price">Free &middot; Pro from $6.99/mo</div>
+              </div>
+            </div>
+          </a>
+
+          <!-- unison -->
+          <a href="unison/" class="product-card card-unison">
+            <div class="product-glow"></div>
+            <div class="product-card-top">
+              <div class="phone-mockup">
+                <div class="phone-notch"></div>
+                <div class="phone-screen screen-unison">
+                  <div class="unison-circle">
+                    <div class="unison-inner"></div>
+                  </div>
+                  <div class="unison-label">breathe</div>
+                </div>
+              </div>
+              <div class="product-card-info">
+                <div class="product-header">
+                  <div class="product-icon">U</div>
+                  <div class="product-name-group">
+                    <div class="product-name">Unison</div>
+                    <div class="product-tagline">Meditate Together</div>
+                  </div>
+                </div>
+                <div class="product-rating">
+                  <div class="product-stars">
+                    <span class="product-star">&#9733;</span>
+                    <span class="product-star">&#9733;</span>
+                    <span class="product-star">&#9733;</span>
+                    <span class="product-star">&#9733;</span>
+                    <span class="product-star">&#9733;</span>
+                  </div>
+                  <span class="product-rating-text">Group Meditation</span>
+                </div>
+                <p class="product-desc">Synchronized group meditation sessions over local Wi-Fi. No cloud. No accounts. Just sit together in the same room and meditate in perfect sync.</p>
+              </div>
+            </div>
+            <div class="product-card-bottom">
+              <div class="product-key-diff">
+                <span class="key-diff-icon">&#128992;</span>
+                Peer-to-peer group sync &mdash; no internet needed
+              </div>
+              <div class="product-features">
+                <div class="product-feature"><div class="feature-dot"></div>Group Sessions</div>
+                <div class="product-feature"><div class="feature-dot"></div>P2P Sync</div>
+                <div class="product-feature"><div class="feature-dot"></div>Custom Timers</div>
+                <div class="product-feature"><div class="feature-dot"></div>Bell Sounds</div>
+                <div class="product-feature"><div class="feature-dot"></div>Session History</div>
+                <div class="product-feature"><div class="feature-dot"></div>Ambient Sounds</div>
+                <div class="product-feature"><div class="feature-dot"></div>Solo Mode</div>
+                <div class="product-feature"><div class="feature-dot"></div>Zero Servers</div>
+                <div class="product-feature"><div class="feature-dot"></div>No Account</div>
+                <div class="product-feature"><div class="feature-dot"></div>Works Offline</div>
+              </div>
+              <div class="product-card-footer">
+                <div class="product-cta">Explore Unison <span class="arrow">&rarr;</span></div>
+                <div class="product-price">Free &middot; Premium $2.99/mo</div>
               </div>
             </div>
           </a>
@@ -2567,6 +2814,75 @@
         </div>
       </div>
 
+      <!-- Category: Utilities -->
+      <div class="cat-section reveal">
+        <div class="cat-header">
+          <div class="cat-icon utilities">&#128268;</div>
+          <div class="cat-name">Utilities</div>
+          <div class="cat-desc">Tools that just work</div>
+        </div>
+        <div class="products-grid single stagger-reveal">
+
+          <!-- fluxer -->
+          <a href="fluxer/" class="product-card card-fluxer">
+            <div class="product-glow"></div>
+            <div class="product-card-top">
+              <div class="phone-mockup">
+                <div class="phone-notch"></div>
+                <div class="phone-screen screen-fluxer">
+                  <div class="fluxer-arrow">&#8593;</div>
+                  <div class="fluxer-label">sending</div>
+                  <div class="fluxer-progress"><div class="fluxer-progress-bar"></div></div>
+                </div>
+              </div>
+              <div class="product-card-info">
+                <div class="product-header">
+                  <div class="product-icon">F</div>
+                  <div class="product-name-group">
+                    <div class="product-name">Fluxer</div>
+                    <div class="product-tagline">P2P File Transfer</div>
+                  </div>
+                </div>
+                <div class="product-rating">
+                  <div class="product-stars">
+                    <span class="product-star">&#9733;</span>
+                    <span class="product-star">&#9733;</span>
+                    <span class="product-star">&#9733;</span>
+                    <span class="product-star">&#9733;</span>
+                    <span class="product-star">&#9733;</span>
+                  </div>
+                  <span class="product-rating-text">File Transfer</span>
+                </div>
+                <p class="product-desc">Send files directly between devices. No cloud, no upload, no waiting. Peer-to-peer over Bluetooth and Wi-Fi. Works in airplane mode.</p>
+              </div>
+            </div>
+            <div class="product-card-bottom">
+              <div class="product-key-diff">
+                <span class="key-diff-icon">&#128225;</span>
+                Direct device-to-device &mdash; files never touch a server
+              </div>
+              <div class="product-features">
+                <div class="product-feature"><div class="feature-dot"></div>P2P Transfer</div>
+                <div class="product-feature"><div class="feature-dot"></div>Bluetooth + Wi-Fi</div>
+                <div class="product-feature"><div class="feature-dot"></div>Any File Type</div>
+                <div class="product-feature"><div class="feature-dot"></div>Transfer History</div>
+                <div class="product-feature"><div class="feature-dot"></div>Encrypted</div>
+                <div class="product-feature"><div class="feature-dot"></div>Works Offline</div>
+                <div class="product-feature"><div class="feature-dot"></div>No Account</div>
+                <div class="product-feature"><div class="feature-dot"></div>Zero Servers</div>
+                <div class="product-feature"><div class="feature-dot"></div>Airplane Mode</div>
+                <div class="product-feature"><div class="feature-dot"></div>Fast Compression</div>
+              </div>
+              <div class="product-card-footer">
+                <div class="product-cta">Explore Fluxer <span class="arrow">&rarr;</span></div>
+                <div class="product-price">3-day trial &middot; $5.99 one-time</div>
+              </div>
+            </div>
+          </a>
+
+        </div>
+      </div>
+
       <!-- Category: Play -->
       <div class="cat-section reveal">
         <div class="cat-header">
@@ -2574,7 +2890,7 @@
           <div class="cat-name">Play</div>
           <div class="cat-desc">Games for real-life moments</div>
         </div>
-        <div class="products-grid single stagger-reveal">
+        <div class="products-grid stagger-reveal">
 
           <!-- matchup -->
           <a href="matchup/" class="product-card card-matchup">
@@ -2633,6 +2949,63 @@
               <div class="product-card-footer">
                 <div class="product-cta">Explore matchup <span class="arrow">&rarr;</span></div>
                 <div class="product-price">Free &middot; Pro $4.99 one-time</div>
+              </div>
+            </div>
+          </a>
+
+          <!-- roomraid -->
+          <a href="roomraid/" class="product-card card-roomraid">
+            <div class="product-glow"></div>
+            <div class="product-card-top">
+              <div class="phone-mockup">
+                <div class="phone-notch"></div>
+                <div class="phone-screen screen-roomraid">
+                  <div class="roomraid-crosshair"></div>
+                  <div class="roomraid-label">scanning</div>
+                  <div class="roomraid-score">3 critters</div>
+                </div>
+              </div>
+              <div class="product-card-info">
+                <div class="product-header">
+                  <div class="product-icon">R</div>
+                  <div class="product-name-group">
+                    <div class="product-name">RoomRaid</div>
+                    <div class="product-tagline">AR Party Game</div>
+                  </div>
+                </div>
+                <div class="product-rating">
+                  <div class="product-stars">
+                    <span class="product-star">&#9733;</span>
+                    <span class="product-star">&#9733;</span>
+                    <span class="product-star">&#9733;</span>
+                    <span class="product-star">&#9733;</span>
+                    <span class="product-star">&#9733;</span>
+                  </div>
+                  <span class="product-rating-text">AR Party Game</span>
+                </div>
+                <p class="product-desc">Your room is the arena. Hunt augmented-reality critters hiding behind real furniture. Solo, party, and team modes. Camera stays on-device.</p>
+              </div>
+            </div>
+            <div class="product-card-bottom">
+              <div class="product-key-diff">
+                <span class="key-diff-icon">&#128248;</span>
+                AR gameplay in your actual room &mdash; camera data never leaves device
+              </div>
+              <div class="product-features">
+                <div class="product-feature"><div class="feature-dot"></div>AR Gameplay</div>
+                <div class="product-feature"><div class="feature-dot"></div>6 Critter Types</div>
+                <div class="product-feature"><div class="feature-dot"></div>Solo Mode</div>
+                <div class="product-feature"><div class="feature-dot"></div>Party Mode</div>
+                <div class="product-feature"><div class="feature-dot"></div>Team Mode</div>
+                <div class="product-feature"><div class="feature-dot"></div>Room Mapping</div>
+                <div class="product-feature"><div class="feature-dot"></div>No Internet</div>
+                <div class="product-feature"><div class="feature-dot"></div>Family Friendly</div>
+                <div class="product-feature"><div class="feature-dot"></div>Sound Effects</div>
+                <div class="product-feature"><div class="feature-dot"></div>Score Tracking</div>
+              </div>
+              <div class="product-card-footer">
+                <div class="product-cta">Explore RoomRaid <span class="arrow">&rarr;</span></div>
+                <div class="product-price">Free &middot; Full Game $6.99</div>
               </div>
             </div>
           </a>
@@ -2753,9 +3126,9 @@
       </div>
       <div class="numbers-grid stagger-reveal">
         <div class="number-card">
-          <div class="number-value gradient"><span class="counter-animate" data-target="5">0</span></div>
+          <div class="number-value gradient"><span class="counter-animate" data-target="8">0</span></div>
           <div class="number-label">Apps on the App Store</div>
-          <div class="number-sublabel">Intelligence, Wellness, Productivity, Play</div>
+          <div class="number-sublabel">Intelligence, Wellness, Productivity, Utilities, Play</div>
         </div>
         <div class="number-card">
           <div class="number-value gradient"><span class="counter-animate" data-target="8">0</span>+</div>
@@ -2848,7 +3221,7 @@
       <div class="section-header reveal">
         <div class="section-divider"></div>
         <div class="section-label">From the maker</div>
-        <h2 class="section-title">One developer. <span class="gradient">Four apps.</span></h2>
+        <h2 class="section-title">One developer. <span class="gradient">Eight apps.</span></h2>
       </div>
       <div class="maker-content reveal">
         <div class="maker-avatar">vt</div>
@@ -2863,6 +3236,9 @@
           <div class="maker-app-icon stepiq">S</div>
           <div class="maker-app-icon matchup">M</div>
           <div class="maker-app-icon beginr">&#9654;</div>
+          <div class="maker-app-icon fluxer">F</div>
+          <div class="maker-app-icon unison">U</div>
+          <div class="maker-app-icon roomraid">R</div>
         </div>
       </div>
     </div>
@@ -2883,6 +3259,9 @@
         <li><a href="stepiq/">stepiq</a></li>
         <li><a href="matchup/">matchup</a></li>
         <li><a href="beginr/">beginr</a></li>
+        <li><a href="fluxer/">fluxer</a></li>
+        <li><a href="unison/">unison</a></li>
+        <li><a href="roomraid/">roomraid</a></li>
       </ul>
     </div>
   </footer>

@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Privacy Policy — RoomRaid</title>
+  <meta name="description" content="RoomRaid Privacy Policy. Your camera feed stays on your device. AR processing is local. No servers. No accounts. No tracking.">
+  <meta name="theme-color" content="#0C0808">
+  <link rel="icon" type="image/svg+xml" href="../favicon.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+    :root{--bg:#0C0808;--bg-card:#1C1414;--text:#FFFFFF;--text-secondary:#AA9090;--text-tertiary:#6B5555;--red:#FF3B30;--orange:#FF9500;--radius-xl:20px}
+    html{scroll-behavior:smooth}
+    body{font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;background:var(--bg);color:var(--text);-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}
+    .container{max-width:760px;margin:0 auto;padding:0 24px}
+    nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:16px 0;background:rgba(12,8,8,0.9);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-bottom:1px solid rgba(255,59,48,0.08)}
+    nav .nav-inner{max-width:760px;margin:0 auto;padding:0 24px;display:flex;align-items:center;justify-content:space-between}
+    .nav-brand{display:flex;align-items:center;gap:10px;text-decoration:none}
+    .nav-logo{width:36px;height:36px;background:linear-gradient(135deg,var(--red),#CC2E25);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:800;color:#fff}
+    .nav-wordmark{font-size:20px;font-weight:700;color:var(--text);letter-spacing:-0.5px}
+    .nav-back{color:var(--red);text-decoration:none;font-size:14px;font-weight:500;transition:opacity .2s}
+    .nav-back:hover{opacity:.7}
+    .page-header{padding-top:120px;padding-bottom:48px;border-bottom:1px solid rgba(255,255,255,0.06)}
+    .page-header h1{font-size:40px;font-weight:800;letter-spacing:-1.5px;margin-bottom:12px}
+    .page-header .subtitle{font-size:18px;color:var(--text-secondary);line-height:1.6}
+    .page-header .effective{margin-top:16px;font-size:13px;color:var(--text-tertiary);font-weight:500}
+    .privacy-content{padding:48px 0 100px}
+    .privacy-content h2{font-size:24px;font-weight:700;letter-spacing:-0.5px;margin-top:48px;margin-bottom:16px;padding-top:32px;border-top:1px solid rgba(255,255,255,0.04)}
+    .privacy-content h2:first-child{margin-top:0;padding-top:0;border-top:none}
+    .privacy-content h3{font-size:17px;font-weight:600;margin-top:28px;margin-bottom:10px;color:var(--red)}
+    .privacy-content p{font-size:15px;color:var(--text-secondary);line-height:1.75;margin-bottom:16px}
+    .privacy-content ul{list-style:none;margin-bottom:16px;padding-left:0}
+    .privacy-content ul li{font-size:15px;color:var(--text-secondary);line-height:1.75;padding-left:20px;position:relative;margin-bottom:4px}
+    .privacy-content ul li::before{content:'';width:6px;height:6px;background:var(--red);border-radius:50%;position:absolute;left:0;top:10px}
+    .privacy-content strong{color:var(--text);font-weight:600}
+    .highlight-box{background:var(--bg-card);border:1px solid rgba(255,59,48,0.15);border-radius:16px;padding:24px 28px;margin:24px 0}
+    .highlight-box p{margin-bottom:0;color:var(--text);font-weight:500}
+    .data-table{width:100%;border-collapse:collapse;margin:20px 0 24px;border-radius:12px;overflow:hidden}
+    .data-table thead th{background:var(--bg-card);text-align:left;padding:12px 16px;font-size:13px;font-weight:600;color:var(--text);border-bottom:1px solid rgba(255,255,255,0.06)}
+    .data-table tbody td{padding:12px 16px;font-size:14px;color:var(--text-secondary);border-bottom:1px solid rgba(255,255,255,0.03)}
+    .data-table tbody tr:last-child td{border-bottom:none}
+    .data-table .badge-no{display:inline-block;padding:2px 10px;background:rgba(255,59,48,0.12);color:var(--red);border-radius:100px;font-size:12px;font-weight:600}
+    .toc{background:var(--bg-card);border-radius:16px;padding:24px 28px;margin-bottom:32px}
+    .toc-title{font-size:14px;font-weight:600;color:var(--text);margin-bottom:12px;text-transform:uppercase;letter-spacing:1px}
+    .toc ol{list-style:none;counter-reset:toc;padding:0}
+    .toc ol li{counter-increment:toc;margin-bottom:6px}
+    .toc ol li a{font-size:14px;color:var(--text-secondary);text-decoration:none;transition:color .2s;display:flex;align-items:center;gap:10px}
+    .toc ol li a::before{content:counter(toc) ".";color:var(--text-tertiary);font-weight:600;font-size:12px;min-width:20px}
+    .toc ol li a:hover{color:var(--red)}
+    footer{padding:32px 0;border-top:1px solid rgba(255,255,255,0.04);text-align:center}
+    .footer-copy{font-size:13px;color:var(--text-tertiary)}
+    .footer-copy a{color:var(--text-secondary);text-decoration:none}
+    @media(max-width:640px){.page-header h1{font-size:28px}.privacy-content h2{font-size:20px}.data-table{font-size:13px}.data-table thead th,.data-table tbody td{padding:10px 12px}}
+  </style>
+</head>
+<body>
+  <nav><div class="nav-inner">
+    <a href="index.html" class="nav-brand"><div class="nav-logo">R</div><span class="nav-wordmark">RoomRaid</span></a>
+    <a href="index.html" class="nav-back">&larr; Back to home</a>
+  </div></nav>
+  <div class="container">
+    <div class="page-header">
+      <h1>Privacy Policy</h1>
+      <p class="subtitle">RoomRaid uses your camera for AR gameplay &mdash; but everything stays on your device. We process no images on servers, require no accounts, and collect no data. This policy explains exactly how it works.</p>
+      <p class="effective">Effective Date: January 1, 2026 &middot; Last Updated: January 1, 2026</p>
+    </div>
+    <div class="privacy-content">
+
+      <div class="toc">
+        <div class="toc-title">Contents</div>
+        <ol>
+          <li><a href="#philosophy">Our Privacy Philosophy</a></li>
+          <li><a href="#data-collected">Data We Access</a></li>
+          <li><a href="#data-not-collected">Data We Do Not Collect</a></li>
+          <li><a href="#permissions">Camera, Local Network &amp; Microphone</a></li>
+          <li><a href="#processing">How Data Is Processed</a></li>
+          <li><a href="#storage">Data Storage</a></li>
+          <li><a href="#third-parties">Third Parties</a></li>
+          <li><a href="#payments">Payments</a></li>
+          <li><a href="#children">Children's Privacy</a></li>
+          <li><a href="#your-rights">Your Rights</a></li>
+          <li><a href="#changes">Changes to This Policy</a></li>
+          <li><a href="#contact">Contact</a></li>
+        </ol>
+      </div>
+
+      <h2 id="philosophy">1. Our Privacy Philosophy</h2>
+      <div class="highlight-box"><p>RoomRaid processes your camera feed entirely on your device using Apple's ARKit. No images, video, or room data are ever transmitted to any server. We have zero servers, zero access to your data, and zero interest in changing that.</p></div>
+      <p>We understand that an app requesting camera access carries a higher responsibility for privacy. Your camera sees your home, your friends, your personal space. That's why we built RoomRaid with an absolute on-device-only policy. ARKit processes the camera feed in real-time to place virtual critters in your room &mdash; and that data never leaves your device.</p>
+
+      <h2 id="data-collected">2. Data We Access</h2>
+      <p>RoomRaid accesses the following data categories, only with your explicit permission:</p>
+      <table class="data-table">
+        <thead><tr><th>Data Type</th><th>Purpose</th><th>Leaves Device?</th></tr></thead>
+        <tbody>
+          <tr><td>Camera Feed</td><td>AR scene rendering and critter placement</td><td><span class="badge-no">No</span></td></tr>
+          <tr><td>Room Mapping Data</td><td>Surface detection for placing virtual objects</td><td><span class="badge-no">No</span></td></tr>
+          <tr><td>Game Scores</td><td>Local leaderboard and game history</td><td><span class="badge-no">No</span></td></tr>
+          <tr><td>Device Name</td><td>Identify players in local multiplayer</td><td><span class="badge-no">Local peers only</span></td></tr>
+          <tr><td>Microphone (optional)</td><td>Sound-reactive game features</td><td><span class="badge-no">No</span></td></tr>
+        </tbody>
+      </table>
+      <p>Camera and room mapping data are processed in real-time by Apple's ARKit framework on your device. No images or spatial data are stored after a game session ends.</p>
+
+      <h2 id="data-not-collected">3. Data We Do Not Collect</h2>
+      <p>To be absolutely clear, RoomRaid does <strong>not</strong> collect, transmit, or have access to:</p>
+      <ul>
+        <li>Your name, email address, or any personal identifiers</li>
+        <li>Device identifiers, advertising IDs, or fingerprints</li>
+        <li>Location data</li>
+        <li>Photos or recordings from your camera</li>
+        <li>Room layout data or 3D maps of your space</li>
+        <li>Usage analytics or behavioral telemetry</li>
+        <li>Crash reports (we do not use any crash reporting SDK)</li>
+        <li>Audio recordings from your microphone</li>
+      </ul>
+      <div class="highlight-box"><p>RoomRaid does not connect to the internet for any game functionality. There are no network calls to any server. We cannot see your camera feed, your room, or anything you do in the app.</p></div>
+
+      <h2 id="permissions">4. Camera, Local Network &amp; Microphone</h2>
+      <h3>Camera</h3>
+      <p>RoomRaid requires camera access to deliver the AR experience:</p>
+      <ul>
+        <li><strong>Real-time processing only.</strong> The camera feed is processed frame-by-frame by ARKit to detect surfaces and track motion. No frames are saved, stored, or transmitted.</li>
+        <li><strong>No photos or recordings.</strong> RoomRaid does not take screenshots, record video, or capture any images from your camera.</li>
+        <li><strong>Processed by ARKit.</strong> All AR processing uses Apple's on-device ARKit framework. The camera data never leaves the ARKit pipeline on your device.</li>
+        <li><strong>Revocable.</strong> You can revoke camera access at any time in Settings &gt; RoomRaid &gt; Camera.</li>
+      </ul>
+      <h3>Local Network</h3>
+      <p>For multiplayer games, RoomRaid uses the local network to connect players:</p>
+      <ul>
+        <li><strong>Peer-to-peer.</strong> Players connect directly using Apple's Multipeer Connectivity. No game data passes through any server.</li>
+        <li><strong>No internet required.</strong> Multiplayer works in airplane mode over local Wi-Fi or Bluetooth.</li>
+        <li><strong>Optional.</strong> Solo mode works without any network permissions.</li>
+      </ul>
+      <h3>Microphone (Optional)</h3>
+      <p>Some game modes feature sound-reactive gameplay:</p>
+      <ul>
+        <li><strong>Real-time only.</strong> Audio is analyzed in real-time for game mechanics (e.g., detecting loudness to scare critters). No audio is recorded or stored.</li>
+        <li><strong>Completely optional.</strong> You can decline microphone access and still play all core game modes.</li>
+        <li><strong>No recordings.</strong> RoomRaid never records, saves, or transmits any audio.</li>
+      </ul>
+
+      <h2 id="processing">5. How Data Is Processed</h2>
+      <p>All data processing happens locally on your device:</p>
+      <h3>AR Scene Processing</h3>
+      <p>ARKit analyzes your camera feed to understand room geometry, detect surfaces, and track device motion. Virtual critters are placed onto detected surfaces. All of this processing happens entirely on your device's GPU and Neural Engine.</p>
+      <h3>Game Logic</h3>
+      <p>Scoring, critter behavior, and game state are computed locally. In multiplayer, minimal sync data (scores, critter positions) is shared peer-to-peer between devices.</p>
+      <div class="highlight-box"><p>There are no server calls for any game feature. RoomRaid works fully offline after installation.</p></div>
+
+      <h2 id="storage">6. Data Storage</h2>
+      <ul>
+        <li><strong>Game sessions</strong> are stored in memory during gameplay and discarded when the session ends</li>
+        <li><strong>High scores</strong> are stored locally on your device</li>
+        <li><strong>No camera data</strong> is ever persisted to storage</li>
+        <li><strong>Encrypted at rest</strong> by iOS Data Protection</li>
+        <li><strong>Deleted entirely</strong> when you uninstall RoomRaid</li>
+      </ul>
+      <p>We do not operate any servers, databases, or cloud storage. There is no "account" to delete because no account exists.</p>
+
+      <h2 id="third-parties">7. Third Parties</h2>
+      <p>RoomRaid does not share data with any third parties. Specifically:</p>
+      <ul>
+        <li><strong>No analytics providers</strong></li>
+        <li><strong>No advertising networks</strong> (no ads of any kind)</li>
+        <li><strong>No crash reporting services</strong></li>
+        <li><strong>No social integrations</strong></li>
+        <li><strong>No data brokers</strong></li>
+      </ul>
+      <p>The only external service is the <strong>Apple App Store</strong> for purchase verification via StoreKit 2, subject to <a href="https://www.apple.com/legal/privacy/" style="color:var(--red)">Apple's Privacy Policy</a>.</p>
+
+      <h2 id="payments">8. Payments</h2>
+      <p>RoomRaid offers a free tier and a one-time Full Game purchase ($6.99) processed entirely by Apple. We do not have access to your payment information, credit card number, or Apple ID.</p>
+      <ul>
+        <li>Payments are processed by Apple through your App Store account</li>
+        <li>Purchase status is verified on-device using Apple's StoreKit 2</li>
+        <li>No purchase data is transmitted to our servers (we have no servers)</li>
+      </ul>
+
+      <h2 id="children">9. Children's Privacy</h2>
+      <p>RoomRaid is family-friendly. Since we collect no personal information from any user, children's privacy is inherently protected by our zero-data architecture. Parental supervision is recommended for AR gameplay to ensure physical safety.</p>
+
+      <h2 id="your-rights">10. Your Rights</h2>
+      <p>Because RoomRaid operates with a zero-server, on-device-only architecture:</p>
+      <ul>
+        <li><strong>Access:</strong> All your data is on your device. You already have complete access.</li>
+        <li><strong>Deletion:</strong> Uninstall RoomRaid to delete all app data.</li>
+        <li><strong>Restriction:</strong> Revoke Camera, Local Network, or Microphone permissions at any time in Settings.</li>
+        <li><strong>Objection:</strong> You can stop all processing by simply closing or uninstalling the app.</li>
+      </ul>
+      <p>For users in the European Union, California, or other jurisdictions with specific privacy regulations (GDPR, CCPA, etc.): RoomRaid's architecture means we are not a data controller or processor of your personal data in any networked sense.</p>
+
+      <h2 id="changes">11. Changes to This Policy</h2>
+      <p>If we make material changes to this privacy policy, we will update this page and the "Last Updated" date above. Our core commitment &mdash; that your camera feed and personal data never leave your device &mdash; will not change.</p>
+
+      <h2 id="contact">12. Contact</h2>
+      <ul>
+        <li><strong>Developer:</strong> iOS Craft Studio</li>
+        <li><strong>GitHub:</strong> github.com/AeroMate</li>
+      </ul>
+      <p style="margin-top:40px;font-size:13px;color:var(--text-tertiary)">This privacy policy is effective as of January 1, 2026.</p>
+    </div>
+  </div>
+  <footer><div class="container"><p class="footer-copy">&copy; 2026 iOS Craft Studio. All rights reserved. &middot; <a href="index.html">RoomRaid Home</a> &middot; <a href="../">iOS Craft Studio</a></p></div></footer>
+</body>
+</html>

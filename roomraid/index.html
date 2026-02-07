@@ -1,0 +1,1102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>RoomRaid — AR Critter Hunting Party Game for iOS</title>
+  <meta name="description" content="RoomRaid is the ultimate AR party game. Point your camera, find hidden critters in your room, and compete with friends. 2-6 players, no internet required.">
+  <meta name="keywords" content="AR game, augmented reality, party game, critter hunting, local multiplayer, no wifi game, camera game, iOS game, family game, offline game">
+  <meta name="theme-color" content="#0C0808">
+  <link rel="icon" type="image/svg+xml" href="../favicon.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    /* ===================================================================
+       RESET & VARIABLES
+       =================================================================== */
+    *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+    :root{
+      --bg:#0C0808;--bg-elevated:#140F0F;--bg-card:#1C1414;--bg-card-hover:#241A1A;
+      --text:#FFFFFF;--text-secondary:#B09999;--text-tertiary:#6B5555;
+      --red:#FF3B30;--red-light:#FF6B61;--red-dim:rgba(255,59,48,0.12);--red-glow:rgba(255,59,48,0.08);
+      --orange:#FF9500;--orange-light:#FFAD33;--orange-dim:rgba(255,149,0,0.12);
+      --purple:#A855F7;--purple-dim:rgba(168,85,247,0.12);
+      --cyan:#06B6D4;--cyan-dim:rgba(6,182,212,0.12);
+      --green:#22C55E;--green-dim:rgba(34,197,94,0.12);
+      --amber:#F59E0B;--amber-dim:rgba(245,158,11,0.12);
+      --border:rgba(255,255,255,0.06);--border-hover:rgba(255,255,255,0.12);
+      --radius-sm:10px;--radius-md:16px;--radius-lg:24px;--radius-xl:32px;
+    }
+    html{scroll-behavior:smooth;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}
+    body{font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;background:var(--bg);color:var(--text);overflow-x:hidden;line-height:1.6}
+    .mono{font-family:'JetBrains Mono',monospace}
+    .container{max-width:1120px;margin:0 auto;padding:0 24px}
+
+    /* ===================================================================
+       SCROLL PROGRESS BAR
+       =================================================================== */
+    .scroll-progress{position:fixed;top:0;left:0;width:0%;height:2px;background:linear-gradient(90deg,var(--red),var(--orange),var(--red-light),var(--red));background-size:300% 100%;animation:gradientFlow 4s linear infinite;z-index:10000;border-radius:0 1px 1px 0;box-shadow:0 0 12px rgba(255,59,48,0.15),0 0 4px var(--red)}
+    @keyframes gradientFlow{0%{background-position:0% 0}100%{background-position:300% 0}}
+
+    /* ===================================================================
+       AMBIENT BACKGROUND
+       =================================================================== */
+    .ambient{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden}
+    .ambient .orb{position:absolute;border-radius:50%;filter:blur(140px);animation:drift 22s ease-in-out infinite}
+    .ambient .orb-1{width:600px;height:600px;background:var(--red);top:-200px;left:-100px;opacity:0.12}
+    .ambient .orb-2{width:500px;height:500px;background:var(--orange);bottom:-200px;right:-150px;animation-delay:-10s;opacity:0.10}
+    .ambient .orb-3{width:350px;height:350px;background:var(--purple);top:40%;right:5%;animation-delay:-5s;opacity:0.06}
+    @keyframes drift{0%,100%{transform:translate(0,0) scale(1)}33%{transform:translate(35px,-30px) scale(1.06)}66%{transform:translate(-20px,15px) scale(0.97)}}
+
+    .content{position:relative;z-index:1}
+
+    /* Noise texture overlay */
+    body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:9999;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.015'/%3E%3C/svg%3E");background-repeat:repeat;opacity:.35}
+
+    /* ===================================================================
+       CONFETTI PARTICLES (CSS-only)
+       =================================================================== */
+    .confetti-wrap{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden}
+    .confetti{position:absolute;width:8px;height:8px;border-radius:2px;opacity:0;animation:confettiFall linear infinite}
+    .confetti:nth-child(1){left:5%;background:var(--red);animation-duration:11s;animation-delay:0s;width:6px;height:10px}
+    .confetti:nth-child(2){left:14%;background:var(--orange);animation-duration:9s;animation-delay:1.5s;width:8px;height:6px}
+    .confetti:nth-child(3){left:23%;background:var(--purple);animation-duration:13s;animation-delay:3s;width:5px;height:8px;border-radius:50%}
+    .confetti:nth-child(4){left:33%;background:var(--green);animation-duration:10s;animation-delay:0.8s;width:7px;height:7px}
+    .confetti:nth-child(5){left:42%;background:var(--amber);animation-duration:12s;animation-delay:2.5s;width:9px;height:5px}
+    .confetti:nth-child(6){left:52%;background:var(--cyan);animation-duration:8s;animation-delay:4s;width:6px;height:9px;border-radius:50%}
+    .confetti:nth-child(7){left:62%;background:var(--red-light);animation-duration:14s;animation-delay:1s;width:8px;height:6px}
+    .confetti:nth-child(8){left:71%;background:var(--orange-light);animation-duration:11s;animation-delay:3.5s;width:5px;height:8px}
+    .confetti:nth-child(9){left:80%;background:var(--red);animation-duration:9s;animation-delay:2s;width:7px;height:7px;border-radius:50%}
+    .confetti:nth-child(10){left:88%;background:var(--purple);animation-duration:12s;animation-delay:0.5s;width:6px;height:10px}
+    .confetti:nth-child(11){left:10%;background:var(--orange);animation-duration:15s;animation-delay:5s;width:5px;height:5px}
+    .confetti:nth-child(12){left:48%;background:var(--green);animation-duration:10s;animation-delay:6s;width:8px;height:4px}
+    @keyframes confettiFall{
+      0%{transform:translateY(-20px) rotate(0deg) scale(0.8);opacity:0}
+      5%{opacity:0.6}
+      50%{opacity:0.3}
+      95%{opacity:0}
+      100%{transform:translateY(100vh) rotate(720deg) scale(0.3);opacity:0}
+    }
+
+    /* ===================================================================
+       NAVIGATION
+       =================================================================== */
+    nav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(12,8,8,0.8);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-bottom:1px solid var(--border);transition:background .3s}
+    nav.scrolled{background:rgba(12,8,8,0.95)}
+    nav .container{display:flex;align-items:center;justify-content:space-between;height:64px}
+    .nav-brand{display:flex;align-items:center;gap:10px;text-decoration:none;color:var(--text)}
+    .nav-icon{width:36px;height:36px;border-radius:10px;background:linear-gradient(135deg,var(--red),var(--orange));display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:800;color:#fff;box-shadow:0 4px 16px rgba(255,59,48,0.3);transition:transform .3s}
+    .nav-brand:hover .nav-icon{transform:rotate(-5deg) scale(1.05)}
+    .nav-name{font-size:20px;font-weight:700;letter-spacing:-0.5px}
+    .nav-links{display:flex;align-items:center;gap:24px;list-style:none}
+    .nav-links a{color:var(--text-secondary);text-decoration:none;font-size:14px;font-weight:500;transition:color .2s}
+    .nav-links a:hover{color:var(--text)}
+    .nav-cta{background:var(--red)!important;color:#fff!important;padding:8px 20px;border-radius:100px;font-weight:600!important;transition:transform .2s,box-shadow .2s!important}
+    .nav-cta:hover{transform:translateY(-1px);box-shadow:0 4px 20px rgba(255,59,48,0.4)}
+    .mobile-toggle{display:none;background:none;border:none;color:var(--text);font-size:22px;cursor:pointer;padding:8px}
+    .nav-links.show{display:flex!important;position:absolute;top:64px;left:0;right:0;flex-direction:column;background:rgba(12,8,8,0.95);backdrop-filter:blur(20px);padding:24px;gap:20px;border-bottom:1px solid var(--border)}
+
+    /* ===================================================================
+       BUTTONS
+       =================================================================== */
+    .btn{display:inline-flex;align-items:center;gap:8px;padding:14px 28px;border-radius:14px;font-size:16px;font-weight:600;text-decoration:none;border:none;cursor:pointer;transition:all .4s cubic-bezier(.34,1.56,.64,1)}
+    .btn:active{transform:scale(0.96)!important}
+    .btn-primary{background:var(--red);color:#fff;box-shadow:0 4px 24px rgba(255,59,48,0.3)}
+    .btn-primary:hover{transform:translateY(-2px);box-shadow:0 8px 32px rgba(255,59,48,0.45)}
+    .btn-secondary{background:var(--bg-card);color:var(--text);border:1px solid var(--border)}
+    .btn-secondary:hover{border-color:var(--border-hover);transform:translateY(-2px)}
+
+    /* ===================================================================
+       HERO SECTION
+       =================================================================== */
+    .hero{min-height:100vh;display:flex;align-items:center;padding-top:80px;padding-bottom:40px}
+    .hero .container{display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center}
+    .hero-content{position:relative;z-index:2}
+    .hero-badge{display:inline-flex;align-items:center;gap:8px;padding:6px 16px 6px 10px;background:var(--red-dim);border:1px solid rgba(255,59,48,0.25);border-radius:100px;font-size:13px;font-weight:600;color:var(--red);margin-bottom:32px;animation:fadeUp .8s ease both;position:relative;overflow:hidden}
+    .hero-badge::before{content:'';position:absolute;inset:-1px;background:conic-gradient(from 0deg,transparent,rgba(255,59,48,0.4),transparent,transparent);border-radius:100px;animation:badgeRotate 4s linear infinite;z-index:-1}
+    @keyframes badgeRotate{to{transform:rotate(360deg)}}
+    .hero-badge .dot{width:8px;height:8px;border-radius:50%;background:var(--red);animation:pulse 2s ease-in-out infinite}
+    @keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:0.5;transform:scale(0.8)}}
+    .hero h1{font-size:clamp(36px,5.5vw,64px);font-weight:900;line-height:1.05;letter-spacing:-3px;margin-bottom:24px;animation:fadeUp .8s ease .1s both}
+    .hero h1 .gr{background:linear-gradient(135deg,var(--red),var(--orange),var(--red-light));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;background-size:200% auto;animation:shimmerGradient 4s ease-in-out infinite}
+    @keyframes shimmerGradient{0%{background-position:0% center}100%{background-position:200% center}}
+    .hero-sub{font-size:clamp(16px,2vw,19px);color:var(--text-secondary);line-height:1.7;margin-bottom:40px;max-width:480px;animation:fadeUp .8s ease .2s both}
+    .hero-sub strong{color:var(--text);font-weight:600}
+    .hero-actions{display:flex;gap:16px;flex-wrap:wrap;animation:fadeUp .8s ease .3s both}
+    .hero-pills{display:flex;gap:12px;flex-wrap:wrap;margin-top:32px;animation:fadeUp .8s ease .4s both}
+    .hero-pill{display:inline-flex;align-items:center;gap:6px;padding:6px 14px;background:rgba(255,255,255,0.04);border:1px solid var(--border);border-radius:100px;font-size:12px;font-weight:500;color:var(--text-tertiary);transition:all .4s cubic-bezier(.34,1.56,.64,1);animation:bounceIn .6s ease both}
+    .hero-pill:nth-child(1){animation-delay:.5s}
+    .hero-pill:nth-child(2){animation-delay:.6s}
+    .hero-pill:nth-child(3){animation-delay:.7s}
+    .hero-pill:nth-child(4){animation-delay:.8s}
+    .hero-pill:hover{background:rgba(255,255,255,0.08);border-color:var(--border-hover);transform:translateY(-2px)}
+    .hero-pill span{font-size:14px}
+    @keyframes bounceIn{0%{opacity:0;transform:scale(0.3) translateY(20px)}50%{transform:scale(1.05) translateY(-4px)}100%{opacity:1;transform:scale(1) translateY(0)}}
+    @keyframes fadeUp{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
+
+    /* ===================================================================
+       PHONE MOCKUP (Hero)
+       =================================================================== */
+    .hero-visual{display:flex;justify-content:center;animation:fadeUp 1s ease .3s both}
+    .phone-frame{width:272px;background:#1A1010;border-radius:44px;padding:10px;border:2px solid rgba(255,255,255,0.08);box-shadow:0 30px 80px rgba(0,0,0,0.5),0 0 80px var(--red-glow),inset 0 1px 0 rgba(255,255,255,0.05);animation:phoneFloat 6s ease-in-out infinite;position:relative}
+    @keyframes phoneFloat{0%,100%{transform:translateY(0) rotate(0deg)}50%{transform:translateY(-12px) rotate(0.5deg)}}
+    .phone-screen{background:#111;border-radius:36px;overflow:hidden;min-height:480px;display:flex;flex-direction:column;position:relative}
+    .phone-status-bar{display:flex;justify-content:space-between;align-items:center;padding:12px 24px 0;font-size:11px;font-weight:600;color:var(--text-secondary)}
+    .phone-status-icons{display:flex;gap:4px;align-items:center}
+    .phone-status-icons span{font-size:10px}
+    .phone-dynamic-island{width:90px;height:26px;background:#000;border-radius:14px;margin:6px auto 0;position:relative;z-index:2}
+
+    /* AR Game Screen */
+    .ar-view{flex:1;position:relative;display:flex;flex-direction:column;background:linear-gradient(180deg,#1a1520 0%,#0d0a12 100%);overflow:hidden}
+    .ar-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(255,59,48,0.04) 1px,transparent 1px),linear-gradient(90deg,rgba(255,59,48,0.04) 1px,transparent 1px);background-size:40px 40px;opacity:0.5}
+    .ar-score-bar{display:flex;justify-content:space-between;align-items:center;padding:12px 16px;position:relative;z-index:2}
+    .ar-score{font-family:'JetBrains Mono',monospace;font-size:22px;font-weight:700;color:var(--orange);letter-spacing:-0.5px}
+    .ar-timer{font-family:'JetBrains Mono',monospace;font-size:14px;font-weight:600;color:var(--text-secondary);background:rgba(255,255,255,0.06);padding:4px 10px;border-radius:8px}
+    .ar-crosshair{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:60px;height:60px;z-index:2}
+    .ar-crosshair::before,.ar-crosshair::after{content:'';position:absolute;background:rgba(255,59,48,0.6)}
+    .ar-crosshair::before{width:2px;height:100%;left:50%;transform:translateX(-50%)}
+    .ar-crosshair::after{height:2px;width:100%;top:50%;transform:translateY(-50%)}
+    .ar-crosshair-ring{position:absolute;inset:0;border:2px solid rgba(255,59,48,0.3);border-radius:50%;animation:crosshairPulse 2s ease-in-out infinite}
+    @keyframes crosshairPulse{0%,100%{transform:scale(1);opacity:0.5}50%{transform:scale(1.15);opacity:1}}
+    .ar-critter{position:absolute;bottom:30%;right:25%;font-size:36px;z-index:2;animation:critterBob 2s ease-in-out infinite;filter:drop-shadow(0 0 12px rgba(255,149,0,0.4))}
+    @keyframes critterBob{0%,100%{transform:translateY(0) rotate(-5deg)}50%{transform:translateY(-8px) rotate(5deg)}}
+    .ar-remaining{position:absolute;bottom:16px;left:50%;transform:translateX(-50%);font-size:11px;font-weight:600;color:var(--text-tertiary);background:rgba(0,0,0,0.5);padding:4px 14px;border-radius:100px;z-index:2;white-space:nowrap}
+
+    /* ===================================================================
+       SECTION SHARED STYLES
+       =================================================================== */
+    section{padding:100px 0}
+    .section-label{display:inline-flex;align-items:center;gap:8px;font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:2px;color:var(--red);margin-bottom:16px}
+    .section-title{font-size:clamp(30px,4.5vw,50px);font-weight:800;letter-spacing:-2px;line-height:1.1;margin-bottom:16px}
+    .section-title .gr{background:linear-gradient(135deg,var(--red),var(--orange));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+    .section-desc{font-size:18px;color:var(--text-secondary);line-height:1.7;max-width:560px}
+
+    /* Reveal animations */
+    .reveal{opacity:0;transform:translateY(32px);filter:blur(6px);transition:all .8s cubic-bezier(.16,1,.3,1)}
+    .reveal.visible{opacity:1;transform:translateY(0);filter:blur(0)}
+    .reveal-delay-1{transition-delay:.1s}
+    .reveal-delay-2{transition-delay:.2s}
+    .reveal-delay-3{transition-delay:.3s}
+
+    /* Page entrance */
+    body{animation:pageReveal .8s cubic-bezier(.16,1,.3,1) both}
+    @keyframes pageReveal{from{opacity:0;filter:blur(4px)}to{opacity:1;filter:blur(0)}}
+
+    /* ===================================================================
+       PITCH SECTION
+       =================================================================== */
+    .pitch-section{padding:80px 0;background:var(--bg-elevated);border-top:1px solid var(--border);border-bottom:1px solid var(--border);overflow:hidden;position:relative}
+    .pitch-section::before{content:'';position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:700px;height:700px;background:radial-gradient(circle,rgba(255,59,48,0.05),transparent);border-radius:50%;pointer-events:none}
+    .pitch-card{text-align:center;max-width:700px;margin:0 auto}
+    .pitch-quote{font-size:clamp(22px,3.5vw,36px);font-weight:800;letter-spacing:-1.5px;line-height:1.3;margin-bottom:24px;position:relative}
+    .pitch-quote::before{content:'\201C';font-size:80px;color:var(--red);opacity:0.3;position:absolute;top:-30px;left:-10px;font-family:Georgia,serif;line-height:1}
+
+    /* ===================================================================
+       FEATURES GRID
+       =================================================================== */
+    .features-section{padding:120px 0}
+    .features-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-top:64px}
+    .feature-card{padding:32px 24px;background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-lg);transition:all .3s;position:relative;overflow:hidden;transform-style:preserve-3d;will-change:transform}
+    .feature-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--red),transparent);opacity:0;transition:opacity .3s}
+    .feature-card:hover::before{opacity:1}
+    .feature-card:hover{transform:translateY(-4px);box-shadow:0 16px 48px rgba(0,0,0,0.3)}
+    .feature-icon{width:48px;height:48px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:22px;margin-bottom:20px}
+    .feature-icon.red{background:var(--red-dim)}
+    .feature-icon.orange{background:var(--orange-dim)}
+    .feature-icon.purple{background:var(--purple-dim)}
+    .feature-icon.cyan{background:var(--cyan-dim)}
+    .feature-icon.green{background:var(--green-dim)}
+    .feature-icon.amber{background:var(--amber-dim)}
+    .feature-title{font-size:17px;font-weight:700;margin-bottom:8px}
+    .feature-desc{font-size:14px;color:var(--text-secondary);line-height:1.6}
+
+    /* Stagger for feature cards */
+    .features-grid .feature-card{opacity:0;transform:translateY(24px);transition:all .6s cubic-bezier(.16,1,.3,1)}
+    .features-grid.visible .feature-card{opacity:1;transform:translateY(0)}
+    .features-grid.visible .feature-card:nth-child(1){transition-delay:0s}
+    .features-grid.visible .feature-card:nth-child(2){transition-delay:.08s}
+    .features-grid.visible .feature-card:nth-child(3){transition-delay:.16s}
+    .features-grid.visible .feature-card:nth-child(4){transition-delay:.24s}
+    .features-grid.visible .feature-card:nth-child(5){transition-delay:.32s}
+    .features-grid.visible .feature-card:nth-child(6){transition-delay:.40s}
+
+    /* ===================================================================
+       HOW IT WORKS
+       =================================================================== */
+    .how-section{background:var(--bg-elevated);border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding:120px 0}
+    .steps-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:24px;margin-top:64px;position:relative}
+    .steps-grid::before{content:'';position:absolute;top:28px;left:15%;right:15%;height:2px;background:linear-gradient(90deg,transparent,rgba(255,59,48,0.2),rgba(255,59,48,0.3),rgba(255,59,48,0.2),transparent)}
+    .step{text-align:center;position:relative}
+    .step-num{width:56px;height:56px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:800;margin:0 auto 20px;background:var(--bg-card);border:2px solid rgba(255,59,48,0.3);color:var(--red);position:relative;z-index:2;transition:all .3s}
+    .step:hover .step-num{background:var(--red);color:#fff;transform:scale(1.1);box-shadow:0 0 30px rgba(255,59,48,0.3)}
+    .step-title{font-size:16px;font-weight:700;margin-bottom:8px}
+    .step-desc{font-size:13px;color:var(--text-secondary);line-height:1.6;max-width:200px;margin:0 auto}
+    .step-icon{font-size:24px;margin-bottom:8px}
+
+    /* Stagger for steps */
+    .steps-grid .step{opacity:0;transform:translateY(24px);transition:all .6s cubic-bezier(.16,1,.3,1)}
+    .steps-grid.visible .step{opacity:1;transform:translateY(0)}
+    .steps-grid.visible .step:nth-child(1){transition-delay:0s}
+    .steps-grid.visible .step:nth-child(2){transition-delay:.1s}
+    .steps-grid.visible .step:nth-child(3){transition-delay:.2s}
+    .steps-grid.visible .step:nth-child(4){transition-delay:.3s}
+
+    /* ===================================================================
+       GAME MODES
+       =================================================================== */
+    .modes-section{padding:120px 0}
+    .modes-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-top:64px}
+    .mode-card{padding:36px 28px;background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-lg);transition:all .4s;position:relative;overflow:hidden;transform-style:preserve-3d;will-change:transform}
+    .mode-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;opacity:0;transition:opacity .3s}
+    .mode-card:nth-child(1)::before{background:linear-gradient(90deg,var(--orange),var(--amber))}
+    .mode-card:nth-child(2)::before{background:linear-gradient(90deg,var(--red),var(--orange))}
+    .mode-card:nth-child(3)::before{background:linear-gradient(90deg,var(--purple),var(--cyan))}
+    .mode-card:hover::before{opacity:1}
+    .mode-card:hover{transform:translateY(-6px);box-shadow:0 20px 60px rgba(0,0,0,0.3)}
+    .mode-card:nth-child(1):hover{border-color:rgba(255,149,0,0.2)}
+    .mode-card:nth-child(2):hover{border-color:rgba(255,59,48,0.2)}
+    .mode-card:nth-child(3):hover{border-color:rgba(168,85,247,0.2)}
+    .mode-icon{width:56px;height:56px;border-radius:16px;display:flex;align-items:center;justify-content:center;font-size:26px;margin-bottom:20px}
+    .mode-icon.solo{background:linear-gradient(135deg,rgba(255,149,0,0.15),rgba(245,158,11,0.1));border:1px solid rgba(255,149,0,0.2)}
+    .mode-icon.party{background:linear-gradient(135deg,rgba(255,59,48,0.15),rgba(255,149,0,0.1));border:1px solid rgba(255,59,48,0.2)}
+    .mode-icon.team{background:linear-gradient(135deg,rgba(168,85,247,0.15),rgba(6,182,212,0.1));border:1px solid rgba(168,85,247,0.2)}
+    .mode-title{font-size:20px;font-weight:800;margin-bottom:8px;letter-spacing:-0.5px}
+    .mode-subtitle{font-size:13px;font-weight:600;margin-bottom:16px}
+    .mode-card:nth-child(1) .mode-subtitle{color:var(--orange)}
+    .mode-card:nth-child(2) .mode-subtitle{color:var(--red-light)}
+    .mode-card:nth-child(3) .mode-subtitle{color:var(--purple)}
+    .mode-desc{font-size:14px;color:var(--text-secondary);line-height:1.6;margin-bottom:20px}
+    .mode-specs{list-style:none;display:flex;flex-direction:column;gap:8px}
+    .mode-specs li{font-size:13px;color:var(--text-secondary);display:flex;align-items:center;gap:8px}
+    .mode-specs li::before{content:'';width:16px;height:16px;border-radius:50%;background:var(--red-dim);flex-shrink:0;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 24 24' fill='none' stroke='%23FF3B30' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='20 6 9 17 4 12'%3E%3C/polyline%3E%3C/svg%3E");background-repeat:no-repeat;background-position:center}
+
+    /* Stagger for mode cards */
+    .modes-grid .mode-card{opacity:0;transform:translateY(24px);transition:all .6s cubic-bezier(.16,1,.3,1)}
+    .modes-grid.visible .mode-card{opacity:1;transform:translateY(0)}
+    .modes-grid.visible .mode-card:nth-child(1){transition-delay:0s}
+    .modes-grid.visible .mode-card:nth-child(2){transition-delay:.12s}
+    .modes-grid.visible .mode-card:nth-child(3){transition-delay:.24s}
+
+    /* ===================================================================
+       CRITTER SHOWCASE
+       =================================================================== */
+    .critter-section{background:var(--bg-elevated);border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding:120px 0}
+    .critter-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-top:64px;max-width:900px;margin-left:auto;margin-right:auto}
+    .critter-card{padding:28px 24px;background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-lg);text-align:center;transition:all .3s;position:relative;overflow:hidden}
+    .critter-card:hover{transform:translateY(-4px);box-shadow:0 16px 48px rgba(0,0,0,0.3);border-color:var(--border-hover)}
+    .critter-emoji{font-size:44px;margin-bottom:12px;display:block;animation:critterHover 3s ease-in-out infinite}
+    .critter-card:nth-child(even) .critter-emoji{animation-delay:-1.5s}
+    @keyframes critterHover{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
+    .critter-name{font-size:16px;font-weight:700;margin-bottom:6px}
+    .critter-meta{display:flex;align-items:center;justify-content:center;gap:12px;margin-top:8px}
+    .critter-rarity{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1px;padding:3px 10px;border-radius:6px}
+    .critter-rarity.common{background:var(--green-dim);color:var(--green)}
+    .critter-rarity.rare{background:var(--cyan-dim);color:var(--cyan)}
+    .critter-rarity.epic{background:var(--purple-dim);color:var(--purple)}
+    .critter-rarity.legendary{background:var(--orange-dim);color:var(--orange)}
+    .critter-points{font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:600;color:var(--text-tertiary)}
+
+    /* Stagger for critter cards */
+    .critter-grid .critter-card{opacity:0;transform:translateY(24px);transition:all .6s cubic-bezier(.16,1,.3,1)}
+    .critter-grid.visible .critter-card{opacity:1;transform:translateY(0)}
+    .critter-grid.visible .critter-card:nth-child(1){transition-delay:0s}
+    .critter-grid.visible .critter-card:nth-child(2){transition-delay:.08s}
+    .critter-grid.visible .critter-card:nth-child(3){transition-delay:.16s}
+    .critter-grid.visible .critter-card:nth-child(4){transition-delay:.24s}
+    .critter-grid.visible .critter-card:nth-child(5){transition-delay:.32s}
+    .critter-grid.visible .critter-card:nth-child(6){transition-delay:.40s}
+
+    /* ===================================================================
+       PRIVACY SUMMARY
+       =================================================================== */
+    .privacy-section{padding:120px 0}
+    .privacy-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-top:64px;max-width:900px;margin-left:auto;margin-right:auto}
+    .privacy-card{padding:32px 24px;background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-lg);text-align:center;transition:all .3s}
+    .privacy-card:hover{transform:translateY(-4px);border-color:var(--border-hover);box-shadow:0 16px 48px rgba(0,0,0,0.3)}
+    .privacy-icon{font-size:36px;margin-bottom:16px;display:block}
+    .privacy-title{font-size:17px;font-weight:700;margin-bottom:8px}
+    .privacy-desc{font-size:14px;color:var(--text-secondary);line-height:1.6}
+
+    /* ===================================================================
+       PRICING
+       =================================================================== */
+    .pricing{text-align:center;padding:120px 0;background:var(--bg-elevated);border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
+    .pricing-subtitle{font-size:18px;color:var(--text-secondary);margin-top:12px;line-height:1.6}
+    .pricing-cards{display:grid;grid-template-columns:repeat(2,1fr);gap:24px;max-width:760px;margin:64px auto 0}
+    .pricing-card{padding:40px 32px;background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-lg);text-align:left;transition:all .3s;position:relative;transform-style:preserve-3d;will-change:transform}
+    .pricing-card.featured{border-color:rgba(255,59,48,0.3);background:linear-gradient(180deg,rgba(255,59,48,0.06),var(--bg-card))}
+    .pricing-card.featured::before{content:'One-Time Purchase';position:absolute;top:-14px;left:50%;transform:translateX(-50%);padding:5px 18px;background:linear-gradient(135deg,var(--red),var(--orange));color:#fff;border-radius:100px;font-size:12px;font-weight:700;letter-spacing:0.3px;white-space:nowrap}
+    .pricing-card:hover{transform:translateY(-4px);box-shadow:0 16px 48px rgba(0,0,0,0.3)}
+    .pricing-tier{font-size:14px;font-weight:600;text-transform:uppercase;letter-spacing:1px;color:var(--text-secondary);margin-bottom:8px}
+    .pricing-price{font-size:44px;font-weight:900;letter-spacing:-2px;margin-bottom:4px}
+    .pricing-price .currency{font-size:24px;font-weight:700;color:var(--text-secondary)}
+    .pricing-period{font-size:14px;color:var(--text-tertiary);margin-bottom:28px}
+    .pricing-features{list-style:none;margin-bottom:32px}
+    .pricing-features li{font-size:14px;color:var(--text-secondary);padding:8px 0;display:flex;align-items:center;gap:10px;border-bottom:1px solid rgba(255,255,255,0.03)}
+    .pricing-features li:last-child{border-bottom:none}
+    .pricing-features li::before{content:'';width:18px;height:18px;border-radius:50%;flex-shrink:0;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23FF3B30' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='20 6 9 17 4 12'%3E%3C/polyline%3E%3C/svg%3E");background-repeat:no-repeat;background-position:center;background-color:var(--red-dim)}
+    .pricing-features.full li::before{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%2322C55E' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='20 6 9 17 4 12'%3E%3C/polyline%3E%3C/svg%3E");background-color:var(--green-dim)}
+    .pricing-btn{display:block;width:100%;text-align:center;padding:14px;border-radius:14px;font-size:15px;font-weight:700;text-decoration:none;transition:all .3s;border:none;cursor:pointer}
+    .pricing-btn.primary{background:var(--red);color:#fff;box-shadow:0 4px 20px rgba(255,59,48,0.3)}
+    .pricing-btn.primary:hover{transform:translateY(-2px);box-shadow:0 8px 32px rgba(255,59,48,0.45)}
+    .pricing-btn.outline{background:transparent;border:1px solid var(--border);color:var(--text)}
+    .pricing-btn.outline:hover{border-color:var(--border-hover);background:rgba(255,255,255,0.02)}
+
+    /* Stagger for pricing cards */
+    .pricing-cards .pricing-card{opacity:0;transform:translateY(24px);transition:all .6s cubic-bezier(.16,1,.3,1)}
+    .pricing-cards.visible .pricing-card{opacity:1;transform:translateY(0)}
+    .pricing-cards.visible .pricing-card:nth-child(1){transition-delay:0s}
+    .pricing-cards.visible .pricing-card:nth-child(2){transition-delay:.15s}
+
+    /* ===================================================================
+       FAQ
+       =================================================================== */
+    .faq-section{padding:120px 0}
+    .faq-grid{max-width:720px;margin:48px auto 0;display:flex;flex-direction:column;gap:12px}
+    .faq-item{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-md);overflow:hidden;transition:border-color .3s}
+    .faq-item:hover{border-color:var(--border-hover)}
+    .faq-question{width:100%;padding:20px 24px;display:flex;align-items:center;justify-content:space-between;background:none;border:none;color:var(--text);font-size:15px;font-weight:600;cursor:pointer;text-align:left;font-family:inherit;transition:color .2s}
+    .faq-question:hover{color:var(--red-light)}
+    .faq-chevron{width:20px;height:20px;transition:transform .3s;flex-shrink:0;color:var(--text-tertiary)}
+    .faq-answer{max-height:0;overflow:hidden;transition:max-height .4s ease,padding .3s ease}
+    .faq-answer-inner{padding:0 24px 20px;font-size:14px;color:var(--text-secondary);line-height:1.7}
+    .faq-item.open .faq-chevron{transform:rotate(180deg)}
+    .faq-item.open .faq-answer{max-height:300px}
+
+    /* Stagger for FAQ items */
+    .faq-grid .faq-item{opacity:0;transform:translateY(16px);transition:all .5s cubic-bezier(.16,1,.3,1)}
+    .faq-grid.visible .faq-item{opacity:1;transform:translateY(0)}
+    .faq-grid.visible .faq-item:nth-child(1){transition-delay:0s}
+    .faq-grid.visible .faq-item:nth-child(2){transition-delay:.06s}
+    .faq-grid.visible .faq-item:nth-child(3){transition-delay:.12s}
+    .faq-grid.visible .faq-item:nth-child(4){transition-delay:.18s}
+    .faq-grid.visible .faq-item:nth-child(5){transition-delay:.24s}
+    .faq-grid.visible .faq-item:nth-child(6){transition-delay:.30s}
+
+    /* ===================================================================
+       CTA SECTION
+       =================================================================== */
+    .cta-section{text-align:center;padding:120px 0}
+    .cta-card{background:linear-gradient(135deg,rgba(255,59,48,0.08),rgba(255,149,0,0.06),rgba(168,85,247,0.04));border:1px solid rgba(255,59,48,0.15);border-radius:var(--radius-xl);padding:80px;position:relative;overflow:hidden}
+    .cta-card::before{content:'';position:absolute;top:-200px;left:50%;transform:translateX(-50%);width:600px;height:600px;background:radial-gradient(circle,rgba(255,59,48,0.08),transparent);border-radius:50%}
+    .cta-card .section-title,.cta-card .section-desc,.cta-card .hero-actions,.cta-card .cta-note{position:relative;z-index:1}
+    .cta-card .section-desc{margin:0 auto 40px}
+    .cta-note{font-size:13px;color:var(--text-tertiary);margin-top:20px}
+    .cta-card .btn-primary{animation:ctaPulse 3s ease-in-out infinite}
+    @keyframes ctaPulse{0%,100%{box-shadow:0 4px 24px rgba(255,59,48,0.3)}50%{box-shadow:0 4px 40px rgba(255,59,48,0.5)}}
+
+    /* ===================================================================
+       FOOTER
+       =================================================================== */
+    footer{border-top:1px solid var(--border);padding:48px 0}
+    footer .container{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:24px}
+    .footer-left{display:flex;align-items:center;gap:10px}
+    .footer-logo{width:28px;height:28px;border-radius:8px;background:linear-gradient(135deg,var(--red),var(--orange));display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;color:#fff;transition:transform .3s}
+    .footer-left:hover .footer-logo{transform:rotate(-5deg) scale(1.1)}
+    .footer-copy{font-size:13px;color:var(--text-tertiary)}
+    .footer-links{display:flex;gap:24px;list-style:none}
+    .footer-links a{color:var(--text-secondary);text-decoration:none;font-size:13px;transition:color .2s}
+    .footer-links a:hover{color:var(--text)}
+
+    /* ===================================================================
+       RESPONSIVE
+       =================================================================== */
+    @media(min-width:1200px){
+      .hero h1{font-size:64px}
+      .section-title{font-size:50px}
+      .phone-frame{width:290px}
+      .phone-screen{min-height:510px}
+    }
+
+    @media(max-width:900px){
+      .hero .container{grid-template-columns:1fr;text-align:center}
+      .hero-sub{margin:0 auto 40px}
+      .hero-actions{justify-content:center}
+      .hero-pills{justify-content:center}
+      .features-grid{grid-template-columns:repeat(2,1fr)}
+      .steps-grid{grid-template-columns:repeat(2,1fr)}
+      .steps-grid::before{display:none}
+      .modes-grid{grid-template-columns:1fr}
+      .critter-grid{grid-template-columns:repeat(2,1fr)}
+      .privacy-grid{grid-template-columns:1fr}
+      .pricing-cards{grid-template-columns:1fr;max-width:400px}
+      .nav-links{display:none}
+      .mobile-toggle{display:block}
+    }
+
+    @media(max-width:768px){
+      .nav-links{display:none}
+      .mobile-toggle{display:block}
+    }
+
+    @media(max-width:480px){
+      section{padding:80px 0}
+      .features-grid,.steps-grid{grid-template-columns:1fr}
+      .critter-grid{grid-template-columns:1fr}
+      .hero-actions{flex-direction:column;width:100%;max-width:320px;margin:0 auto}
+      .hero-actions .btn{justify-content:center}
+      .cta-card{padding:48px 24px}
+      footer .container{flex-direction:column;text-align:center}
+      .phone-frame{width:240px}
+      .phone-screen{min-height:420px}
+      .hero-badge{font-size:12px}
+      .pitch-quote{font-size:22px}
+      .container{padding:0 16px}
+      .hero h1{font-size:32px;letter-spacing:-2px}
+      .hero-sub{font-size:15px}
+      .section-title{font-size:28px;letter-spacing:-1px}
+    }
+
+    /* ===================================================================
+       ACCESSIBILITY
+       =================================================================== */
+    @media(prefers-reduced-motion:reduce){
+      *,*::before,*::after{animation-duration:0.01ms!important;animation-iteration-count:1!important;transition-duration:0.01ms!important}
+      .confetti-wrap{display:none}
+      .ambient .orb{animation:none}
+      .phone-frame{animation:none}
+      .game-word{opacity:1;animation:none}
+      .hero-pill{opacity:1;animation:none}
+      .reveal{opacity:1;transform:none;filter:none}
+    }
+
+    a{color:inherit}
+    a:focus-visible{outline:2px solid var(--red);outline-offset:2px;border-radius:4px}
+    button:focus-visible{outline:2px solid var(--red);outline-offset:2px;border-radius:4px}
+    ::selection{background:rgba(255,59,48,0.3);color:#fff}
+    ::-moz-selection{background:rgba(255,59,48,0.3);color:#fff}
+    ::-webkit-scrollbar{width:6px}
+    ::-webkit-scrollbar-track{background:transparent}
+    ::-webkit-scrollbar-thumb{background:rgba(255,255,255,0.08);border-radius:3px}
+    ::-webkit-scrollbar-thumb:hover{background:rgba(255,255,255,0.16)}
+    a,button{transition:all .3s cubic-bezier(.16,1,.3,1)}
+
+    @media print{
+      .ambient,.confetti-wrap,nav{display:none}
+      body{background:#fff;color:#000}
+      .content{position:static}
+      section{padding:40px 0}
+      body::after{display:none}
+    }
+  </style>
+</head>
+<body>
+<div class="scroll-progress"></div>
+
+<!-- Confetti particles -->
+<div class="confetti-wrap">
+  <div class="confetti"></div>
+  <div class="confetti"></div>
+  <div class="confetti"></div>
+  <div class="confetti"></div>
+  <div class="confetti"></div>
+  <div class="confetti"></div>
+  <div class="confetti"></div>
+  <div class="confetti"></div>
+  <div class="confetti"></div>
+  <div class="confetti"></div>
+  <div class="confetti"></div>
+  <div class="confetti"></div>
+</div>
+
+<!-- Ambient orbs -->
+<div class="ambient">
+  <div class="orb orb-1"></div>
+  <div class="orb orb-2"></div>
+  <div class="orb orb-3"></div>
+</div>
+
+<div class="content">
+
+  <!-- ================================================================
+       NAVIGATION
+       ================================================================ -->
+  <nav><div class="container">
+    <a href="index.html" class="nav-brand"><div class="nav-icon">R</div><span class="nav-name">RoomRaid</span></a>
+    <button class="mobile-toggle" onclick="document.querySelector('.nav-links').classList.toggle('show')" aria-label="Menu">&#9776;</button>
+    <ul class="nav-links">
+      <li><a href="#features">Features</a></li>
+      <li><a href="#modes">Game Modes</a></li>
+      <li><a href="#pricing">Pricing</a></li>
+      <li><a href="#download" class="nav-cta">Download</a></li>
+    </ul>
+  </div></nav>
+
+  <!-- ================================================================
+       HERO
+       ================================================================ -->
+  <section class="hero">
+    <div class="container">
+      <div class="hero-content">
+        <div class="hero-badge">
+          <span class="dot"></span>
+          Available on the App Store
+        </div>
+        <h1>Your room is <span class="gr">the arena.</span></h1>
+        <p class="hero-sub">The AR party game where you hunt invisible critters hiding in your actual room. Point your camera, compete with friends, and <strong>catch them all before time runs out.</strong></p>
+        <div class="hero-actions">
+          <a href="#download" class="btn btn-primary">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
+            Download Free
+          </a>
+          <a href="#modes" class="btn btn-secondary">See Game Modes</a>
+        </div>
+        <div class="hero-pills">
+          <div class="hero-pill"><span>&#128248;</span> AR Game</div>
+          <div class="hero-pill"><span>&#128101;</span> 2-6 Players</div>
+          <div class="hero-pill"><span>&#9992;&#65039;</span> No Internet</div>
+          <div class="hero-pill"><span>&#127909;</span> Camera Fun</div>
+        </div>
+      </div>
+
+      <!-- Hero Phone Mockup: AR Game View -->
+      <div class="hero-visual">
+        <div class="phone-frame">
+          <div class="phone-screen">
+            <div class="phone-status-bar">
+              <span>9:41</span>
+              <div class="phone-status-icons">
+                <span>&#9679;</span>
+                <span>&#9679;</span>
+                <span>&#9679;</span>
+              </div>
+            </div>
+            <div class="phone-dynamic-island"></div>
+            <div class="ar-view">
+              <div class="ar-grid"></div>
+              <div class="ar-score-bar">
+                <div class="ar-score" id="ar-score">1,250</div>
+                <div class="ar-timer">1:42</div>
+              </div>
+              <div class="ar-crosshair">
+                <div class="ar-crosshair-ring"></div>
+              </div>
+              <div class="ar-critter">&#128438;</div>
+              <div class="ar-remaining">3 critters remaining</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================================================================
+       PHILOSOPHY / PITCH
+       ================================================================ -->
+  <section class="pitch-section">
+    <div class="container">
+      <div class="pitch-card reveal">
+        <div class="pitch-quote">
+          The best party games don't need Wi-Fi. They need a <span class="gr">room full of friends.</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================================================================
+       FEATURES
+       ================================================================ -->
+  <section class="features-section" id="features">
+    <div class="container">
+      <div class="reveal" style="text-align:center">
+        <div class="section-label">Why RoomRaid</div>
+        <h2 class="section-title">Everything you need for <span class="gr">epic game nights</span></h2>
+        <p class="section-desc" style="margin:0 auto">Augmented reality meets party chaos. Built for fun, designed for every room.</p>
+      </div>
+      <div class="features-grid reveal">
+        <div class="feature-card">
+          <div class="feature-icon red">&#128270;</div>
+          <div class="feature-title">AR Critter Hunt</div>
+          <div class="feature-desc">Point your camera, find hidden critters in your actual room. They hide behind furniture, under tables, and in corners.</div>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon orange">&#128101;</div>
+          <div class="feature-title">Multiplayer</div>
+          <div class="feature-desc">2-6 players compete on the same local network. Everyone hunts critters at the same time in the same room.</div>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon purple">&#128266;</div>
+          <div class="feature-title">Sound Reactive</div>
+          <div class="feature-desc">Make noise to scare critters out of hiding. Clap, shout, or stomp -- the louder, the better your chances.</div>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon cyan">&#127942;</div>
+          <div class="feature-title">Real-Time Scores</div>
+          <div class="feature-desc">Live leaderboard during every round. Watch your friends' scores climb as critters get caught in real time.</div>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon green">&#128154;</div>
+          <div class="feature-title">Family Friendly</div>
+          <div class="feature-desc">Safe for all ages, no inappropriate content. Designed so everyone from kids to grandparents can join in.</div>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon amber">&#128225;</div>
+          <div class="feature-title">Zero Internet</div>
+          <div class="feature-desc">Works completely offline via Bluetooth and Wi-Fi Direct. No cloud, no lag, no signal problems.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================================================================
+       HOW IT WORKS
+       ================================================================ -->
+  <section class="how-section" id="how">
+    <div class="container">
+      <div class="reveal" style="text-align:center">
+        <div class="section-label">4 simple steps</div>
+        <h2 class="section-title">Hunt critters in <span class="gr">30 seconds flat</span></h2>
+        <p class="section-desc" style="margin:0 auto">No tutorials needed. Pick up your phone and start hunting.</p>
+      </div>
+      <div class="steps-grid reveal">
+        <div class="step">
+          <div class="step-num">&#128247;</div>
+          <div class="step-title">Point Camera</div>
+          <div class="step-desc">Open the app, aim your phone at any room. The AR engine maps your space instantly.</div>
+        </div>
+        <div class="step">
+          <div class="step-num">&#128065;</div>
+          <div class="step-title">Find Critters</div>
+          <div class="step-desc">Critters hide behind real objects. Move around, look carefully -- they blend into your environment.</div>
+        </div>
+        <div class="step">
+          <div class="step-num">&#128070;</div>
+          <div class="step-title">Tap to Catch</div>
+          <div class="step-desc">Spot a critter? Tap it before it scurries away. Faster catches earn bonus points.</div>
+        </div>
+        <div class="step">
+          <div class="step-num">&#127941;</div>
+          <div class="step-title">Most Catches Wins</div>
+          <div class="step-desc">When time runs out, the player with the highest score takes the crown. Simple.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================================================================
+       GAME MODES
+       ================================================================ -->
+  <section class="modes-section" id="modes">
+    <div class="container">
+      <div class="reveal" style="text-align:center">
+        <div class="section-label">Game Modes</div>
+        <h2 class="section-title">Three ways to <span class="gr">raid your room</span></h2>
+        <p class="section-desc" style="margin:0 auto">Whether you're solo or with a crowd, there's a mode for every mood.</p>
+      </div>
+      <div class="modes-grid reveal">
+        <div class="mode-card">
+          <div class="mode-icon solo">&#127919;</div>
+          <div class="mode-title">Solo Hunt</div>
+          <div class="mode-subtitle">Single Player</div>
+          <div class="mode-desc">Practice mode. Beat your own high scores in timed rounds and discover every critter type at your own pace.</div>
+          <ul class="mode-specs">
+            <li>1 player</li>
+            <li>Timed rounds (1, 3, or 5 min)</li>
+            <li>Personal high score tracking</li>
+            <li>Unlock new critters by playing</li>
+          </ul>
+        </div>
+        <div class="mode-card">
+          <div class="mode-icon party">&#127881;</div>
+          <div class="mode-title">Party Raid</div>
+          <div class="mode-subtitle">Competitive Multiplayer</div>
+          <div class="mode-desc">2-6 players hunt in the same room at the same time. A live local leaderboard keeps everyone on edge.</div>
+          <ul class="mode-specs">
+            <li>2-6 players</li>
+            <li>Competitive critter hunting</li>
+            <li>Live local leaderboard</li>
+            <li>Round-by-round scoring</li>
+          </ul>
+        </div>
+        <div class="mode-card">
+          <div class="mode-icon team">&#129309;</div>
+          <div class="mode-title">Team Battle</div>
+          <div class="mode-subtitle">Cooperative Teams</div>
+          <div class="mode-desc">Split into teams and coordinate your critter hunting strategy. Team scores combine for maximum chaos.</div>
+          <ul class="mode-specs">
+            <li>2 teams of 2-3 players</li>
+            <li>Coordinate hunting strategy</li>
+            <li>Combined team scores</li>
+            <li>Best-of-3 match format</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================================================================
+       CRITTER SHOWCASE
+       ================================================================ -->
+  <section class="critter-section" id="critters">
+    <div class="container">
+      <div class="reveal" style="text-align:center">
+        <div class="section-label">Critter Collection</div>
+        <h2 class="section-title">Meet the <span class="gr">critters</span></h2>
+        <p class="section-desc" style="margin:0 auto">Six types of critters from common to legendary. The rarer they are, the more points they're worth.</p>
+      </div>
+      <div class="critter-grid reveal">
+        <div class="critter-card">
+          <span class="critter-emoji">&#128048;</span>
+          <div class="critter-name">Dust Bunny</div>
+          <div class="critter-meta">
+            <span class="critter-rarity common">Common</span>
+            <span class="critter-points mono">100 pts</span>
+          </div>
+        </div>
+        <div class="critter-card">
+          <span class="critter-emoji">&#128375;</span>
+          <div class="critter-name">Wall Crawler</div>
+          <div class="critter-meta">
+            <span class="critter-rarity common">Common</span>
+            <span class="critter-points mono">150 pts</span>
+          </div>
+        </div>
+        <div class="critter-card">
+          <span class="critter-emoji">&#128123;</span>
+          <div class="critter-name">Shadow Sprite</div>
+          <div class="critter-meta">
+            <span class="critter-rarity rare">Rare</span>
+            <span class="critter-points mono">500 pts</span>
+          </div>
+        </div>
+        <div class="critter-card">
+          <span class="critter-emoji">&#129418;</span>
+          <div class="critter-name">Ceiling Gecko</div>
+          <div class="critter-meta">
+            <span class="critter-rarity rare">Rare</span>
+            <span class="critter-points mono">600 pts</span>
+          </div>
+        </div>
+        <div class="critter-card">
+          <span class="critter-emoji">&#128009;</span>
+          <div class="critter-name">Neon Chameleon</div>
+          <div class="critter-meta">
+            <span class="critter-rarity epic">Epic</span>
+            <span class="critter-points mono">800 pts</span>
+          </div>
+        </div>
+        <div class="critter-card">
+          <span class="critter-emoji">&#11088;</span>
+          <div class="critter-name">Golden Bug</div>
+          <div class="critter-meta">
+            <span class="critter-rarity legendary">Legendary</span>
+            <span class="critter-points mono">1,000 pts</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================================================================
+       PRIVACY SUMMARY
+       ================================================================ -->
+  <section class="privacy-section">
+    <div class="container">
+      <div class="reveal" style="text-align:center">
+        <div class="section-label">Your Privacy</div>
+        <h2 class="section-title">Your camera. <span class="gr">Your data.</span></h2>
+        <p class="section-desc" style="margin:0 auto">We take privacy seriously. Everything stays on your device.</p>
+      </div>
+      <div class="privacy-grid reveal">
+        <div class="privacy-card">
+          <span class="privacy-icon">&#128247;</span>
+          <div class="privacy-title">Camera On-Device</div>
+          <div class="privacy-desc">Camera feed is processed entirely on your iPhone. No images or video ever leave your device.</div>
+        </div>
+        <div class="privacy-card">
+          <span class="privacy-icon">&#9729;&#65039;</span>
+          <div class="privacy-title">No Cloud</div>
+          <div class="privacy-desc">Zero cloud storage. No servers, no uploads, no remote processing. Everything runs locally.</div>
+        </div>
+        <div class="privacy-card">
+          <span class="privacy-icon">&#128683;</span>
+          <div class="privacy-title">No Tracking</div>
+          <div class="privacy-desc">No analytics, no ad SDKs, no third-party trackers. We don't collect, sell, or share any data.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================================================================
+       PRICING
+       ================================================================ -->
+  <section class="pricing" id="pricing">
+    <div class="container">
+      <div class="reveal">
+        <div class="section-label" style="justify-content:center">Pricing</div>
+        <h2 class="section-title">Simple, <span class="gr">honest pricing</span></h2>
+        <p class="pricing-subtitle">No subscriptions. No hidden fees. No in-app surprises.</p>
+      </div>
+      <div class="pricing-cards reveal">
+        <div class="pricing-card">
+          <div class="pricing-tier">Free</div>
+          <div class="pricing-price"><span class="currency">$</span>0</div>
+          <div class="pricing-period">Free forever</div>
+          <ul class="pricing-features">
+            <li>Solo Hunt mode</li>
+            <li>3 critter types</li>
+            <li>Basic AR features</li>
+            <li>Personal high scores</li>
+          </ul>
+          <a href="#download" class="pricing-btn outline">Download Free</a>
+        </div>
+        <div class="pricing-card featured">
+          <div class="pricing-tier">Full Game</div>
+          <div class="pricing-price"><span class="currency">$</span>6.99</div>
+          <div class="pricing-period">One-time purchase</div>
+          <ul class="pricing-features full">
+            <li>All 3 game modes</li>
+            <li>All 6 critter types</li>
+            <li>Multiplayer (2-6 players)</li>
+            <li>Sound-reactive features</li>
+            <li>Team Battle mode</li>
+            <li>Future updates included</li>
+          </ul>
+          <a href="#download" class="pricing-btn primary">Unlock Full Game</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================================================================
+       FAQ
+       ================================================================ -->
+  <section class="faq-section" id="faq">
+    <div class="container">
+      <div class="reveal" style="text-align:center">
+        <div class="section-label">FAQ</div>
+        <h2 class="section-title">Got questions?</h2>
+      </div>
+      <div class="faq-grid reveal">
+        <div class="faq-item">
+          <button class="faq-question" onclick="this.parentElement.classList.toggle('open')">
+            What devices support AR in RoomRaid?
+            <svg class="faq-chevron" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"/></svg>
+          </button>
+          <div class="faq-answer"><div class="faq-answer-inner">
+            RoomRaid requires an iPhone or iPad with an A12 chip or later running iOS 17+. This includes iPhone XS and newer, iPad Pro (3rd gen+), iPad Air (3rd gen+), and iPad mini (5th gen+). The device must have a LiDAR sensor or TrueDepth camera for the best AR experience.
+          </div></div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-question" onclick="this.parentElement.classList.toggle('open')">
+            How does multiplayer work without internet?
+            <svg class="faq-chevron" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"/></svg>
+          </button>
+          <div class="faq-answer"><div class="faq-answer-inner">
+            RoomRaid uses Apple's Multipeer Connectivity framework, which creates a direct device-to-device connection via Bluetooth and Wi-Fi Direct. No router or internet connection needed -- just have all players in the same room with Bluetooth and Wi-Fi turned on.
+          </div></div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-question" onclick="this.parentElement.classList.toggle('open')">
+            Is my camera data private and secure?
+            <svg class="faq-chevron" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"/></svg>
+          </button>
+          <div class="faq-answer"><div class="faq-answer-inner">
+            Absolutely. Your camera feed is processed entirely on-device using Apple's ARKit. No images, video frames, or spatial data are ever sent anywhere. We don't have servers, cloud storage, or any way to access your camera data. Everything stays on your iPhone.
+          </div></div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-question" onclick="this.parentElement.classList.toggle('open')">
+            What size room do I need?
+            <svg class="faq-chevron" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"/></svg>
+          </button>
+          <div class="faq-answer"><div class="faq-answer-inner">
+            Any room works! RoomRaid automatically adapts to your space. A living room, bedroom, or even a dorm room is perfect. Larger spaces mean critters spread out more, while smaller rooms create intense, fast-paced hunts. We recommend at least 8x8 feet for the best experience.
+          </div></div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-question" onclick="this.parentElement.classList.toggle('open')">
+            Is RoomRaid safe for kids?
+            <svg class="faq-chevron" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"/></svg>
+          </button>
+          <div class="faq-answer"><div class="faq-answer-inner">
+            Yes! RoomRaid is rated 4+ on the App Store. All critters are cute and friendly. There's no violence, no inappropriate content, no ads, and no social features that connect to strangers. It's designed for families and friends of all ages.
+          </div></div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-question" onclick="this.parentElement.classList.toggle('open')">
+            Can I play solo without buying the full game?
+            <svg class="faq-chevron" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"/></svg>
+          </button>
+          <div class="faq-answer"><div class="faq-answer-inner">
+            Absolutely. The free version includes Solo Hunt mode with 3 critter types and full AR features. You can play unlimited rounds, track your high scores, and get a complete feel for the game. The full unlock adds multiplayer, all 6 critter types, sound-reactive features, and Team Battle mode.
+          </div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================================================================
+       CTA
+       ================================================================ -->
+  <section class="cta-section" id="download">
+    <div class="container">
+      <div class="cta-card reveal">
+        <h2 class="section-title">Ready to raid <span class="gr">your room?</span></h2>
+        <p class="section-desc">Grab your friends, point your cameras, and let the critter hunt begin. Free to download, one-time purchase to unlock everything.</p>
+        <div class="hero-actions" style="justify-content:center">
+          <a href="#" class="btn btn-primary" style="font-size:18px;padding:16px 36px">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
+            Download on the App Store
+          </a>
+        </div>
+        <p class="cta-note">iOS 17+ &middot; Free to try &middot; One-time purchase</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================================================================
+       FOOTER
+       ================================================================ -->
+  <footer>
+    <div class="container">
+      <div class="footer-left">
+        <div class="footer-logo">R</div>
+        <span class="footer-copy">&copy; 2026 iOS Craft Studio. All rights reserved.</span>
+      </div>
+      <ul class="footer-links">
+        <li><a href="privacy.html">Privacy Policy</a></li>
+        <li><a href="../">iOS Craft Studio</a></li>
+      </ul>
+    </div>
+  </footer>
+
+</div>
+
+<!-- ================================================================
+     SCRIPTS
+     ================================================================ -->
+<script>
+  // Intersection Observer for reveal animations
+  (function() {
+    var reveals = document.querySelectorAll('.reveal, .features-grid, .modes-grid, .steps-grid, .pricing-cards, .faq-grid, .critter-grid');
+    var observer = new IntersectionObserver(function(entries) {
+      entries.forEach(function(entry) {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+        }
+      });
+    }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+    reveals.forEach(function(el) { observer.observe(el); });
+  })();
+
+  // Scroll Progress Bar
+  (function() {
+    var progressBar = document.querySelector('.scroll-progress');
+    if (!progressBar) return;
+    var ticking = false;
+    window.addEventListener('scroll', function() {
+      if (!ticking) {
+        requestAnimationFrame(function() {
+          var scrollTop = window.scrollY;
+          var docHeight = document.documentElement.scrollHeight - window.innerHeight;
+          progressBar.style.width = ((scrollTop / docHeight) * 100) + '%';
+          ticking = false;
+        });
+        ticking = true;
+      }
+    }, { passive: true });
+  })();
+
+  // Nav background change on scroll
+  (function() {
+    var nav = document.querySelector('nav');
+    if (!nav) return;
+    var scrolled = false;
+    window.addEventListener('scroll', function() {
+      if (!scrolled) {
+        requestAnimationFrame(function() {
+          if (window.scrollY > 50) {
+            nav.classList.add('scrolled');
+          } else {
+            nav.classList.remove('scrolled');
+          }
+          scrolled = false;
+        });
+        scrolled = true;
+      }
+    }, { passive: true });
+  })();
+
+  // 3D Card Tilt on hover
+  (function() {
+    var cards = document.querySelectorAll('.feature-card, .pricing-card, .mode-card, .critter-card');
+    cards.forEach(function(card) {
+      card.addEventListener('mousemove', function(e) {
+        var rect = card.getBoundingClientRect();
+        var x = e.clientX - rect.left;
+        var y = e.clientY - rect.top;
+        var centerX = rect.width / 2;
+        var centerY = rect.height / 2;
+        var rotateX = ((y - centerY) / centerY) * -2;
+        var rotateY = ((x - centerX) / centerX) * 2;
+        card.style.transform = 'perspective(800px) rotateX(' + rotateX + 'deg) rotateY(' + rotateY + 'deg) translateY(-4px)';
+      });
+      card.addEventListener('mouseleave', function() {
+        card.style.transform = '';
+        card.style.transition = 'transform 0.6s cubic-bezier(0.16, 1, 0.3, 1)';
+        setTimeout(function() { card.style.transition = ''; }, 600);
+      });
+    });
+  })();
+
+  // Parallax on ambient orbs
+  (function() {
+    var orbs = document.querySelectorAll('.ambient .orb');
+    if (!orbs.length) return;
+    var scrollTicking = false;
+    window.addEventListener('scroll', function() {
+      if (!scrollTicking) {
+        requestAnimationFrame(function() {
+          var scrollY = window.scrollY;
+          orbs.forEach(function(orb, i) {
+            var speed = 0.015 + (i * 0.008);
+            orb.style.transform = 'translateY(' + (scrollY * speed) + 'px)';
+          });
+          scrollTicking = false;
+        });
+        scrollTicking = true;
+      }
+    }, { passive: true });
+  })();
+
+  // Mobile menu toggle -- close on link click
+  (function() {
+    var links = document.querySelectorAll('.nav-links a');
+    links.forEach(function(link) {
+      link.addEventListener('click', function() {
+        document.querySelector('.nav-links').classList.remove('show');
+      });
+    });
+  })();
+
+  // Animated score counter in phone mockup
+  (function() {
+    var scoreEl = document.getElementById('ar-score');
+    if (!scoreEl) return;
+    var baseScore = 1250;
+    var direction = 1;
+    setInterval(function() {
+      baseScore += Math.floor(Math.random() * 50 + 10) * direction;
+      if (baseScore > 2000) direction = -1;
+      if (baseScore < 800) direction = 1;
+      scoreEl.textContent = baseScore.toLocaleString();
+    }, 2000);
+  })();
+
+  // FAQ accordion toggle (handled via inline onclick, but also supports keyboard)
+  (function() {
+    var faqButtons = document.querySelectorAll('.faq-question');
+    faqButtons.forEach(function(btn) {
+      btn.addEventListener('keydown', function(e) {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          btn.parentElement.classList.toggle('open');
+        }
+      });
+    });
+  })();
+</script>
+</body>
+</html>

@@ -1,0 +1,2257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Fluxer — P2P File Transfer for iOS | Send Files Without the Cloud</title>
+  <meta name="description" content="Fluxer sends files directly between devices. No cloud, no servers, no middlemen. Peer-to-peer transfers at Wi-Fi Direct speeds with end-to-end encryption. Privacy-first.">
+  <meta name="keywords" content="file transfer, P2P, peer to peer, AirDrop alternative, iOS, send files, Wi-Fi Direct, Bluetooth, private transfer, no cloud">
+  <meta name="theme-color" content="#060A10">
+  <meta property="og:title" content="Fluxer — P2P File Transfer for iOS">
+  <meta property="og:description" content="Send files directly between devices. No cloud, no servers. Just fast, private, peer-to-peer transfers.">
+  <meta property="og:type" content="website">
+  <link rel="icon" type="image/svg+xml" href="../favicon.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet">
+  <style>
+    /* ============================================
+       Fluxer MARKETING PAGE — SUPER DESIGN
+       ============================================ */
+
+    *, *::before, *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --blue: #007AFF;
+      --blue-dim: #007AFF20;
+      --cyan: #5AC8FA;
+      --cyan-dim: #5AC8FA20;
+      --indigo: #5E5CE6;
+      --indigo-dim: #5E5CE620;
+      --orange: #FF9500;
+      --yellow: #FFD60A;
+      --purple: #BF5AF2;
+      --pink: #FF375F;
+      --green: #30D158;
+      --bg: #060A10;
+      --bg-secondary: #0A0E16;
+      --bg-card: #0D1117;
+      --bg-card-hover: #151B25;
+      --text: #FFFFFF;
+      --text-secondary: #8E8E93;
+      --text-tertiary: #636366;
+      --border: #1E2A3A;
+      --radius-sm: 12px;
+      --radius-md: 20px;
+      --radius-lg: 28px;
+      --radius-xl: 40px;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      overflow-x: hidden;
+      line-height: 1.6;
+    }
+
+    /* ---- UTILITY ---- */
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    .section-label {
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--blue);
+      margin-bottom: 16px;
+      display: inline-block;
+    }
+
+    .section-title {
+      font-size: clamp(32px, 5vw, 56px);
+      font-weight: 800;
+      line-height: 1.1;
+      letter-spacing: -0.03em;
+      margin-bottom: 20px;
+    }
+
+    .section-subtitle {
+      font-size: clamp(16px, 2vw, 20px);
+      color: var(--text-secondary);
+      max-width: 600px;
+      line-height: 1.6;
+    }
+
+    /* ---- SCROLL PROGRESS ---- */
+    .scroll-progress {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 0%;
+      height: 2px;
+      background: linear-gradient(90deg, var(--blue), var(--cyan), var(--blue));
+      background-size: 300% 100%;
+      animation: gradientFlow 4s linear infinite;
+      z-index: 10000;
+      border-radius: 0 1px 1px 0;
+      box-shadow: 0 0 12px rgba(0, 122, 255, 0.15), 0 0 4px var(--blue);
+    }
+
+    @keyframes gradientFlow {
+      0% { background-position: 0% 0; }
+      100% { background-position: 300% 0; }
+    }
+
+    /* ---- ANIMATED BACKGROUND ---- */
+    .bg-glow {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      pointer-events: none;
+      z-index: 0;
+      overflow: hidden;
+    }
+
+    .bg-glow .orb {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(120px);
+      opacity: 0.15;
+      animation: orbFloat 20s ease-in-out infinite;
+    }
+
+    .bg-glow .orb-1 {
+      width: 600px;
+      height: 600px;
+      background: var(--blue);
+      top: -200px;
+      right: -100px;
+      animation-delay: 0s;
+    }
+
+    .bg-glow .orb-2 {
+      width: 500px;
+      height: 500px;
+      background: var(--cyan);
+      bottom: -200px;
+      left: -100px;
+      animation-delay: -7s;
+    }
+
+    .bg-glow .orb-3 {
+      width: 400px;
+      height: 400px;
+      background: var(--blue);
+      top: 50%;
+      left: 50%;
+      animation-delay: -14s;
+    }
+
+    @keyframes orbFloat {
+      0%, 100% { transform: translate(0, 0) scale(1); }
+      25% { transform: translate(50px, -30px) scale(1.1); }
+      50% { transform: translate(-30px, 50px) scale(0.9); }
+      75% { transform: translate(20px, 20px) scale(1.05); }
+    }
+
+    /* ---- GLASS NOISE TEXTURE ---- */
+    body::after {
+      content: '';
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      pointer-events: none;
+      z-index: 9999;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.015'/%3E%3C/svg%3E");
+      background-repeat: repeat;
+      opacity: 0.4;
+    }
+
+    /* ---- NAVIGATION ---- */
+    nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 1000;
+      backdrop-filter: blur(24px) saturate(180%);
+      -webkit-backdrop-filter: blur(24px) saturate(180%);
+      background: rgba(6, 10, 16, 0.72);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+      transition: all 0.3s ease;
+    }
+
+    nav .container {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 64px;
+    }
+
+    .nav-logo {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+      color: var(--text);
+    }
+
+    .nav-logo-icon {
+      width: 36px;
+      height: 36px;
+      border-radius: 10px;
+      background: linear-gradient(135deg, var(--blue), var(--cyan));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      font-weight: 800;
+      color: #fff;
+      box-shadow: 0 4px 16px rgba(0, 122, 255, 0.3);
+    }
+
+    .nav-logo-text {
+      font-size: 20px;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 32px;
+      list-style: none;
+    }
+
+    .nav-links a {
+      color: var(--text-secondary);
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 500;
+      transition: color 0.2s;
+    }
+
+    .nav-links a:hover {
+      color: var(--text);
+    }
+
+    .nav-cta {
+      background: var(--text);
+      color: var(--bg) !important;
+      padding: 8px 20px;
+      border-radius: 100px;
+      font-weight: 600 !important;
+      transition: transform 0.2s, box-shadow 0.2s !important;
+    }
+
+    .nav-cta:hover {
+      transform: scale(1.05);
+      box-shadow: 0 4px 20px rgba(255, 255, 255, 0.2);
+    }
+
+    .nav-mobile-toggle {
+      display: none;
+      background: none;
+      border: none;
+      color: var(--text);
+      font-size: 24px;
+      cursor: pointer;
+      padding: 8px;
+    }
+
+    /* ---- HERO ---- */
+    .hero {
+      position: relative;
+      z-index: 1;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      padding-top: 100px;
+      padding-bottom: 60px;
+      overflow: hidden;
+    }
+
+    .hero .container {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 60px;
+      align-items: center;
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 2;
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--blue-dim);
+      border: 1px solid rgba(0, 122, 255, 0.2);
+      border-radius: 100px;
+      padding: 6px 16px 6px 8px;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--blue);
+      margin-bottom: 32px;
+      animation: fadeInUp 0.8s ease-out;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-badge::before {
+      content: '';
+      position: absolute;
+      inset: -1px;
+      background: conic-gradient(from 0deg, transparent, rgba(0, 122, 255, 0.4), transparent, transparent);
+      border-radius: 100px;
+      animation: badgeRotate 4s linear infinite;
+      z-index: -1;
+    }
+
+    @keyframes badgeRotate {
+      to { transform: rotate(360deg); }
+    }
+
+    .hero-badge .dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--blue);
+      animation: pulse 2s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.5; transform: scale(0.8); }
+    }
+
+    .hero h1 {
+      font-size: clamp(40px, 6vw, 72px);
+      font-weight: 900;
+      line-height: 1.05;
+      letter-spacing: -0.04em;
+      margin-bottom: 24px;
+      animation: fadeInUp 0.8s ease-out 0.1s both;
+    }
+
+    .hero h1 .gradient-text {
+      background: linear-gradient(135deg, var(--blue), var(--cyan));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      background-size: 200% auto;
+      animation: shimmerGradient 4s linear infinite;
+    }
+
+    @keyframes shimmerGradient {
+      0% { background-position: 0% center; }
+      100% { background-position: 200% center; }
+    }
+
+    .hero-description {
+      font-size: clamp(16px, 2vw, 20px);
+      color: var(--text-secondary);
+      line-height: 1.7;
+      margin-bottom: 40px;
+      max-width: 520px;
+      animation: fadeInUp 0.8s ease-out 0.2s both;
+    }
+
+    .hero-actions {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      flex-wrap: wrap;
+      animation: fadeInUp 0.8s ease-out 0.3s both;
+    }
+
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background: var(--blue);
+      color: #fff;
+      padding: 16px 32px;
+      border-radius: 100px;
+      font-size: 16px;
+      font-weight: 700;
+      text-decoration: none;
+      border: none;
+      cursor: pointer;
+      transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) !important;
+      box-shadow: 0 8px 32px rgba(0, 122, 255, 0.3);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 12px 40px rgba(0, 122, 255, 0.45);
+    }
+
+    .btn-primary:active {
+      transform: scale(0.96) !important;
+    }
+
+    .btn-primary svg {
+      width: 20px;
+      height: 20px;
+    }
+
+    .btn-secondary {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: transparent;
+      color: var(--text);
+      padding: 16px 28px;
+      border-radius: 100px;
+      font-size: 16px;
+      font-weight: 600;
+      text-decoration: none;
+      border: 1px solid var(--border);
+      transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) !important;
+    }
+
+    .btn-secondary:hover {
+      border-color: var(--text-secondary);
+      background: rgba(255, 255, 255, 0.04);
+    }
+
+    .btn-secondary:active {
+      transform: scale(0.96) !important;
+    }
+
+    .hero-stats {
+      display: flex;
+      gap: 40px;
+      margin-top: 48px;
+      animation: fadeInUp 0.8s ease-out 0.4s both;
+    }
+
+    .hero-stat {
+      text-align: left;
+    }
+
+    .hero-stat-value {
+      font-size: 28px;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+    }
+
+    .hero-stat-label {
+      font-size: 13px;
+      color: var(--text-tertiary);
+      margin-top: 2px;
+    }
+
+    /* Hero Phone Mockup */
+    .hero-visual {
+      position: relative;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      animation: fadeInUp 1s ease-out 0.3s both;
+    }
+
+    .phone-frame {
+      position: relative;
+      width: 280px;
+      height: 580px;
+      background: #1C1C1E;
+      border-radius: 44px;
+      padding: 12px;
+      box-shadow:
+        0 0 0 1px rgba(255, 255, 255, 0.1),
+        0 40px 80px rgba(0, 0, 0, 0.5),
+        0 0 120px rgba(0, 122, 255, 0.1);
+    }
+
+    .phone-screen {
+      width: 100%;
+      height: 100%;
+      background: #000;
+      border-radius: 34px;
+      overflow: hidden;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .phone-notch {
+      width: 120px;
+      height: 28px;
+      background: #000;
+      border-radius: 0 0 20px 20px;
+      margin: 0 auto;
+      position: relative;
+      z-index: 10;
+    }
+
+    .phone-app {
+      flex: 1;
+      padding: 16px 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .phone-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .phone-header-title {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--text);
+    }
+
+    .phone-header-status {
+      font-size: 9px;
+      font-weight: 600;
+      color: var(--blue);
+      background: var(--blue-dim);
+      padding: 3px 8px;
+      border-radius: 100px;
+    }
+
+    .phone-transfer-card {
+      background: var(--bg-card);
+      border-radius: 14px;
+      padding: 14px;
+      border: 1px solid rgba(255, 255, 255, 0.04);
+    }
+
+    .phone-file-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 12px;
+    }
+
+    .phone-file-icon {
+      width: 36px;
+      height: 36px;
+      border-radius: 10px;
+      background: linear-gradient(135deg, var(--blue), var(--cyan));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+    }
+
+    .phone-file-name {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text);
+    }
+
+    .phone-file-size {
+      font-size: 10px;
+      color: var(--text-tertiary);
+      margin-top: 1px;
+    }
+
+    .phone-progress-bar {
+      width: 100%;
+      height: 6px;
+      background: rgba(255, 255, 255, 0.06);
+      border-radius: 3px;
+      overflow: hidden;
+      margin-bottom: 8px;
+    }
+
+    .phone-progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--blue), var(--cyan));
+      border-radius: 3px;
+      width: 72%;
+      transition: width 0.5s ease;
+    }
+
+    .phone-transfer-stats {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .phone-transfer-speed {
+      font-size: 11px;
+      font-weight: 600;
+      font-family: 'JetBrains Mono', monospace;
+      color: var(--cyan);
+    }
+
+    .phone-transfer-percent {
+      font-size: 11px;
+      font-weight: 700;
+      font-family: 'JetBrains Mono', monospace;
+      color: var(--blue);
+    }
+
+    .phone-device-row {
+      background: var(--bg-card);
+      border-radius: 14px;
+      padding: 12px 14px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      border: 1px solid rgba(255, 255, 255, 0.04);
+    }
+
+    .phone-device-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--green);
+      box-shadow: 0 0 6px rgba(48, 209, 88, 0.5);
+      animation: pulse 2s ease-in-out infinite;
+    }
+
+    .phone-device-name {
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--text);
+      flex: 1;
+    }
+
+    .phone-device-type {
+      font-size: 9px;
+      color: var(--text-tertiary);
+    }
+
+    .phone-recent-label {
+      font-size: 10px;
+      color: var(--text-tertiary);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      font-weight: 600;
+      margin-top: 4px;
+    }
+
+    .phone-recent-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 8px 0;
+    }
+
+    .phone-recent-icon {
+      width: 28px;
+      height: 28px;
+      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.04);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+    }
+
+    .phone-recent-name {
+      font-size: 11px;
+      font-weight: 500;
+      color: var(--text-secondary);
+      flex: 1;
+    }
+
+    .phone-recent-check {
+      font-size: 10px;
+      color: var(--green);
+    }
+
+    /* Floating cards around the phone */
+    .floating-card {
+      position: absolute;
+      background: rgba(13, 17, 23, 0.9);
+      backdrop-filter: blur(24px);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 16px;
+      padding: 14px 18px;
+      animation: float 6s ease-in-out infinite;
+      z-index: 5;
+      transition: all 0.3s ease;
+    }
+
+    .floating-card:hover {
+      transform: translateY(-4px) scale(1.05);
+    }
+
+    .floating-card-1 {
+      top: 60px;
+      right: -40px;
+      animation-delay: 0s;
+    }
+
+    .floating-card-2 {
+      bottom: 120px;
+      left: -50px;
+      animation-delay: -2s;
+    }
+
+    .floating-card-3 {
+      bottom: 40px;
+      right: -30px;
+      animation-delay: -4s;
+    }
+
+    .floating-card .fc-icon {
+      font-size: 20px;
+      margin-bottom: 6px;
+    }
+
+    .floating-card .fc-title {
+      font-size: 12px;
+      font-weight: 600;
+      margin-bottom: 2px;
+    }
+
+    .floating-card .fc-value {
+      font-size: 11px;
+      color: var(--text-secondary);
+    }
+
+    .floating-card .fc-value.blue { color: var(--blue); }
+    .floating-card .fc-value.cyan { color: var(--cyan); }
+    .floating-card .fc-value.green { color: var(--green); }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-12px); }
+    }
+
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ---- PHILOSOPHY ---- */
+    .philosophy {
+      position: relative;
+      z-index: 1;
+      padding: 120px 0;
+    }
+
+    .philosophy .container {
+      text-align: center;
+    }
+
+    .philosophy-quote {
+      font-size: clamp(24px, 4vw, 44px);
+      font-weight: 700;
+      line-height: 1.3;
+      letter-spacing: -0.02em;
+      max-width: 900px;
+      margin: 0 auto 24px;
+    }
+
+    .philosophy-quote .highlight {
+      background: linear-gradient(135deg, var(--blue), var(--cyan));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      background-size: 200% auto;
+      animation: shimmerGradient 4s linear infinite;
+    }
+
+    .philosophy-sub {
+      font-size: 18px;
+      color: var(--text-secondary);
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    /* ---- FEATURES ---- */
+    .features {
+      position: relative;
+      z-index: 1;
+      padding: 120px 0;
+    }
+
+    .features-header {
+      text-align: center;
+      margin-bottom: 80px;
+    }
+
+    .features-header .section-subtitle {
+      margin: 0 auto;
+    }
+
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+    }
+
+    .feature-card {
+      background: var(--bg-card);
+      border: 1px solid rgba(255, 255, 255, 0.04);
+      border-radius: var(--radius-md);
+      padding: 36px 28px;
+      transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+      position: relative;
+      overflow: hidden;
+      transform-style: preserve-3d;
+      will-change: transform;
+    }
+
+    .feature-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--blue), transparent);
+      opacity: 0;
+      transition: opacity 0.4s;
+    }
+
+    .feature-card:hover {
+      background: var(--bg-card-hover);
+      border-color: rgba(255, 255, 255, 0.08);
+      transform: translateY(-4px);
+      box-shadow: 0 24px 64px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(0, 122, 255, 0.08);
+    }
+
+    .feature-card:hover::before {
+      opacity: 1;
+    }
+
+    .feature-icon {
+      width: 52px;
+      height: 52px;
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      margin-bottom: 20px;
+    }
+
+    .feature-icon.blue { background: var(--blue-dim); }
+    .feature-icon.cyan { background: var(--cyan-dim); }
+    .feature-icon.orange { background: rgba(255, 149, 0, 0.12); }
+    .feature-icon.purple { background: rgba(191, 90, 242, 0.12); }
+    .feature-icon.pink { background: rgba(255, 55, 95, 0.12); }
+    .feature-icon.indigo { background: var(--indigo-dim); }
+
+    .feature-card h3 {
+      font-size: 18px;
+      font-weight: 700;
+      margin-bottom: 10px;
+      letter-spacing: -0.01em;
+    }
+
+    .feature-card p {
+      font-size: 14px;
+      color: var(--text-secondary);
+      line-height: 1.6;
+    }
+
+    /* ---- HOW IT WORKS ---- */
+    .how-it-works {
+      position: relative;
+      z-index: 1;
+      padding: 120px 0;
+    }
+
+    .how-header {
+      text-align: center;
+      margin-bottom: 80px;
+    }
+
+    .how-header .section-subtitle {
+      margin: 0 auto;
+    }
+
+    .how-steps {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 32px;
+    }
+
+    .how-step {
+      text-align: center;
+      position: relative;
+      transition: all 0.3s ease;
+    }
+
+    .how-step:hover {
+      transform: translateY(-4px);
+    }
+
+    .how-step-number {
+      width: 56px;
+      height: 56px;
+      border-radius: 50%;
+      background: var(--bg-card);
+      border: 2px solid var(--blue);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 22px;
+      font-weight: 800;
+      font-family: 'JetBrains Mono', monospace;
+      color: var(--blue);
+      margin: 0 auto 20px;
+      transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    .how-step:hover .how-step-number {
+      transform: scale(1.1);
+      box-shadow: 0 0 24px rgba(0, 122, 255, 0.15);
+    }
+
+    .how-step h3 {
+      font-size: 17px;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+
+    .how-step p {
+      font-size: 14px;
+      color: var(--text-secondary);
+      line-height: 1.6;
+    }
+
+    .how-step-icon {
+      font-size: 28px;
+      margin-bottom: 12px;
+    }
+
+    /* ---- APPLE WATCH BENTO ---- */
+    .watch-section {
+      position: relative;
+      z-index: 1;
+      padding: 120px 0;
+    }
+
+    .watch-header {
+      text-align: center;
+      margin-bottom: 80px;
+    }
+
+    .watch-header .section-subtitle {
+      margin: 0 auto;
+    }
+
+    .bento-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+    }
+
+    .bento-card {
+      background: var(--bg-card);
+      border: 1px solid rgba(255, 255, 255, 0.04);
+      border-radius: var(--radius-md);
+      padding: 32px 28px;
+      overflow: hidden;
+      position: relative;
+      transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+      transform-style: preserve-3d;
+      will-change: transform;
+    }
+
+    .bento-card:hover {
+      border-color: rgba(255, 255, 255, 0.08);
+      transform: translateY(-2px);
+      box-shadow: 0 20px 48px rgba(0, 0, 0, 0.3);
+    }
+
+    .bento-card.span-2 { grid-column: span 2; }
+
+    .bento-card h3 {
+      font-size: 20px;
+      font-weight: 700;
+      margin-bottom: 8px;
+      letter-spacing: -0.01em;
+    }
+
+    .bento-card p {
+      font-size: 14px;
+      color: var(--text-secondary);
+      line-height: 1.6;
+    }
+
+    .bento-card .bento-visual {
+      margin-top: 24px;
+    }
+
+    /* Watch face mockup */
+    .watch-face {
+      width: 140px;
+      height: 170px;
+      background: #111;
+      border-radius: 36px;
+      margin: 0 auto;
+      padding: 16px;
+      border: 2px solid rgba(255, 255, 255, 0.08);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    .watch-progress-ring {
+      position: relative;
+      width: 60px;
+      height: 60px;
+    }
+
+    .watch-progress-ring svg {
+      transform: rotate(-90deg);
+    }
+
+    .watch-progress-bg {
+      fill: none;
+      stroke: rgba(255, 255, 255, 0.06);
+      stroke-width: 5;
+    }
+
+    .watch-progress-fill {
+      fill: none;
+      stroke: var(--blue);
+      stroke-width: 5;
+      stroke-linecap: round;
+      stroke-dasharray: 157;
+      stroke-dashoffset: 44;
+    }
+
+    .watch-progress-text {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 14px;
+      font-weight: 700;
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    .watch-label {
+      font-size: 9px;
+      color: var(--text-tertiary);
+      text-align: center;
+    }
+
+    .watch-value {
+      font-size: 11px;
+      font-weight: 600;
+      font-family: 'JetBrains Mono', monospace;
+      color: var(--cyan);
+    }
+
+    /* Recent transfer list in watch */
+    .watch-list {
+      list-style: none;
+    }
+
+    .watch-list li {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 8px 0;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+      font-size: 13px;
+    }
+
+    .watch-list li:last-child {
+      border-bottom: none;
+    }
+
+    .watch-list .wl-icon {
+      font-size: 16px;
+    }
+
+    .watch-list .wl-name {
+      flex: 1;
+      color: var(--text-secondary);
+    }
+
+    .watch-list .wl-status {
+      font-size: 11px;
+      color: var(--green);
+      font-weight: 600;
+    }
+
+    /* Quick send grid */
+    .quick-send-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+      margin-top: 16px;
+    }
+
+    .quick-send-item {
+      background: rgba(255, 255, 255, 0.04);
+      border-radius: 12px;
+      padding: 12px 8px;
+      text-align: center;
+    }
+
+    .quick-send-item .qs-icon {
+      font-size: 20px;
+      margin-bottom: 4px;
+    }
+
+    .quick-send-item .qs-label {
+      font-size: 10px;
+      color: var(--text-tertiary);
+    }
+
+    /* ---- PRIVACY SECTION ---- */
+    .privacy-section {
+      position: relative;
+      z-index: 1;
+      padding: 120px 0;
+    }
+
+    .privacy-cards {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+    }
+
+    .privacy-card {
+      background: var(--bg-card);
+      border: 1px solid rgba(255, 255, 255, 0.04);
+      border-radius: var(--radius-md);
+      padding: 40px 28px;
+      text-align: center;
+      transition: all 0.5s ease;
+    }
+
+    .privacy-card:hover {
+      border-color: rgba(0, 122, 255, 0.15);
+      box-shadow: 0 0 40px rgba(0, 122, 255, 0.05);
+      transform: translateY(-4px);
+    }
+
+    .privacy-icon {
+      font-size: 48px;
+      margin-bottom: 20px;
+    }
+
+    .privacy-card h3 {
+      font-size: 20px;
+      font-weight: 700;
+      margin-bottom: 10px;
+    }
+
+    .privacy-card p {
+      font-size: 14px;
+      color: var(--text-secondary);
+      line-height: 1.6;
+    }
+
+    /* ---- PRICING ---- */
+    .pricing {
+      position: relative;
+      z-index: 1;
+      padding: 120px 0;
+    }
+
+    .pricing-header {
+      text-align: center;
+      margin-bottom: 64px;
+    }
+
+    .pricing-header .section-subtitle {
+      margin: 0 auto;
+    }
+
+    .pricing-cards {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 20px;
+      max-width: 720px;
+      margin: 0 auto;
+    }
+
+    .pricing-card {
+      background: var(--bg-card);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      border-radius: var(--radius-md);
+      padding: 36px 28px;
+      position: relative;
+      transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+      transform-style: preserve-3d;
+      will-change: transform;
+    }
+
+    .pricing-card.featured {
+      background: linear-gradient(180deg, rgba(0, 122, 255, 0.08), var(--bg-card));
+      border-color: rgba(0, 122, 255, 0.25);
+      transform: scale(1.03);
+    }
+
+    .pricing-card.featured::before {
+      content: 'Best Value';
+      position: absolute;
+      top: -12px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--blue);
+      color: #fff;
+      font-size: 11px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      padding: 4px 16px;
+      border-radius: 100px;
+    }
+
+    .pricing-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 24px 64px rgba(0, 0, 0, 0.4);
+    }
+
+    .pricing-card.featured:hover {
+      transform: scale(1.03) translateY(-4px);
+    }
+
+    .pricing-plan-name {
+      font-size: 16px;
+      font-weight: 600;
+      color: var(--text-secondary);
+      margin-bottom: 12px;
+    }
+
+    .pricing-price {
+      font-size: 40px;
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      margin-bottom: 4px;
+    }
+
+    .pricing-price span {
+      font-size: 16px;
+      font-weight: 500;
+      color: var(--text-secondary);
+    }
+
+    .pricing-note {
+      font-size: 13px;
+      color: var(--text-tertiary);
+      margin-bottom: 24px;
+    }
+
+    .pricing-features {
+      list-style: none;
+      margin-bottom: 28px;
+    }
+
+    .pricing-features li {
+      font-size: 14px;
+      color: var(--text-secondary);
+      padding: 8px 0;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .pricing-features li::before {
+      content: '\2713';
+      color: var(--blue);
+      font-weight: 700;
+      font-size: 14px;
+    }
+
+    .pricing-features li.disabled {
+      color: var(--text-tertiary);
+    }
+
+    .pricing-features li.disabled::before {
+      content: '\2014';
+      color: var(--text-tertiary);
+    }
+
+    .pricing-btn {
+      display: block;
+      width: 100%;
+      text-align: center;
+      padding: 14px;
+      border-radius: 100px;
+      font-size: 15px;
+      font-weight: 700;
+      text-decoration: none;
+      transition: all 0.3s ease;
+      border: none;
+      cursor: pointer;
+    }
+
+    .pricing-btn-outline {
+      background: transparent;
+      border: 1px solid var(--border);
+      color: var(--text);
+    }
+
+    .pricing-btn-outline:hover {
+      border-color: var(--text-secondary);
+    }
+
+    .pricing-btn-primary {
+      background: var(--blue);
+      color: #fff;
+      box-shadow: 0 4px 20px rgba(0, 122, 255, 0.3);
+    }
+
+    .pricing-btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 32px rgba(0, 122, 255, 0.4);
+    }
+
+    /* ---- FAQ ---- */
+    .faq {
+      position: relative;
+      z-index: 1;
+      padding: 120px 0;
+    }
+
+    .faq-header {
+      text-align: center;
+      margin-bottom: 64px;
+    }
+
+    .faq-header .section-subtitle {
+      margin: 0 auto;
+    }
+
+    .faq-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 20px;
+      max-width: 960px;
+      margin: 0 auto;
+    }
+
+    .faq-item {
+      background: var(--bg-card);
+      border: 1px solid rgba(255, 255, 255, 0.04);
+      border-radius: var(--radius-md);
+      padding: 28px;
+      transition: all 0.3s ease;
+    }
+
+    .faq-item:hover {
+      border-color: rgba(255, 255, 255, 0.08);
+      transform: translateY(-2px);
+    }
+
+    .faq-item h3 {
+      font-size: 16px;
+      font-weight: 700;
+      margin-bottom: 10px;
+      letter-spacing: -0.01em;
+    }
+
+    .faq-item p {
+      font-size: 14px;
+      color: var(--text-secondary);
+      line-height: 1.6;
+    }
+
+    /* ---- CTA ---- */
+    .final-cta {
+      position: relative;
+      z-index: 1;
+      padding: 120px 0;
+    }
+
+    .cta-card {
+      background: linear-gradient(135deg, rgba(0, 122, 255, 0.08), rgba(90, 200, 250, 0.05));
+      border: 1px solid rgba(0, 122, 255, 0.15);
+      border-radius: var(--radius-xl);
+      padding: 80px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+      transition: all 0.5s ease;
+    }
+
+    .cta-card:hover {
+      border-color: rgba(0, 122, 255, 0.25);
+      box-shadow: 0 0 60px rgba(0, 122, 255, 0.05);
+    }
+
+    .cta-card::before {
+      content: '';
+      position: absolute;
+      top: -150px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 600px;
+      height: 600px;
+      background: radial-gradient(circle, rgba(0, 122, 255, 0.06), transparent);
+      border-radius: 50%;
+    }
+
+    .cta-card .section-title {
+      position: relative;
+    }
+
+    .cta-card .section-subtitle {
+      margin: 0 auto 40px;
+      position: relative;
+    }
+
+    .cta-actions {
+      display: flex;
+      justify-content: center;
+      gap: 16px;
+      flex-wrap: wrap;
+      position: relative;
+    }
+
+    .cta-note {
+      font-size: 13px;
+      color: var(--text-tertiary);
+      margin-top: 20px;
+      position: relative;
+    }
+
+    /* ---- FOOTER ---- */
+    footer {
+      position: relative;
+      z-index: 1;
+      border-top: 1px solid rgba(255, 255, 255, 0.04);
+      padding: 48px 0;
+    }
+
+    footer .container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 24px;
+    }
+
+    .footer-left {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .footer-logo-icon {
+      width: 28px;
+      height: 28px;
+      border-radius: 8px;
+      background: linear-gradient(135deg, var(--blue), var(--cyan));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      font-weight: 800;
+      color: #fff;
+    }
+
+    .footer-copy {
+      font-size: 13px;
+      color: var(--text-tertiary);
+    }
+
+    .footer-links {
+      display: flex;
+      gap: 24px;
+      list-style: none;
+    }
+
+    .footer-links a {
+      color: var(--text-secondary);
+      text-decoration: none;
+      font-size: 13px;
+      transition: color 0.2s;
+    }
+
+    .footer-links a:hover {
+      color: var(--text);
+    }
+
+    /* ---- SCROLL ANIMATIONS ---- */
+    .reveal {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+      filter: blur(6px);
+    }
+
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+      filter: blur(0);
+    }
+
+    /* ---- SMOOTH PAGE ENTRANCE ---- */
+    body {
+      animation: pageReveal 0.8s cubic-bezier(0.16, 1, 0.3, 1) both;
+    }
+
+    @keyframes pageReveal {
+      from { opacity: 0; filter: blur(4px); }
+      to { opacity: 1; filter: blur(0); }
+    }
+
+    /* ---- CUSTOM SCROLLBAR ---- */
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.08); border-radius: 3px; }
+    ::-webkit-scrollbar-thumb:hover { background: rgba(255, 255, 255, 0.16); }
+
+    /* Selection */
+    ::selection { background: rgba(0, 122, 255, 0.3); color: #fff; }
+
+    /* Focus Visible */
+    *:focus-visible { outline: 2px solid var(--blue); outline-offset: 2px; border-radius: 4px; }
+
+    /* Smooth link transitions */
+    a, button { transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1); }
+
+    /* ---- RESPONSIVE ---- */
+    @media (max-width: 1024px) {
+      .features-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      .bento-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      .privacy-cards {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      .privacy-cards .privacy-card:last-child {
+        grid-column: span 2;
+        max-width: 400px;
+        margin: 0 auto;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .hero .container {
+        grid-template-columns: 1fr;
+        text-align: center;
+        gap: 40px;
+      }
+      .hero-description {
+        margin: 0 auto 40px;
+      }
+      .hero-actions {
+        justify-content: center;
+      }
+      .hero-stats {
+        justify-content: center;
+      }
+      .nav-links {
+        display: none;
+      }
+      .nav-links.show {
+        display: flex;
+        flex-direction: column;
+        position: absolute;
+        top: 64px;
+        left: 0;
+        right: 0;
+        background: rgba(6, 10, 16, 0.95);
+        backdrop-filter: blur(24px);
+        -webkit-backdrop-filter: blur(24px);
+        padding: 24px;
+        gap: 16px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+      }
+      .nav-mobile-toggle {
+        display: block;
+      }
+      .features-grid {
+        grid-template-columns: 1fr;
+      }
+      .bento-grid {
+        grid-template-columns: 1fr;
+      }
+      .bento-card.span-2 {
+        grid-column: span 1;
+      }
+      .how-steps {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      .pricing-cards {
+        grid-template-columns: 1fr;
+        max-width: 400px;
+        margin: 0 auto;
+      }
+      .pricing-card.featured {
+        transform: none;
+      }
+      .pricing-card.featured:hover {
+        transform: translateY(-4px);
+      }
+      .privacy-cards {
+        grid-template-columns: 1fr;
+      }
+      .privacy-cards .privacy-card:last-child {
+        grid-column: span 1;
+        max-width: none;
+      }
+      .faq-grid {
+        grid-template-columns: 1fr;
+      }
+      .cta-card {
+        padding: 48px 24px;
+      }
+      .floating-card {
+        display: none;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .how-steps {
+        grid-template-columns: 1fr;
+      }
+      .hero-stats {
+        flex-direction: column;
+        gap: 16px;
+      }
+      .quick-send-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+  </style>
+</head>
+<body>
+<div class="scroll-progress"></div>
+
+  <!-- Animated Background -->
+  <div class="bg-glow">
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+    <div class="orb orb-3"></div>
+  </div>
+
+  <!-- Navigation -->
+  <nav>
+    <div class="container">
+      <a href="#" class="nav-logo">
+        <div class="nav-logo-icon">F</div>
+        <span class="nav-logo-text">Fluxer</span>
+      </a>
+      <ul class="nav-links">
+        <li><a href="#features">Features</a></li>
+        <li><a href="#how-it-works">How It Works</a></li>
+        <li><a href="#pricing">Pricing</a></li>
+        <li><a href="#download" class="nav-cta">Download</a></li>
+      </ul>
+      <button class="nav-mobile-toggle" aria-label="Menu">&#9776;</button>
+    </div>
+  </nav>
+
+  <!-- Hero -->
+  <section class="hero" id="hero">
+    <div class="container">
+      <div class="hero-content">
+        <div class="hero-badge">
+          <span class="dot"></span>
+          Available on the App Store
+        </div>
+        <h1>
+          Send files.<br>
+          <span class="gradient-text">Not to the cloud.</span>
+        </h1>
+        <p class="hero-description">
+          Fluxer sends files directly from your device to theirs. No cloud servers, no middlemen, no compromises. Peer-to-peer transfers with end-to-end encryption at Wi-Fi Direct speeds.
+        </p>
+        <div class="hero-actions">
+          <a href="#download" class="btn-primary">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.71 19.5C17.88 20.74 17 21.95 15.66 21.97C14.32 21.99 13.89 21.18 12.37 21.18C10.84 21.18 10.37 21.95 9.1 21.99C7.79 22.03 6.8 20.68 5.96 19.47C4.25 16.97 2.94 12.45 4.7 9.39C5.57 7.87 7.13 6.91 8.82 6.88C10.1 6.86 11.32 7.75 12.11 7.75C12.89 7.75 14.37 6.68 15.92 6.84C16.57 6.87 18.39 7.1 19.56 8.82C19.47 8.88 17.39 10.1 17.41 12.63C17.44 15.65 20.06 16.66 20.09 16.67C20.06 16.74 19.67 18.11 18.71 19.5ZM13 3.5C13.73 2.67 14.94 2.04 15.94 2C16.07 3.17 15.6 4.35 14.9 5.19C14.21 6.04 13.07 6.7 11.95 6.61C11.8 5.46 12.36 4.26 13 3.5Z"/></svg>
+            Download Free
+          </a>
+          <a href="#features" class="btn-secondary">Explore Features</a>
+        </div>
+        <div class="hero-stats">
+          <div class="hero-stat">
+            <div class="hero-stat-value">P2P</div>
+            <div class="hero-stat-label">Direct Transfer</div>
+          </div>
+          <div class="hero-stat">
+            <div class="hero-stat-value">0</div>
+            <div class="hero-stat-label">Servers</div>
+          </div>
+          <div class="hero-stat">
+            <div class="hero-stat-value">100%</div>
+            <div class="hero-stat-label">Private</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="hero-visual">
+        <!-- Phone Mockup -->
+        <div class="phone-frame">
+          <div class="phone-screen">
+            <div class="phone-notch"></div>
+            <div class="phone-app">
+              <div class="phone-header">
+                <span class="phone-header-title">Fluxer</span>
+                <span class="phone-header-status">Transferring</span>
+              </div>
+
+              <div class="phone-transfer-card">
+                <div class="phone-file-row">
+                  <div class="phone-file-icon">&#128196;</div>
+                  <div>
+                    <div class="phone-file-name">presentation.key</div>
+                    <div class="phone-file-size">48.2 MB</div>
+                  </div>
+                </div>
+                <div class="phone-progress-bar">
+                  <div class="phone-progress-fill" id="mockup-progress"></div>
+                </div>
+                <div class="phone-transfer-stats">
+                  <span class="phone-transfer-speed" id="mockup-speed">12.4 MB/s</span>
+                  <span class="phone-transfer-percent" id="mockup-percent">72%</span>
+                </div>
+              </div>
+
+              <div class="phone-device-row">
+                <div class="phone-device-dot"></div>
+                <span class="phone-device-name">Alex's MacBook Pro</span>
+                <span class="phone-device-type">Wi-Fi Direct</span>
+              </div>
+
+              <div class="phone-recent-label">Recent</div>
+              <div class="phone-recent-item">
+                <div class="phone-recent-icon">&#127912;</div>
+                <span class="phone-recent-name">vacation_photos.zip</span>
+                <span class="phone-recent-check">&#10003;</span>
+              </div>
+              <div class="phone-recent-item">
+                <div class="phone-recent-icon">&#127916;</div>
+                <span class="phone-recent-name">demo_video.mp4</span>
+                <span class="phone-recent-check">&#10003;</span>
+              </div>
+              <div class="phone-recent-item">
+                <div class="phone-recent-icon">&#128195;</div>
+                <span class="phone-recent-name">contract_v2.pdf</span>
+                <span class="phone-recent-check">&#10003;</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Floating Cards -->
+        <div class="floating-card floating-card-1">
+          <div class="fc-icon">&#9889;</div>
+          <div class="fc-title">Transfer Speed</div>
+          <div class="fc-value cyan">12.4 MB/s</div>
+        </div>
+        <div class="floating-card floating-card-2">
+          <div class="fc-icon">&#128274;</div>
+          <div class="fc-title">Encryption</div>
+          <div class="fc-value blue">AES-256</div>
+        </div>
+        <div class="floating-card floating-card-3">
+          <div class="fc-icon">&#128193;</div>
+          <div class="fc-title">File Types</div>
+          <div class="fc-value green">All supported</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Philosophy -->
+  <section class="philosophy reveal">
+    <div class="container">
+      <span class="section-label">Philosophy</span>
+      <p class="philosophy-quote">
+        Your files should travel the <span class="highlight">shortest distance</span> possible: from your device to theirs.
+      </p>
+      <p class="philosophy-sub">
+        No uploading to a server. No waiting for a download link. Just a direct, encrypted connection between two devices.
+      </p>
+    </div>
+  </section>
+
+  <!-- Features -->
+  <section class="features" id="features">
+    <div class="features-header reveal">
+      <span class="section-label">Features</span>
+      <h2 class="section-title">Everything you need.<br>Nothing in between.</h2>
+      <p class="section-subtitle">Powerful file transfer tools built for speed, privacy, and simplicity. No accounts, no cloud, no complexity.</p>
+    </div>
+    <div class="container">
+      <div class="features-grid">
+        <div class="feature-card reveal">
+          <div class="feature-icon blue">&#128279;</div>
+          <h3>Peer-to-Peer</h3>
+          <p>Direct device-to-device connection. Your files never touch a cloud server. No relay, no middleman, no exposure.</p>
+        </div>
+        <div class="feature-card reveal">
+          <div class="feature-icon cyan">&#9889;</div>
+          <h3>Lightning Fast</h3>
+          <p>Transfers at Wi-Fi Direct speeds up to 50MB/s. Faster than most cloud uploads and downloads combined.</p>
+        </div>
+        <div class="feature-card reveal">
+          <div class="feature-icon orange">&#128451;</div>
+          <h3>Any File Type</h3>
+          <p>Documents, photos, videos, folders, archives — if your device can store it, Fluxer can send it. No restrictions.</p>
+        </div>
+        <div class="feature-card reveal">
+          <div class="feature-icon purple">&#128225;</div>
+          <h3>Auto-Discovery</h3>
+          <p>Nearby devices appear instantly via Bluetooth LE scanning. No manual IP entry, no QR codes, no pairing hassle.</p>
+        </div>
+        <div class="feature-card reveal">
+          <div class="feature-icon pink">&#128260;</div>
+          <h3>Resume Transfers</h3>
+          <p>Connection dropped? Walk out of range? Fluxer picks up right where it left off when you reconnect. Zero wasted bandwidth.</p>
+        </div>
+        <div class="feature-card reveal">
+          <div class="feature-icon indigo">&#8987;</div>
+          <h3>Apple Watch</h3>
+          <p>Start, monitor, and manage transfers from your wrist. See progress, speed, and connected devices at a glance.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- How It Works -->
+  <section class="how-it-works" id="how-it-works">
+    <div class="how-header reveal">
+      <span class="section-label">Simple</span>
+      <h2 class="section-title">How Fluxer works</h2>
+      <p class="section-subtitle">Four steps. No account. No setup. Just open and send.</p>
+    </div>
+    <div class="container">
+      <div class="how-steps reveal">
+        <div class="how-step">
+          <div class="how-step-number">1</div>
+          <div class="how-step-icon">&#128194;</div>
+          <h3>Select Files</h3>
+          <p>Pick any files or folders from your device. Photos, documents, videos, archives — anything goes.</p>
+        </div>
+        <div class="how-step">
+          <div class="how-step-number">2</div>
+          <div class="how-step-icon">&#128225;</div>
+          <h3>Discover</h3>
+          <p>Fluxer automatically finds nearby devices using Bluetooth. Tap the one you want to send to.</p>
+        </div>
+        <div class="how-step">
+          <div class="how-step-number">3</div>
+          <div class="how-step-icon">&#9889;</div>
+          <h3>Transfer</h3>
+          <p>Files fly directly between devices over Wi-Fi Direct. Watch real-time progress and speed.</p>
+        </div>
+        <div class="how-step">
+          <div class="how-step-number">4</div>
+          <div class="how-step-icon">&#10003;</div>
+          <h3>Done</h3>
+          <p>Files arrive instantly on the other device. No download link, no expiration, no cloud middleman.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Apple Watch Section -->
+  <section class="watch-section">
+    <div class="watch-header reveal">
+      <span class="section-label">Apple Watch</span>
+      <h2 class="section-title">Monitor from your wrist</h2>
+      <p class="section-subtitle">Start transfers, track progress, and manage recent files — all from your Apple Watch.</p>
+    </div>
+    <div class="container">
+      <div class="bento-grid">
+        <div class="bento-card reveal">
+          <h3>Transfer Progress</h3>
+          <p>Real-time progress ring with speed and ETA on your wrist.</p>
+          <div class="bento-visual">
+            <div class="watch-face">
+              <div class="watch-progress-ring">
+                <svg width="60" height="60" viewBox="0 0 60 60">
+                  <circle class="watch-progress-bg" cx="30" cy="30" r="25"/>
+                  <circle class="watch-progress-fill" cx="30" cy="30" r="25"/>
+                </svg>
+                <div class="watch-progress-text">72%</div>
+              </div>
+              <div class="watch-label">presentation.key</div>
+              <div class="watch-value">12.4 MB/s</div>
+            </div>
+          </div>
+        </div>
+        <div class="bento-card span-2 reveal">
+          <h3>Recent Transfers</h3>
+          <p>Quickly view your latest transfers and their status without pulling out your phone.</p>
+          <div class="bento-visual">
+            <ul class="watch-list">
+              <li>
+                <span class="wl-icon">&#128196;</span>
+                <span class="wl-name">presentation.key</span>
+                <span class="wl-status">Sending...</span>
+              </li>
+              <li>
+                <span class="wl-icon">&#127912;</span>
+                <span class="wl-name">vacation_photos.zip</span>
+                <span class="wl-status">Done</span>
+              </li>
+              <li>
+                <span class="wl-icon">&#127916;</span>
+                <span class="wl-name">demo_video.mp4</span>
+                <span class="wl-status">Done</span>
+              </li>
+              <li>
+                <span class="wl-icon">&#128195;</span>
+                <span class="wl-name">contract_v2.pdf</span>
+                <span class="wl-status">Done</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div class="bento-card span-2 reveal">
+          <h3>Quick Send</h3>
+          <p>Tap a category to instantly start sending files from your most-used types.</p>
+          <div class="bento-visual">
+            <div class="quick-send-grid">
+              <div class="quick-send-item">
+                <div class="qs-icon">&#128247;</div>
+                <div class="qs-label">Photos</div>
+              </div>
+              <div class="quick-send-item">
+                <div class="qs-icon">&#127916;</div>
+                <div class="qs-label">Videos</div>
+              </div>
+              <div class="quick-send-item">
+                <div class="qs-icon">&#128196;</div>
+                <div class="qs-label">Docs</div>
+              </div>
+              <div class="quick-send-item">
+                <div class="qs-icon">&#127925;</div>
+                <div class="qs-label">Music</div>
+              </div>
+              <div class="quick-send-item">
+                <div class="qs-icon">&#128193;</div>
+                <div class="qs-label">Folders</div>
+              </div>
+              <div class="quick-send-item">
+                <div class="qs-icon">&#128230;</div>
+                <div class="qs-label">Archives</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="bento-card reveal">
+          <h3>Haptic Alerts</h3>
+          <p>Feel a gentle tap when a transfer completes or a new device connects nearby.</p>
+          <div class="bento-visual" style="text-align: center; padding: 20px 0;">
+            <span style="font-size: 48px;">&#9076;</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Privacy -->
+  <section class="privacy-section">
+    <div class="container">
+      <div class="privacy-cards reveal">
+        <div class="privacy-card">
+          <div class="privacy-icon">&#128421;</div>
+          <h3>No Servers</h3>
+          <p>Your files travel directly between devices. No cloud infrastructure, no relay servers, no data centers involved.</p>
+        </div>
+        <div class="privacy-card">
+          <div class="privacy-icon">&#128065;&#8205;&#128488;&#65039;</div>
+          <h3>No Tracking</h3>
+          <p>Zero analytics, zero telemetry, zero usage tracking. We have no idea what you send, when, or to whom.</p>
+        </div>
+        <div class="privacy-card">
+          <div class="privacy-icon">&#9729;&#65039;</div>
+          <h3>No Cloud</h3>
+          <p>Nothing is uploaded anywhere. Files exist only on sender and receiver devices. End-to-end encrypted in transit.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Pricing -->
+  <section class="pricing" id="pricing">
+    <div class="pricing-header reveal">
+      <span class="section-label">Pricing</span>
+      <h2 class="section-title">Try free. Buy once.</h2>
+      <p class="section-subtitle">No subscriptions. No recurring fees. One purchase unlocks everything, forever.</p>
+    </div>
+    <div class="container">
+      <div class="pricing-cards reveal">
+        <!-- Trial -->
+        <div class="pricing-card">
+          <div class="pricing-plan-name">Trial</div>
+          <div class="pricing-price">$0</div>
+          <div class="pricing-note">3-day free trial</div>
+          <ul class="pricing-features">
+            <li>Basic file transfers</li>
+            <li>1 device at a time</li>
+            <li>Auto-discovery</li>
+            <li class="disabled">Multi-device transfers</li>
+            <li class="disabled">Apple Watch app</li>
+            <li class="disabled">Resume transfers</li>
+          </ul>
+          <a href="#download" class="pricing-btn pricing-btn-outline">Start Trial</a>
+        </div>
+        <!-- Full -->
+        <div class="pricing-card featured">
+          <div class="pricing-plan-name">Full Version</div>
+          <div class="pricing-price">$5.99<span> once</span></div>
+          <div class="pricing-note">One-time purchase &middot; Lifetime access</div>
+          <ul class="pricing-features">
+            <li>Unlimited transfers</li>
+            <li>Multi-device support</li>
+            <li>Auto-discovery</li>
+            <li>Apple Watch app</li>
+            <li>Resume transfers</li>
+            <li>All future updates</li>
+          </ul>
+          <a href="#download" class="pricing-btn pricing-btn-primary">Get Fluxer</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section class="faq">
+    <div class="faq-header reveal">
+      <span class="section-label">FAQ</span>
+      <h2 class="section-title">Questions &amp; answers</h2>
+      <p class="section-subtitle">Everything you need to know about Fluxer.</p>
+    </div>
+    <div class="container">
+      <div class="faq-grid reveal">
+        <div class="faq-item">
+          <h3>What file types can I transfer?</h3>
+          <p>Any file your device can store — documents, photos, videos, folders, archives, app exports, and more. There are no file type restrictions.</p>
+        </div>
+        <div class="faq-item">
+          <h3>Does it work between iPhone and Mac?</h3>
+          <p>Fluxer works between any two iOS devices. Mac support and cross-platform transfers are on our roadmap for a future update.</p>
+        </div>
+        <div class="faq-item">
+          <h3>How fast are transfers?</h3>
+          <p>Fluxer uses Wi-Fi Direct for transfers, achieving speeds up to 50 MB/s. Actual speed depends on your devices and distance between them.</p>
+        </div>
+        <div class="faq-item">
+          <h3>Do I need an internet connection?</h3>
+          <p>No. Fluxer works entirely over local connections (Bluetooth for discovery, Wi-Fi Direct for transfer). No internet required.</p>
+        </div>
+        <div class="faq-item">
+          <h3>Does the Apple Watch app work standalone?</h3>
+          <p>The Apple Watch app monitors and controls transfers initiated from your iPhone. It shows real-time progress, speed, and lets you start saved quick-send presets.</p>
+        </div>
+        <div class="faq-item">
+          <h3>What happens if my connection drops?</h3>
+          <p>Fluxer automatically saves your transfer progress. When devices reconnect, the transfer resumes from where it stopped — no data is re-sent.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Final CTA -->
+  <section class="final-cta" id="download">
+    <div class="container">
+      <div class="cta-card reveal">
+        <span class="section-label">Ready?</span>
+        <h2 class="section-title">Transfer files the way they should be transferred</h2>
+        <p class="section-subtitle">Direct. Private. Fast. Download Fluxer and send your first file in under 30 seconds.</p>
+        <div class="cta-actions">
+          <a href="#" class="btn-primary">
+            <svg viewBox="0 0 24 24" fill="currentColor" width="20" height="20"><path d="M18.71 19.5C17.88 20.74 17 21.95 15.66 21.97C14.32 21.99 13.89 21.18 12.37 21.18C10.84 21.18 10.37 21.95 9.1 21.99C7.79 22.03 6.8 20.68 5.96 19.47C4.25 16.97 2.94 12.45 4.7 9.39C5.57 7.87 7.13 6.91 8.82 6.88C10.1 6.86 11.32 7.75 12.11 7.75C12.89 7.75 14.37 6.68 15.92 6.84C16.57 6.87 18.39 7.1 19.56 8.82C19.47 8.88 17.39 10.1 17.41 12.63C17.44 15.65 20.06 16.66 20.09 16.67C20.06 16.74 19.67 18.11 18.71 19.5ZM13 3.5C13.73 2.67 14.94 2.04 15.94 2C16.07 3.17 15.6 4.35 14.9 5.19C14.21 6.04 13.07 6.7 11.95 6.61C11.8 5.46 12.36 4.26 13 3.5Z"/></svg>
+            Download on the App Store
+          </a>
+        </div>
+        <p class="cta-note">iOS 17+ &middot; One-time purchase &middot; No subscription</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <div class="container">
+      <div class="footer-left">
+        <div class="footer-logo-icon">F</div>
+        <span class="footer-copy">&copy; 2026 iOS Craft Studio. All rights reserved.</span>
+      </div>
+      <ul class="footer-links">
+        <li><a href="privacy.html">Privacy Policy</a></li>
+        <li><a href="../">iOS Craft Studio</a></li>
+      </ul>
+    </div>
+  </footer>
+
+<script>
+    // ============================================
+    // Fluxer — INTERACTIONS
+    // ============================================
+
+    // Scroll Progress Bar
+    (function() {
+      var progressBar = document.querySelector('.scroll-progress');
+      if (!progressBar) return;
+      var ticking = false;
+      window.addEventListener('scroll', function() {
+        if (!ticking) {
+          requestAnimationFrame(function() {
+            var scrollTop = window.scrollY;
+            var docHeight = document.documentElement.scrollHeight - window.innerHeight;
+            progressBar.style.width = ((scrollTop / docHeight) * 100) + '%';
+            ticking = false;
+          });
+          ticking = true;
+        }
+      }, { passive: true });
+    })();
+
+    // Scroll Reveal (IntersectionObserver)
+    (function() {
+      var reveals = document.querySelectorAll('.reveal');
+      var observer = new IntersectionObserver(function(entries) {
+        entries.forEach(function(entry) {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+          }
+        });
+      }, { threshold: 0.1, rootMargin: '0px 0px -60px 0px' });
+      reveals.forEach(function(el) { observer.observe(el); });
+    })();
+
+    // Nav background change on scroll
+    (function() {
+      var nav = document.querySelector('nav');
+      if (!nav) return;
+      window.addEventListener('scroll', function() {
+        if (window.scrollY > 20) {
+          nav.style.borderBottomColor = 'rgba(255,255,255,0.08)';
+          nav.style.background = 'rgba(6, 10, 16, 0.92)';
+        } else {
+          nav.style.borderBottomColor = 'rgba(255,255,255,0.06)';
+          nav.style.background = 'rgba(6, 10, 16, 0.72)';
+        }
+      }, { passive: true });
+    })();
+
+    // 3D Card Tilt on hover
+    (function() {
+      var cards = document.querySelectorAll('.feature-card, .pricing-card, .bento-card, .faq-item');
+      cards.forEach(function(card) {
+        card.addEventListener('mousemove', function(e) {
+          var rect = card.getBoundingClientRect();
+          var x = e.clientX - rect.left;
+          var y = e.clientY - rect.top;
+          var centerX = rect.width / 2;
+          var centerY = rect.height / 2;
+          var rotateX = ((y - centerY) / centerY) * -2;
+          var rotateY = ((x - centerX) / centerX) * 2;
+          card.style.transform = 'perspective(800px) rotateX(' + rotateX + 'deg) rotateY(' + rotateY + 'deg) translateY(-4px)';
+        });
+        card.addEventListener('mouseleave', function() {
+          card.style.transform = '';
+          card.style.transition = 'transform 0.6s cubic-bezier(0.16, 1, 0.3, 1)';
+          setTimeout(function() { card.style.transition = ''; }, 600);
+        });
+      });
+    })();
+
+    // Parallax on Ambient Orbs
+    (function() {
+      var orbs = document.querySelectorAll('.bg-glow .orb');
+      if (!orbs.length) return;
+      var scrollTicking = false;
+      window.addEventListener('scroll', function() {
+        if (!scrollTicking) {
+          requestAnimationFrame(function() {
+            var scrollY = window.scrollY;
+            orbs.forEach(function(orb, i) {
+              var speed = 0.015 + (i * 0.008);
+              orb.style.transform = 'translateY(' + (scrollY * speed) + 'px)';
+            });
+            scrollTicking = false;
+          });
+          scrollTicking = true;
+        }
+      }, { passive: true });
+    })();
+
+    // Mobile Menu Toggle
+    (function() {
+      var toggle = document.querySelector('.nav-mobile-toggle');
+      var navLinks = document.querySelector('.nav-links');
+      if (!toggle || !navLinks) return;
+      toggle.addEventListener('click', function() {
+        navLinks.classList.toggle('show');
+      });
+      // Close mobile menu when a link is clicked
+      navLinks.querySelectorAll('a').forEach(function(link) {
+        link.addEventListener('click', function() {
+          navLinks.classList.remove('show');
+        });
+      });
+    })();
+
+    // Animated Transfer Progress in Phone Mockup
+    (function() {
+      var progressEl = document.getElementById('mockup-progress');
+      var percentEl = document.getElementById('mockup-percent');
+      var speedEl = document.getElementById('mockup-speed');
+      if (!progressEl || !percentEl || !speedEl) return;
+
+      var transferred = 34.7; // MB transferred so far (72% of 48.2 MB)
+      var totalSize = 48.2;
+      var running = true;
+
+      function updateMockup() {
+        if (!running) return;
+        // Simulate transfer speed fluctuation
+        var speed = 10 + Math.random() * 8; // 10-18 MB/s
+        transferred += speed * 0.1; // ~100ms increments
+
+        if (transferred >= totalSize) {
+          transferred = 0; // Reset and simulate a new transfer
+        }
+
+        var percent = Math.min(Math.round((transferred / totalSize) * 100), 100);
+        progressEl.style.width = percent + '%';
+        percentEl.textContent = percent + '%';
+        speedEl.textContent = speed.toFixed(1) + ' MB/s';
+
+        setTimeout(updateMockup, 100);
+      }
+
+      // Start after a delay
+      setTimeout(updateMockup, 2000);
+
+      // Pause when tab is not visible
+      document.addEventListener('visibilitychange', function() {
+        if (document.hidden) {
+          running = false;
+        } else {
+          running = true;
+          updateMockup();
+        }
+      });
+    })();
+</script>
+
+</body>
+</html>
