@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>iOS Craft Studio — Premium iOS Apps</title>
-  <meta name="description" content="iOS Craft Studio crafts premium, privacy-first iOS apps across health intelligence, wellness, utilities, and entertainment. Explore fastrum, somniq, stepiq, matchup, beginr, fluxer, unison, and roomraid.">
+  <meta name="description" content="iOS Craft Studio crafts premium, privacy-first iOS apps across health intelligence, wellness, utilities, and entertainment. Explore fastrum, somniq, stepiq, matchup, beginr, fluxer, unison meditation, and roomraid.">
   <meta name="theme-color" content="#08080C">
   <link rel="icon" type="image/svg+xml" href="favicon.svg">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -253,6 +253,116 @@
     .nav-links a:hover::after {
       width: 100%;
     }
+
+    /* Apps Dropdown */
+    .nav-apps-wrap {
+      position: relative;
+    }
+
+    .nav-apps-btn {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      color: var(--text-secondary);
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+      background: none;
+      border: none;
+      font-family: inherit;
+      padding: 0;
+      transition: color 0.2s;
+    }
+
+    .nav-apps-btn:hover {
+      color: var(--text);
+    }
+
+    .nav-apps-btn .chevron {
+      width: 10px;
+      height: 10px;
+      border-right: 1.5px solid currentColor;
+      border-bottom: 1.5px solid currentColor;
+      transform: rotate(45deg);
+      transition: transform 0.3s;
+      margin-top: -2px;
+    }
+
+    .nav-apps-wrap.open .nav-apps-btn .chevron {
+      transform: rotate(-135deg);
+      margin-top: 2px;
+    }
+
+    .nav-apps-dropdown {
+      position: absolute;
+      top: calc(100% + 16px);
+      left: 50%;
+      transform: translateX(-50%) translateY(-8px);
+      background: rgba(22, 22, 29, 0.98);
+      backdrop-filter: blur(24px);
+      -webkit-backdrop-filter: blur(24px);
+      border: 1px solid var(--border-hover);
+      border-radius: 16px;
+      padding: 12px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4px;
+      min-width: 280px;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.25s, transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+      z-index: 200;
+    }
+
+    .nav-apps-wrap.open .nav-apps-dropdown {
+      opacity: 1;
+      pointer-events: auto;
+      transform: translateX(-50%) translateY(0);
+    }
+
+    .nav-apps-dropdown a {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 14px;
+      border-radius: 10px;
+      text-decoration: none;
+      color: var(--text-secondary);
+      font-size: 13px;
+      font-weight: 500;
+      transition: background 0.2s, color 0.2s;
+    }
+
+    .nav-apps-dropdown a:hover {
+      background: rgba(255, 255, 255, 0.06);
+      color: var(--text);
+    }
+
+    .nav-apps-dropdown a::after {
+      display: none;
+    }
+
+    .nav-app-icon {
+      width: 28px;
+      height: 28px;
+      border-radius: 7px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      font-weight: 800;
+      flex-shrink: 0;
+    }
+
+    .nav-app-icon.fastrum { background: linear-gradient(135deg, var(--green), #28B84C); color: #000; }
+    .nav-app-icon.somniq { background: linear-gradient(135deg, var(--lavender), var(--teal)); color: #0D0D1A; }
+    .nav-app-icon.stepiq { background: linear-gradient(135deg, var(--sage), #5C8A5C); color: #0D0D0C; }
+    .nav-app-icon.matchup { background: linear-gradient(135deg, var(--indigo), #6C63FF); color: #fff; }
+    .nav-app-icon.beginr { background: linear-gradient(135deg, #34C759, #2AAF4A); color: #000; }
+    .nav-app-icon.fluxer { background: linear-gradient(135deg, var(--blue), #0055D4); color: #fff; }
+    .nav-app-icon.unison { background: linear-gradient(135deg, var(--amber), #B8863A); color: #1A1008; }
+    .nav-app-icon.roomraid { background: linear-gradient(135deg, var(--red), #CC2E26); color: #fff; }
 
     /* ============================================
        HERO SECTION
@@ -515,7 +625,7 @@
 
     /* Category sections */
     .cat-section {
-      margin-bottom: 100px;
+      margin-bottom: 120px;
     }
 
     .cat-section:last-child {
@@ -566,6 +676,7 @@
     .products-grid.single {
       grid-template-columns: 1fr;
       max-width: 640px;
+      margin: 0 auto;
     }
 
     /* ============================================
@@ -2305,6 +2416,22 @@
         animation: menuSlideIn 0.3s cubic-bezier(0.16, 1, 0.3, 1) both;
       }
 
+      .nav-links.mobile-open .nav-apps-dropdown {
+        position: static;
+        transform: none;
+        opacity: 1;
+        pointer-events: auto;
+        background: rgba(255, 255, 255, 0.03);
+        border: 1px solid var(--border);
+        box-shadow: none;
+        min-width: 0;
+        width: 100%;
+      }
+
+      .nav-links.mobile-open .nav-apps-wrap.open .nav-apps-dropdown {
+        transform: none;
+      }
+
       @keyframes menuSlideIn {
         from { opacity: 0; transform: translateY(-8px); }
         to { opacity: 1; transform: translateY(0); }
@@ -2413,14 +2540,19 @@
         <li><a href="#products">Products</a></li>
         <li><a href="#philosophy">Philosophy</a></li>
         <li><a href="#privacy">Privacy</a></li>
-        <li><a href="fastrum/">fastrum</a></li>
-        <li><a href="somniq/">somniq</a></li>
-        <li><a href="stepiq/">stepiq</a></li>
-        <li><a href="matchup/">matchup</a></li>
-        <li><a href="beginr/">beginr</a></li>
-        <li><a href="fluxer/">fluxer</a></li>
-        <li><a href="unison/">unison</a></li>
-        <li><a href="roomraid/">roomraid</a></li>
+        <li class="nav-apps-wrap">
+          <button class="nav-apps-btn" aria-expanded="false" aria-haspopup="true">Apps <span class="chevron"></span></button>
+          <div class="nav-apps-dropdown" role="menu">
+            <a href="fastrum/" role="menuitem"><div class="nav-app-icon fastrum">F</div>fastrum</a>
+            <a href="somniq/" role="menuitem"><div class="nav-app-icon somniq">&#9790;</div>somniq</a>
+            <a href="stepiq/" role="menuitem"><div class="nav-app-icon stepiq">S</div>stepiq</a>
+            <a href="matchup/" role="menuitem"><div class="nav-app-icon matchup">M</div>matchup</a>
+            <a href="beginr/" role="menuitem"><div class="nav-app-icon beginr">&#9654;</div>beginr</a>
+            <a href="fluxer/" role="menuitem"><div class="nav-app-icon fluxer">F</div>Fluxer</a>
+            <a href="unison-meditation/" role="menuitem"><div class="nav-app-icon unison">U</div>Unison Meditation</a>
+            <a href="roomraid/" role="menuitem"><div class="nav-app-icon roomraid">R</div>RoomRaid</a>
+          </div>
+        </li>
       </ul>
     </div>
   </nav>
@@ -2686,7 +2818,7 @@
           </a>
 
           <!-- unison -->
-          <a href="unison/" class="product-card card-unison">
+          <a href="unison-meditation/" class="product-card card-unison">
             <div class="product-glow"></div>
             <div class="product-card-top">
               <div class="phone-mockup">
@@ -2702,7 +2834,7 @@
                 <div class="product-header">
                   <div class="product-icon">U</div>
                   <div class="product-name-group">
-                    <div class="product-name">Unison</div>
+                    <div class="product-name">Unison Meditation</div>
                     <div class="product-tagline">Meditate Together</div>
                   </div>
                 </div>
@@ -2737,7 +2869,7 @@
                 <div class="product-feature"><div class="feature-dot"></div>Works Offline</div>
               </div>
               <div class="product-card-footer">
-                <div class="product-cta">Explore Unison <span class="arrow">&rarr;</span></div>
+                <div class="product-cta">Explore Unison Meditation <span class="arrow">&rarr;</span></div>
                 <div class="product-price">Free &middot; Premium $2.99/mo</div>
               </div>
             </div>
@@ -3260,7 +3392,7 @@
         <li><a href="matchup/">matchup</a></li>
         <li><a href="beginr/">beginr</a></li>
         <li><a href="fluxer/">fluxer</a></li>
-        <li><a href="unison/">unison</a></li>
+        <li><a href="unison-meditation/">unison meditation</a></li>
         <li><a href="roomraid/">roomraid</a></li>
       </ul>
     </div>
@@ -3303,7 +3435,7 @@
           entry.target.classList.add('visible');
         }
       });
-    }, { threshold: 0.06, rootMargin: '0px 0px -50px 0px' });
+    }, { threshold: 0.05, rootMargin: '0px 0px -80px 0px' });
     reveals.forEach(function(el) { observer.observe(el); });
   })();
 
@@ -3401,6 +3533,24 @@
         toggle.classList.remove('open');
         navLinks.classList.remove('mobile-open');
       });
+    });
+  })();
+
+  // Apps Dropdown Toggle
+  (function() {
+    var wrap = document.querySelector('.nav-apps-wrap');
+    var btn = document.querySelector('.nav-apps-btn');
+    if (!wrap || !btn) return;
+    btn.addEventListener('click', function(e) {
+      e.stopPropagation();
+      wrap.classList.toggle('open');
+      btn.setAttribute('aria-expanded', wrap.classList.contains('open'));
+    });
+    document.addEventListener('click', function(e) {
+      if (!wrap.contains(e.target)) {
+        wrap.classList.remove('open');
+        btn.setAttribute('aria-expanded', 'false');
+      }
     });
   })();
 
