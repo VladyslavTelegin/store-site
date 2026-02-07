@@ -126,12 +126,8 @@
     }
     .nav-logo {
       width: 36px; height: 36px;
-      background: linear-gradient(135deg, var(--accent), var(--teal));
       border-radius: 10px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 18px;
+      object-fit: cover;
     }
     .nav-wordmark {
       font-size: 20px;
@@ -1199,7 +1195,7 @@
   <nav>
     <div class="container">
       <a href="#" class="nav-brand">
-        <div class="nav-logo">&#9790;</div>
+        <img class="nav-logo" src="../icons/somniq.png" alt="somniq">
         <span class="nav-wordmark">somniq</span>
       </a>
       <button class="mobile-toggle" onclick="document.querySelector('.nav-links').classList.toggle('open')" aria-label="Menu">
@@ -1570,7 +1566,7 @@
     <div class="container">
       <div class="footer-inner">
         <div class="footer-brand">
-          <div class="nav-logo" style="width:28px;height:28px;font-size:14px;border-radius:8px;">&#9790;</div>
+          <img class="nav-logo" src="../icons/somniq.png" alt="somniq" style="width:28px;height:28px;border-radius:8px;">
           <span class="footer-wordmark">somniq</span>
           <span class="footer-copy">&copy; 2026 iOS Craft Studio. All rights reserved.</span>
         </div>

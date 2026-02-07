@@ -69,12 +69,8 @@
     }
     .nav-logo {
       width: 36px; height: 36px;
-      background: linear-gradient(135deg, var(--accent), var(--teal));
       border-radius: 10px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 18px;
+      object-fit: cover;
     }
     .nav-wordmark {
       font-size: 20px;
@@ -303,7 +299,7 @@
   <nav>
     <div class="nav-inner">
       <a href="index.html" class="nav-brand">
-        <div class="nav-logo">&#9790;</div>
+        <img class="nav-logo" src="../icons/somniq.png" alt="somniq">
         <span class="nav-wordmark">somniq</span>
       </a>
       <a href="index.html" class="nav-back">&larr; Back to home</a>
