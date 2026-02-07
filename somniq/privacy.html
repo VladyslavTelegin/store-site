@@ -5,589 +5,121 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Privacy Policy — somniq</title>
   <meta name="description" content="somniq Privacy Policy. Your data stays on your device. No servers. No accounts. No tracking.">
-  <meta name="theme-color" content="#0D0D1A">
+  <meta name="theme-color" content="#0E0F11">
+  <meta name="i18n-base" content="..">
   <link rel="icon" type="image/svg+xml" href="../favicon.svg">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-  <style>
-    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
-
-    :root {
-      --bg-deep: #0D0D1A;
-      --bg-elevated: #151525;
-      --bg-card: #1E1E32;
-      --bg-interactive: #252540;
-      --text-primary: #FFFFFF;
-      --text-secondary: #A0A0B0;
-      --text-tertiary: #606070;
-      --accent: #8AC1FA;
-      --teal: #2DD4BF;
-      --radius-xl: 20px;
-    }
-
-    html { scroll-behavior: smooth; }
-
-    body {
-      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-      background: var(--bg-deep);
-      color: var(--text-primary);
-      -webkit-font-smoothing: antialiased;
-      -moz-osx-font-smoothing: grayscale;
-    }
-
-    .container {
-      max-width: 760px;
-      margin: 0 auto;
-      padding: 0 24px;
-    }
-
-    /* ── Navigation ── */
-    nav {
-      position: fixed;
-      top: 0; left: 0; right: 0;
-      z-index: 100;
-      padding: 16px 0;
-      background: rgba(13, 13, 26, 0.9);
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
-      border-bottom: 1px solid rgba(138, 193, 250, 0.08);
-    }
-    nav .nav-inner {
-      max-width: 760px;
-      margin: 0 auto;
-      padding: 0 24px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
-    .nav-brand {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      text-decoration: none;
-    }
-    .nav-logo {
-      width: 36px; height: 36px;
-      background: linear-gradient(135deg, var(--accent), var(--teal));
-      border-radius: 10px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 18px;
-    }
-    .nav-wordmark {
-      font-size: 20px;
-      font-weight: 700;
-      color: var(--text-primary);
-      letter-spacing: -0.5px;
-    }
-    .nav-back {
-      color: var(--accent);
-      text-decoration: none;
-      font-size: 14px;
-      font-weight: 500;
-      transition: opacity 0.2s;
-    }
-    .nav-back:hover { opacity: 0.7; }
-
-    /* ── Content ── */
-    .page-header {
-      padding-top: 120px;
-      padding-bottom: 48px;
-      border-bottom: 1px solid rgba(255,255,255,0.06);
-    }
-    .page-header h1 {
-      font-size: 40px;
-      font-weight: 800;
-      letter-spacing: -1.5px;
-      margin-bottom: 12px;
-    }
-    .page-header .subtitle {
-      font-size: 18px;
-      color: var(--text-secondary);
-      line-height: 1.6;
-    }
-    .page-header .effective {
-      margin-top: 16px;
-      font-size: 13px;
-      color: var(--text-tertiary);
-      font-weight: 500;
-    }
-
-    .privacy-content {
-      padding: 48px 0 100px;
-    }
-
-    .privacy-content h2 {
-      font-size: 24px;
-      font-weight: 700;
-      letter-spacing: -0.5px;
-      margin-top: 48px;
-      margin-bottom: 16px;
-      padding-top: 32px;
-      border-top: 1px solid rgba(255,255,255,0.04);
-    }
-    .privacy-content h2:first-child {
-      margin-top: 0;
-      padding-top: 0;
-      border-top: none;
-    }
-
-    .privacy-content h3 {
-      font-size: 17px;
-      font-weight: 600;
-      margin-top: 28px;
-      margin-bottom: 10px;
-      color: var(--accent);
-    }
-
-    .privacy-content p {
-      font-size: 15px;
-      color: var(--text-secondary);
-      line-height: 1.75;
-      margin-bottom: 16px;
-    }
-
-    .privacy-content ul {
-      list-style: none;
-      margin-bottom: 16px;
-      padding-left: 0;
-    }
-    .privacy-content ul li {
-      font-size: 15px;
-      color: var(--text-secondary);
-      line-height: 1.75;
-      padding-left: 20px;
-      position: relative;
-      margin-bottom: 4px;
-    }
-    .privacy-content ul li::before {
-      content: '';
-      width: 6px; height: 6px;
-      background: var(--accent);
-      border-radius: 50%;
-      position: absolute;
-      left: 0;
-      top: 10px;
-    }
-
-    .privacy-content strong {
-      color: var(--text-primary);
-      font-weight: 600;
-    }
-
-    .highlight-box {
-      background: var(--bg-card);
-      border: 1px solid rgba(138, 193, 250, 0.15);
-      border-radius: 16px;
-      padding: 24px 28px;
-      margin: 24px 0;
-    }
-    .highlight-box p {
-      margin-bottom: 0;
-      color: var(--text-primary);
-      font-weight: 500;
-    }
-
-    .data-table {
-      width: 100%;
-      border-collapse: collapse;
-      margin: 20px 0 24px;
-      border-radius: 12px;
-      overflow: hidden;
-    }
-    .data-table thead th {
-      background: var(--bg-card);
-      text-align: left;
-      padding: 12px 16px;
-      font-size: 13px;
-      font-weight: 600;
-      color: var(--text-primary);
-      border-bottom: 1px solid rgba(255,255,255,0.06);
-    }
-    .data-table tbody td {
-      padding: 12px 16px;
-      font-size: 14px;
-      color: var(--text-secondary);
-      border-bottom: 1px solid rgba(255,255,255,0.03);
-    }
-    .data-table tbody tr:last-child td { border-bottom: none; }
-    .data-table .badge-yes {
-      display: inline-block;
-      padding: 2px 10px;
-      background: rgba(45,212,191,0.12);
-      color: var(--teal);
-      border-radius: 100px;
-      font-size: 12px;
-      font-weight: 600;
-    }
-    .data-table .badge-no {
-      display: inline-block;
-      padding: 2px 10px;
-      background: rgba(251,113,133,0.12);
-      color: #FB7185;
-      border-radius: 100px;
-      font-size: 12px;
-      font-weight: 600;
-    }
-
-    /* ── TOC ── */
-    .toc {
-      background: var(--bg-card);
-      border-radius: 16px;
-      padding: 24px 28px;
-      margin-bottom: 32px;
-    }
-    .toc-title {
-      font-size: 14px;
-      font-weight: 600;
-      color: var(--text-primary);
-      margin-bottom: 12px;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-    }
-    .toc ol {
-      list-style: none;
-      counter-reset: toc;
-      padding: 0;
-    }
-    .toc ol li {
-      counter-increment: toc;
-      margin-bottom: 6px;
-    }
-    .toc ol li a {
-      font-size: 14px;
-      color: var(--text-secondary);
-      text-decoration: none;
-      transition: color 0.2s;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-    .toc ol li a::before {
-      content: counter(toc) ".";
-      color: var(--text-tertiary);
-      font-weight: 600;
-      font-size: 12px;
-      min-width: 20px;
-    }
-    .toc ol li a:hover { color: var(--accent); }
-
-    /* ── Footer ── */
-    footer {
-      padding: 32px 0;
-      border-top: 1px solid rgba(255,255,255,0.04);
-      text-align: center;
-    }
-    .footer-copy {
-      font-size: 13px;
-      color: var(--text-tertiary);
-    }
-    .footer-copy a {
-      color: var(--text-secondary);
-      text-decoration: none;
-    }
-
-    @media (max-width: 640px) {
-      .page-header h1 { font-size: 28px; }
-      .privacy-content h2 { font-size: 20px; }
-      .data-table { font-size: 13px; }
-      .data-table thead th, .data-table tbody td { padding: 10px 12px; }
-    }
-  </style>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../styles.css">
+  <style>:root { --accent: #6366F1; }</style>
 </head>
 <body>
 
-  <!-- Navigation -->
   <nav>
-    <div class="nav-inner">
+    <div class="container">
       <a href="index.html" class="nav-brand">
-        <div class="nav-logo">&#9790;</div>
+        <div class="nav-logo" style="background:#6366F1">S</div>
         <span class="nav-wordmark">somniq</span>
       </a>
-      <a href="index.html" class="nav-back">&larr; Back to home</a>
+      <a href="index.html" class="nav-back" data-i18n="nav.back">&larr; Back to home</a>
     </div>
   </nav>
 
-  <div class="container">
-
-    <!-- Header -->
-    <div class="page-header">
-      <h1>Privacy Policy</h1>
-      <p class="subtitle">
-        somniq was built with a zero-server architecture. Your sleep data never leaves your device. This policy explains exactly what we access, why, and what we don't do.
-      </p>
-      <p class="effective">Effective Date: January 1, 2026 &middot; Last Updated: January 1, 2026</p>
-    </div>
-
-    <!-- Content -->
-    <div class="privacy-content">
-
-      <div class="toc">
-        <div class="toc-title">Contents</div>
-        <ol>
-          <li><a href="#philosophy">Our Privacy Philosophy</a></li>
-          <li><a href="#data-collected">Data We Access</a></li>
-          <li><a href="#data-not-collected">Data We Do Not Collect</a></li>
-          <li><a href="#healthkit">Apple HealthKit</a></li>
-          <li><a href="#processing">How Data Is Processed</a></li>
-          <li><a href="#storage">Data Storage</a></li>
-          <li><a href="#third-parties">Third Parties</a></li>
-          <li><a href="#subscriptions">Subscriptions &amp; Payments</a></li>
-          <li><a href="#children">Children's Privacy</a></li>
-          <li><a href="#your-rights">Your Rights</a></li>
-          <li><a href="#changes">Changes to This Policy</a></li>
-          <li><a href="#contact">Contact</a></li>
-        </ol>
-      </div>
-
-      <!-- 1 -->
-      <h2 id="philosophy">1. Our Privacy Philosophy</h2>
-
-      <div class="highlight-box">
-        <p>somniq processes everything on your device. We operate zero servers. We have zero access to your data. Privacy is not a feature we added &mdash; it is the architecture we chose.</p>
-      </div>
-
-      <p>
-        We believe your sleep data is among the most intimate data about you. It reveals your health, your habits, and your daily rhythms. That is why we built somniq with a strict on-device-only architecture. There is no backend. There are no analytics endpoints. There is no way for us to see, access, or retrieve your data &mdash; because it simply never leaves your device.
-      </p>
-
-      <!-- 2 -->
-      <h2 id="data-collected">2. Data We Access</h2>
-
-      <p>somniq accesses the following data categories exclusively through Apple HealthKit, and only with your explicit permission:</p>
-
-      <table class="data-table">
-        <thead>
-          <tr>
-            <th>Data Type</th>
-            <th>Purpose</th>
-            <th>Leaves Device?</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>Sleep Analysis</td>
-            <td>Determine sleep stages, duration, efficiency</td>
-            <td><span class="badge-no">No</span></td>
-          </tr>
-          <tr>
-            <td>Heart Rate</td>
-            <td>Physiological recovery analysis during sleep</td>
-            <td><span class="badge-no">No</span></td>
-          </tr>
-          <tr>
-            <td>Resting Heart Rate</td>
-            <td>Baseline comparison and readiness scoring</td>
-            <td><span class="badge-no">No</span></td>
-          </tr>
-          <tr>
-            <td>Heart Rate Variability (HRV)</td>
-            <td>Autonomic nervous system and recovery assessment</td>
-            <td><span class="badge-no">No</span></td>
-          </tr>
-          <tr>
-            <td>Respiratory Rate</td>
-            <td>Sleep quality supplementary metric</td>
-            <td><span class="badge-no">No</span></td>
-          </tr>
-          <tr>
-            <td>Blood Oxygen Saturation</td>
-            <td>Sleep quality supplementary metric</td>
-            <td><span class="badge-no">No</span></td>
-          </tr>
-          <tr>
-            <td>Wrist Temperature</td>
-            <td>Circadian rhythm and recovery indicator</td>
-            <td><span class="badge-no">No</span></td>
-          </tr>
-          <tr>
-            <td>Workouts</td>
-            <td>Analyze exercise timing impact on sleep</td>
-            <td><span class="badge-no">No</span></td>
-          </tr>
-        </tbody>
-      </table>
-
-      <p>
-        Additionally, somniq stores data you voluntarily enter within the app:
-      </p>
-      <ul>
-        <li><strong>Daily check-ins</strong> &mdash; mood and energy ratings (1&ndash;5 scale), optional notes</li>
-        <li><strong>Behavior logs</strong> &mdash; caffeine, alcohol, exercise, screen time, and other habits you choose to track</li>
-        <li><strong>User preferences</strong> &mdash; notification settings, display preferences, sleep schedule goals</li>
-      </ul>
-      <p>All of this data is stored locally on your device using Apple's SwiftData framework. None of it is transmitted anywhere.</p>
-
-      <!-- 3 -->
-      <h2 id="data-not-collected">3. Data We Do Not Collect</h2>
-
-      <p>To be absolutely clear, somniq does <strong>not</strong> collect, transmit, or have access to:</p>
-
-      <ul>
-        <li>Your name, email address, or any personal identifiers</li>
-        <li>Device identifiers, advertising IDs, or fingerprints</li>
-        <li>Location data</li>
-        <li>Usage analytics or behavioral telemetry</li>
-        <li>Crash reports (we do not use any crash reporting SDK)</li>
-        <li>Any data from other apps on your device</li>
-        <li>Your HealthKit data (we access it locally but never transmit it)</li>
-      </ul>
-
-      <div class="highlight-box">
-        <p>We have no analytics SDK, no tracking pixels, no server logs, and no user database. We literally cannot identify you.</p>
-      </div>
-
-      <!-- 4 -->
-      <h2 id="healthkit">4. Apple HealthKit</h2>
-
-      <p>
-        somniq integrates with Apple HealthKit under Apple's strict HealthKit guidelines:
-      </p>
-
-      <ul>
-        <li><strong>Read-only access.</strong> somniq never writes data to HealthKit.</li>
-        <li><strong>Explicit permission.</strong> You grant or deny access to each data type individually through the standard iOS Health permissions dialog.</li>
-        <li><strong>Revocable at any time.</strong> You can revoke somniq's HealthKit access in Settings &gt; Health &gt; Data Access &amp; Devices &gt; somniq.</li>
-        <li><strong>Not shared.</strong> In compliance with Apple's HealthKit rules, HealthKit data is never shared with third parties, used for advertising, or sold.</li>
-        <li><strong>Not transferred.</strong> HealthKit data accessed by somniq is processed entirely on-device and is never transmitted over any network.</li>
-      </ul>
-
-      <!-- 5 -->
-      <h2 id="processing">5. How Data Is Processed</h2>
-
-      <p>
-        All data processing in somniq happens locally on your iPhone or Apple Watch. The processing includes:
-      </p>
-
-      <h3>Statistical Analysis</h3>
-      <p>
-        somniq calculates rolling baselines (14-day medians), performs outlier detection, and computes effect sizes (Cohen's d) to discover behavior-sleep correlations. These are standard statistical methods executed by your device's processor.
-      </p>
-
-      <h3>Readiness Scoring</h3>
-      <p>
-        A weighted algorithm combines sleep duration, efficiency, consistency, physiological metrics, and trends to produce a daily readiness score. The weights and calculations are fully deterministic and run on-device.
-      </p>
-
-      <h3>Recommendation Generation</h3>
-      <p>
-        somniq generates personalized action plans and recovery windows based on your baseline data and recent patterns. No external AI service or cloud model is used. All logic is embedded in the app binary.
-      </p>
-
-      <div class="highlight-box">
-        <p>There are no network calls for data processing. somniq works fully offline after installation.</p>
-      </div>
-
-      <!-- 6 -->
-      <h2 id="storage">6. Data Storage</h2>
-
-      <p>
-        All app data is stored using Apple's SwiftData framework in a local database on your device. This data is:
-      </p>
-
-      <ul>
-        <li><strong>Encrypted at rest</strong> by iOS Data Protection (tied to your device passcode)</li>
-        <li><strong>Sandboxed</strong> within the somniq app container &mdash; inaccessible to other apps</li>
-        <li><strong>Included in iCloud backups</strong> only if you have iCloud backup enabled on your device (this is managed by iOS, not by somniq)</li>
-        <li><strong>Deleted entirely</strong> when you uninstall somniq from your device</li>
-      </ul>
-
-      <p>We do not operate any servers, databases, or cloud storage. There is no "account" to delete because no account exists.</p>
-
-      <!-- 7 -->
-      <h2 id="third-parties">7. Third Parties</h2>
-
-      <p>somniq does not share data with any third parties. Specifically:</p>
-
-      <ul>
-        <li><strong>No analytics providers</strong> (no Google Analytics, Mixpanel, Amplitude, or similar)</li>
-        <li><strong>No advertising networks</strong> (no ads of any kind)</li>
-        <li><strong>No crash reporting services</strong> (no Firebase Crashlytics, Sentry, or similar)</li>
-        <li><strong>No social integrations</strong> (no Facebook SDK, no social login)</li>
-        <li><strong>No data brokers</strong></li>
-      </ul>
-
-      <p>The only external service somniq communicates with is the <strong>Apple App Store</strong> for subscription verification, which is handled entirely by Apple's StoreKit 2 framework and subject to <a href="https://www.apple.com/legal/privacy/" style="color:var(--accent)">Apple's Privacy Policy</a>.</p>
-
-      <!-- 8 -->
-      <h2 id="subscriptions">8. Subscriptions &amp; Payments</h2>
-
-      <p>
-        somniq offers optional Pro subscriptions through the Apple App Store. All payment processing is handled by Apple. We do not have access to your payment information, credit card number, or Apple ID.
-      </p>
-
-      <p>Subscription details:</p>
-      <ul>
-        <li>Payments are processed by Apple through your App Store account</li>
-        <li>Subscription status is verified on-device using Apple's StoreKit 2</li>
-        <li>No purchase data is transmitted to our servers (we have no servers)</li>
-        <li>Manage or cancel subscriptions through Settings &gt; Apple ID &gt; Subscriptions</li>
-      </ul>
-
-      <!-- 9 -->
-      <h2 id="children">9. Children's Privacy</h2>
-
-      <p>
-        somniq is not directed at children under 13 (or the applicable age in your jurisdiction). We do not knowingly collect personal information from children. Since somniq collects no personal information from any user, this concern is inherently mitigated by our architecture.
-      </p>
-
-      <!-- 10 -->
-      <h2 id="your-rights">10. Your Rights</h2>
-
-      <p>Because somniq operates with a zero-server, on-device-only architecture:</p>
-
-      <ul>
-        <li><strong>Access:</strong> All your data is on your device. You already have complete access.</li>
-        <li><strong>Deletion:</strong> Uninstall somniq to delete all app data. Alternatively, revoke HealthKit permissions to stop data access.</li>
-        <li><strong>Portability:</strong> Your health data remains in Apple Health and is portable through Apple's ecosystem.</li>
-        <li><strong>Restriction:</strong> You can restrict specific data types through Health &gt; Data Access.</li>
-        <li><strong>Objection:</strong> You can stop all processing by simply closing or uninstalling the app.</li>
-      </ul>
-
-      <p>
-        For users in the European Union, California, or other jurisdictions with specific privacy regulations (GDPR, CCPA, etc.): somniq's architecture means we are not a data controller or processor of your personal data in any networked sense. All data remains under your control on your device.
-      </p>
-
-      <!-- 11 -->
-      <h2 id="changes">11. Changes to This Policy</h2>
-
-      <p>
-        If we make material changes to this privacy policy, we will update this page and the "Last Updated" date above. Since somniq does not collect email addresses, we cannot notify you via email. We encourage you to review this policy periodically.
-      </p>
-
-      <p>
-        Our core commitment &mdash; that your data stays on your device and is never transmitted to us or any third party &mdash; will not change. If we ever change our architecture in a way that affects this commitment, we will require your explicit consent through an in-app prompt before any data leaves your device.
-      </p>
-
-      <!-- 12 -->
-      <h2 id="contact">12. Contact</h2>
-
-      <p>
-        If you have questions about this privacy policy or somniq's data practices, please reach out:
-      </p>
-
-      <ul>
-        <li><strong>Developer:</strong> vtsoft</li>
-        <li><strong>GitHub:</strong> github.com/VladyslavTelegin/somniq</li>
-      </ul>
-
-      <p style="margin-top:40px;font-size:13px;color:var(--text-tertiary)">
-        This privacy policy is effective as of January 1, 2026.
-      </p>
-
-    </div>
+  <div class="page-header">
+    <h1 data-i18n="somniq.privacy.title">Privacy Policy</h1>
+    <p class="subtitle" data-i18n="somniq.privacy.sub">somniq uses a zero-server architecture. Your sleep data never leaves your device. This policy explains exactly what we access and what we don't.</p>
+    <p class="effective">Effective: January 1, 2026</p>
   </div>
 
-  <!-- Footer -->
-  <footer>
+  <div class="privacy-content">
+
+    <div class="toc">
+      <div class="toc-title">Contents</div>
+      <ol>
+        <li><a href="#philosophy">Our Privacy Philosophy</a></li>
+        <li><a href="#data-accessed">Data We Access</a></li>
+        <li><a href="#data-not-collected">Data We Do Not Collect</a></li>
+        <li><a href="#processing">How Data Is Processed</a></li>
+        <li><a href="#storage">Data Storage</a></li>
+        <li><a href="#third-parties">Third Parties</a></li>
+        <li><a href="#subscriptions">Subscriptions &amp; Payments</a></li>
+        <li><a href="#children">Children's Privacy</a></li>
+        <li><a href="#your-rights">Your Rights</a></li>
+        <li><a href="#changes">Changes to This Policy</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ol>
+    </div>
+
+    <h2 id="philosophy">1. Our Privacy Philosophy</h2>
+    <div class="highlight-box"><p>somniq stores everything on your device. We operate zero servers. We have zero access to your data. Privacy is not a feature — it is the architecture.</p></div>
+    <p>Your sleep patterns are deeply personal. How you slept, what affected your rest, how you felt in the morning — that data belongs to you and only you.</p>
+
+    <h2 id="data-accessed">2. Data We Access</h2>
+    <p>somniq stores the following data locally on your device:</p>
+    <table class="data-table"><thead><tr><th>Data Type</th><th>Purpose</th><th>Leaves Device?</th></tr></thead><tbody>
+      <tr><td>Sleep Quality Ratings</td><td>Daily morning check-in scores</td><td><span class="badge-no">No</span></td></tr>
+      <tr><td>Sleep Duration</td><td>How long you slept</td><td><span class="badge-no">No</span></td></tr>
+      <tr><td>Factor Tags</td><td>What might have affected sleep</td><td><span class="badge-no">No</span></td></tr>
+      <tr><td>Trend Data</td><td>Pattern detection over time (Pro)</td><td><span class="badge-no">No</span></td></tr>
+      <tr><td>Theme Preference</td><td>UI customization</td><td><span class="badge-no">No</span></td></tr>
+    </tbody></table>
+    <p>All data is stored locally using Apple's SwiftData framework.</p>
+
+    <h2 id="data-not-collected">3. Data We Do Not Collect</h2>
+    <p>somniq does <strong>not</strong> collect, transmit, or have access to:</p>
+    <ul>
+      <li>Your name, email, or personal identifiers</li>
+      <li>Device identifiers or advertising IDs</li>
+      <li>Location data</li>
+      <li>Usage analytics or telemetry</li>
+      <li>Crash reports</li>
+      <li>HealthKit or health data of any kind</li>
+      <li>Any data from other apps</li>
+    </ul>
+    <div class="highlight-box"><p>We have no analytics SDK, no tracking pixels, no server logs, and no user database. We literally cannot identify you.</p></div>
+
+    <h2 id="processing">4. How Data Is Processed</h2>
+    <p>All processing happens locally on your device. Pattern detection and correlation analysis run entirely on-device. There are no network calls for data processing. somniq works fully offline after installation.</p>
+
+    <h2 id="storage">5. Data Storage</h2>
+    <ul>
+      <li><strong>Encrypted at rest</strong> by iOS Data Protection</li>
+      <li><strong>Sandboxed</strong> within the somniq app container</li>
+      <li><strong>Included in iCloud backups</strong> only if you have iCloud backup enabled</li>
+      <li><strong>Deleted entirely</strong> when you uninstall somniq</li>
+    </ul>
+
+    <h2 id="third-parties">6. Third Parties</h2>
+    <p>somniq does not share data with any third parties. No analytics, no ads, no crash reporting. The only external communication is Apple's StoreKit 2 for subscription verification.</p>
+
+    <h2 id="subscriptions">7. Subscriptions &amp; Payments</h2>
+    <p>Optional Pro subscriptions are handled entirely by Apple. We have no access to your payment information or Apple ID.</p>
+
+    <h2 id="children">8. Children's Privacy</h2>
+    <p>somniq is not directed at children under 13. Since we collect no personal information, this concern is inherently mitigated.</p>
+
+    <h2 id="your-rights">9. Your Rights</h2>
+    <ul>
+      <li><strong>Access:</strong> All data is on your device — you already have complete access.</li>
+      <li><strong>Deletion:</strong> Uninstall somniq to delete all app data.</li>
+      <li><strong>Restriction:</strong> Revoke notification permissions in Settings at any time.</li>
+    </ul>
+
+    <h2 id="changes">10. Changes to This Policy</h2>
+    <p>Our core commitment — your data stays on your device — will not change.</p>
+
+    <h2 id="contact">11. Contact</h2>
+    <ul><li><strong>Developer:</strong> vtsoft</li></ul>
+    <p style="margin-top:32px;font-size:13px;color:var(--text-tertiary)">This privacy policy is effective as of January 1, 2026.</p>
+  </div>
+
+  <footer class="privacy-footer">
     <div class="container">
-      <p class="footer-copy">
-        &copy; 2026 vtsoft. All rights reserved. &middot; <a href="index.html">somniq Home</a> &middot; <a href="../">vtsoft</a>
-      </p>
+      <p>&copy; 2026 vtsoft &middot; <a href="index.html">somniq</a> &middot; <a href="../">vtsoft</a></p>
     </div>
   </footer>
 
+  <script src="../i18n/i18n.js"></script>
 </body>
 </html>
