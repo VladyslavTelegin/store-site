@@ -426,7 +426,7 @@
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       background-clip: text;
-      animation: rotateWords 9s ease-in-out infinite;
+      animation: rotateWords 12s ease-in-out infinite;
       position: absolute;
       left: 0;
       top: 0;
@@ -435,9 +435,10 @@
       transform: translateY(30px);
     }
 
-    .hero-rotating-word:nth-child(1) { animation-delay: 0s; }
-    .hero-rotating-word:nth-child(2) { animation-delay: 3s; }
-    .hero-rotating-word:nth-child(3) { animation-delay: 6s; }
+    .hero-rotating-word:nth-child(2) { animation-delay: 0s; }
+    .hero-rotating-word:nth-child(3) { animation-delay: 3s; }
+    .hero-rotating-word:nth-child(4) { animation-delay: 6s; }
+    .hero-rotating-word:nth-child(5) { animation-delay: 9s; }
 
     /* The first word needs to be visible initially for layout sizing */
     .hero-rotating-sizer {
@@ -451,9 +452,9 @@
 
     @keyframes rotateWords {
       0% { opacity: 0; transform: translateY(30px); }
-      5% { opacity: 1; transform: translateY(0); }
-      28% { opacity: 1; transform: translateY(0); }
-      33% { opacity: 0; transform: translateY(-30px); }
+      4% { opacity: 1; transform: translateY(0); }
+      21% { opacity: 1; transform: translateY(0); }
+      25% { opacity: 0; transform: translateY(-30px); }
       100% { opacity: 0; transform: translateY(-30px); }
     }
 
@@ -3366,7 +3367,7 @@
           entry.target.classList.add('visible');
         }
       });
-    }, { threshold: 0.05, rootMargin: '0px 0px -80px 0px' });
+    }, { threshold: 0.02, rootMargin: '0px 0px -30px 0px' });
     reveals.forEach(function(el) { observer.observe(el); });
   })();
 
