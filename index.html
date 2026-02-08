@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>iOS Craft Studio — Premium iOS Apps</title>
-  <meta name="description" content="iOS Craft Studio crafts premium, privacy-first iOS apps across health intelligence, wellness, utilities, and entertainment. Explore fastrum, somniq, stepiq, matchup, beginr, fluxer, unison meditation, and roomraid.">
+  <meta name="description" content="iOS Craft Studio crafts premium, privacy-first iOS apps across health intelligence, wellness, creative tools, utilities, and entertainment. Explore fastrum, somniq, stepiq, matchup, beginr, fluxer, unison meditation, roomraid, and cluxter.">
   <meta name="theme-color" content="#08080C">
   <link rel="icon" type="image/svg+xml" href="favicon.svg">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -748,6 +748,9 @@
     .card-roomraid::before { background: linear-gradient(90deg, transparent, var(--red), transparent); }
     .card-roomraid .product-glow { background: radial-gradient(ellipse at top right, rgba(255, 59, 48, 0.06), transparent 60%); }
 
+    .card-cluxter::before { background: linear-gradient(90deg, transparent, var(--blue), transparent); }
+    .card-cluxter .product-glow { background: radial-gradient(ellipse at top right, rgba(0, 122, 255, 0.06), transparent 60%); }
+
     /* Card top area with phone mockup */
     .product-card-top {
       position: relative;
@@ -1115,6 +1118,56 @@
       50% { transform: scale(1.1); border-color: rgba(255, 59, 48, 0.8); }
     }
 
+    /* cluxter phone screen */
+    .screen-cluxter {
+      background: linear-gradient(180deg, #020a18, #000000);
+    }
+
+    .screen-cluxter .cluxter-nodes {
+      display: flex;
+      gap: 4px;
+      justify-content: center;
+      flex-wrap: wrap;
+      width: 60px;
+    }
+
+    .screen-cluxter .cluxter-node {
+      width: 14px;
+      height: 14px;
+      border-radius: 3px;
+      border: 1.5px solid rgba(0, 122, 255, 0.6);
+      background: rgba(0, 122, 255, 0.15);
+      animation: cluxterPulse 2s ease-in-out infinite;
+    }
+
+    .screen-cluxter .cluxter-node:nth-child(1) { animation-delay: 0s; }
+    .screen-cluxter .cluxter-node:nth-child(2) { animation-delay: 0.3s; }
+    .screen-cluxter .cluxter-node:nth-child(3) { animation-delay: 0.6s; }
+    .screen-cluxter .cluxter-node:nth-child(4) { animation-delay: 0.15s; background: rgba(0, 122, 255, 0.3); }
+    .screen-cluxter .cluxter-node:nth-child(5) { animation-delay: 0.45s; }
+    .screen-cluxter .cluxter-node:nth-child(6) { animation-delay: 0.75s; }
+    .screen-cluxter .cluxter-node:nth-child(7) { animation-delay: 0.2s; }
+
+    .screen-cluxter .cluxter-label {
+      font-size: 6px;
+      color: rgba(0, 122, 255, 0.6);
+      margin-top: 6px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .screen-cluxter .cluxter-status {
+      font-size: 8px;
+      font-weight: 700;
+      color: var(--blue);
+      margin-top: 2px;
+    }
+
+    @keyframes cluxterPulse {
+      0%, 100% { opacity: 0.5; transform: scale(1); }
+      50% { opacity: 1; transform: scale(1.1); border-color: rgba(0, 122, 255, 1); }
+    }
+
     /* Card info area */
     .product-card-info {
       flex: 1;
@@ -1150,6 +1203,7 @@
     .card-fluxer .product-icon { box-shadow: 0 4px 20px rgba(0, 122, 255, 0.2); }
     .card-unison .product-icon { box-shadow: 0 4px 20px rgba(212, 160, 86, 0.2); }
     .card-roomraid .product-icon { box-shadow: 0 4px 20px rgba(255, 59, 48, 0.2); }
+    .card-cluxter .product-icon { box-shadow: 0 4px 20px rgba(0, 122, 255, 0.25); }
 
     .product-name-group {
       display: flex;
@@ -1222,6 +1276,7 @@
     .card-fluxer .product-star { color: var(--blue); }
     .card-unison .product-star { color: var(--amber); }
     .card-roomraid .product-star { color: var(--red); }
+    .card-cluxter .product-star { color: var(--blue); }
 
     .product-rating-text {
       font-size: 12px;
@@ -1277,6 +1332,7 @@
     .card-fluxer .feature-dot { background: var(--blue); }
     .card-unison .feature-dot { background: var(--amber); }
     .card-roomraid .feature-dot { background: var(--red); }
+    .card-cluxter .feature-dot { background: var(--blue); }
 
     /* Key differentiator */
     .product-key-diff {
@@ -1338,6 +1394,12 @@
       color: var(--red);
     }
 
+    .card-cluxter .product-key-diff {
+      background: rgba(0, 122, 255, 0.06);
+      border: 1px solid rgba(0, 122, 255, 0.1);
+      color: var(--blue);
+    }
+
     .key-diff-icon {
       font-size: 16px;
       flex-shrink: 0;
@@ -1373,6 +1435,7 @@
     .card-fluxer .product-cta { color: var(--blue); }
     .card-unison .product-cta { color: var(--amber); }
     .card-roomraid .product-cta { color: var(--red); }
+    .card-cluxter .product-cta { color: var(--blue); }
 
     .product-cta .arrow {
       font-size: 18px;
@@ -2201,6 +2264,7 @@
     .card-stepiq::after { background: radial-gradient(circle at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(125, 166, 125, 0.08), transparent 50%); }
     .card-matchup::after { background: radial-gradient(circle at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(79, 70, 229, 0.08), transparent 50%); }
     .card-beginr::after { background: radial-gradient(circle at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(52, 199, 89, 0.08), transparent 50%); }
+    .card-cluxter::after { background: radial-gradient(circle at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(0, 122, 255, 0.08), transparent 50%); }
 
     .product-card:hover::after {
       opacity: 1;
@@ -2939,6 +3003,83 @@
               <div class="product-card-footer">
                 <div class="product-cta">Explore Fluxer <span class="arrow">&rarr;</span></div>
                 <div class="product-price">3-day trial &middot; $5.99 one-time</div>
+              </div>
+            </div>
+          </a>
+
+        </div>
+      </div>
+
+      <!-- Category: Creative -->
+      <div class="cat-section reveal">
+        <div class="cat-header">
+          <div class="cat-icon creative" style="background:rgba(0,122,255,0.1);color:var(--blue);">&#128161;</div>
+          <div class="cat-name">Creative</div>
+          <div class="cat-desc">Tools for light, space, and performance</div>
+        </div>
+        <div class="products-grid stagger-reveal">
+
+          <!-- cluxter -->
+          <a href="cluxter/" class="product-card card-cluxter">
+            <div class="product-glow"></div>
+            <div class="product-card-top">
+              <div class="phone-mockup">
+                <div class="phone-notch"></div>
+                <div class="phone-screen screen-cluxter">
+                  <div class="cluxter-nodes">
+                    <div class="cluxter-node"></div>
+                    <div class="cluxter-node"></div>
+                    <div class="cluxter-node"></div>
+                    <div class="cluxter-node"></div>
+                    <div class="cluxter-node"></div>
+                    <div class="cluxter-node"></div>
+                    <div class="cluxter-node"></div>
+                  </div>
+                  <div class="cluxter-label">cluster</div>
+                  <div class="cluxter-status">7 nodes synced</div>
+                </div>
+              </div>
+              <div class="product-card-info">
+                <div class="product-header">
+                  <img class="product-icon" src="icons/cluxter.png" alt="CLUXTER">
+                  <div class="product-name-group">
+                    <div class="product-name">CLUXTER</div>
+                    <div class="product-tagline">Distributed Light Cluster</div>
+                  </div>
+                </div>
+                <div class="product-rating">
+                  <div class="product-stars">
+                    <span class="product-star">&#9733;</span>
+                    <span class="product-star">&#9733;</span>
+                    <span class="product-star">&#9733;</span>
+                    <span class="product-star">&#9733;</span>
+                    <span class="product-star">&#9733;</span>
+                  </div>
+                  <span class="product-rating-text">Light Orchestration</span>
+                </div>
+                <p class="product-desc">Turn multiple iPhones and iPads into a synchronized light cluster. Peer-to-peer, offline, no server. Professional scene builder with timeline studio.</p>
+              </div>
+            </div>
+            <div class="product-card-bottom">
+              <div class="product-key-diff">
+                <span class="key-diff-icon">&#128308;</span>
+                Distributed light orchestration &mdash; multiple devices, one synchronized system
+              </div>
+              <div class="product-features">
+                <div class="product-feature"><div class="feature-dot"></div>P2P Cluster Sync</div>
+                <div class="product-feature"><div class="feature-dot"></div>Scene Builder</div>
+                <div class="product-feature"><div class="feature-dot"></div>Timeline Studio</div>
+                <div class="product-feature"><div class="feature-dot"></div>Role-Based Nodes</div>
+                <div class="product-feature"><div class="feature-dot"></div>Rehearsal Mode</div>
+                <div class="product-feature"><div class="feature-dot"></div>Safety System</div>
+                <div class="product-feature"><div class="feature-dot"></div>100% Offline</div>
+                <div class="product-feature"><div class="feature-dot"></div>12 Languages</div>
+                <div class="product-feature"><div class="feature-dot"></div>iPad Optimized</div>
+                <div class="product-feature"><div class="feature-dot"></div>Up to 12 Devices</div>
+              </div>
+              <div class="product-card-footer">
+                <div class="product-cta">Explore CLUXTER <span class="arrow">&rarr;</span></div>
+                <div class="product-price">7-day trial &middot; Standard $6.99 &middot; Pro $12.99</div>
               </div>
             </div>
           </a>

@@ -1,0 +1,2599 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CLUXTER — Distributed Light Orchestration for iOS | Turn Devices into a Light Cluster</title>
+  <meta name="description" content="CLUXTER transforms multiple iPhones and iPads into a synchronized light cluster. Distributed orchestration, role-based nodes, scene builder, and zero-UI performance mode. 100% offline.">
+  <meta name="keywords" content="light show, iPhone, iPad, synchronized lights, distributed system, light orchestration, cluster, torch, flashlight, scene builder, iOS app, performance art, light art">
+  <meta name="theme-color" content="#000000">
+  <meta property="og:title" content="CLUXTER — Distributed Light Orchestration for iOS">
+  <meta property="og:description" content="Turn multiple iPhones and iPads into a synchronized light cluster. Role-based nodes, scene builder, real-time sync. 100% offline.">
+  <meta property="og:type" content="website">
+  <meta property="og:image" content="og-image.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="CLUXTER — Distributed Light Orchestration">
+  <meta name="twitter:description" content="Turn multiple Apple devices into a synchronized light cluster.">
+  <link rel="icon" type="image/svg+xml" href="../favicon.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet">
+  <style>
+    /* ============================================
+       CLUXTER MARKETING PAGE — SUPER DESIGN
+       ============================================ */
+
+    *, *::before, *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --blue: #007AFF;
+      --blue-dim: #007AFF20;
+      --indigo: #5E5CE6;
+      --indigo-dim: #5E5CE620;
+      --orange: #FF9500;
+      --cyan: #64D2FF;
+      --yellow: #FFD60A;
+      --purple: #BF5AF2;
+      --pink: #FF375F;
+      --red: #FF3B30;
+      --green: #30D158;
+      --bg: #000000;
+      --bg-secondary: #0A0A0A;
+      --bg-card: #111113;
+      --bg-card-hover: #1A1A1E;
+      --text: #FFFFFF;
+      --text-secondary: #8E8E93;
+      --text-tertiary: #636366;
+      --border: #2C2C2E;
+      --radius-sm: 12px;
+      --radius-md: 20px;
+      --radius-lg: 28px;
+      --radius-xl: 40px;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      overflow-x: hidden;
+      line-height: 1.6;
+    }
+
+    /* ---- UTILITY ---- */
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    .section-label {
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--blue);
+      margin-bottom: 16px;
+      display: inline-block;
+    }
+
+    .section-title {
+      font-size: clamp(32px, 5vw, 56px);
+      font-weight: 800;
+      line-height: 1.1;
+      letter-spacing: -0.03em;
+      margin-bottom: 20px;
+    }
+
+    .section-subtitle {
+      font-size: clamp(16px, 2vw, 20px);
+      color: var(--text-secondary);
+      max-width: 600px;
+      line-height: 1.6;
+    }
+
+    /* ---- ANIMATED BACKGROUND ---- */
+    .bg-glow {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      pointer-events: none;
+      z-index: 0;
+      overflow: hidden;
+    }
+
+    .bg-glow .orb {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(120px);
+      opacity: 0.15;
+      animation: orbFloat 20s ease-in-out infinite;
+    }
+
+    .bg-glow .orb-1 {
+      width: 600px;
+      height: 600px;
+      background: var(--blue);
+      top: -200px;
+      right: -100px;
+      animation-delay: 0s;
+    }
+
+    .bg-glow .orb-2 {
+      width: 500px;
+      height: 500px;
+      background: var(--indigo);
+      bottom: -200px;
+      left: -100px;
+      animation-delay: -7s;
+    }
+
+    .bg-glow .orb-3 {
+      width: 400px;
+      height: 400px;
+      background: var(--cyan);
+      top: 50%;
+      left: 50%;
+      animation-delay: -14s;
+    }
+
+    @keyframes orbFloat {
+      0%, 100% { transform: translate(0, 0) scale(1); }
+      25% { transform: translate(50px, -30px) scale(1.1); }
+      50% { transform: translate(-30px, 50px) scale(0.9); }
+      75% { transform: translate(20px, 20px) scale(1.05); }
+    }
+
+    /* ---- NAVIGATION ---- */
+    nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 1000;
+      backdrop-filter: blur(24px) saturate(180%);
+      -webkit-backdrop-filter: blur(24px) saturate(180%);
+      background: rgba(0, 0, 0, 0.72);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+      transition: all 0.3s ease;
+    }
+
+    nav .container {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 64px;
+    }
+
+    .nav-logo {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+      color: var(--text);
+    }
+
+    .nav-logo-icon {
+      width: 36px;
+      height: 36px;
+      border-radius: 10px;
+      object-fit: cover;
+      box-shadow: 0 4px 16px rgba(0, 122, 255, 0.3);
+    }
+
+    .nav-logo-text {
+      font-size: 20px;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 32px;
+      list-style: none;
+    }
+
+    .nav-links a {
+      color: var(--text-secondary);
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 500;
+      transition: color 0.2s;
+    }
+
+    .nav-links a:hover {
+      color: var(--text);
+    }
+
+    .nav-cta {
+      background: var(--text);
+      color: var(--bg) !important;
+      padding: 8px 20px;
+      border-radius: 100px;
+      font-weight: 600 !important;
+      transition: transform 0.2s, box-shadow 0.2s !important;
+    }
+
+    .nav-cta:hover {
+      transform: scale(1.05);
+      box-shadow: 0 4px 20px rgba(255, 255, 255, 0.2);
+    }
+
+    .nav-mobile-toggle {
+      display: none;
+      background: none;
+      border: none;
+      color: var(--text);
+      font-size: 24px;
+      cursor: pointer;
+      padding: 8px;
+    }
+
+    /* ---- HERO ---- */
+    .hero {
+      position: relative;
+      z-index: 1;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      padding-top: 100px;
+      padding-bottom: 60px;
+      overflow: hidden;
+    }
+
+    .hero .container {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 60px;
+      align-items: center;
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 2;
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--blue-dim);
+      border: 1px solid rgba(0, 122, 255, 0.2);
+      border-radius: 100px;
+      padding: 6px 16px 6px 8px;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--blue);
+      margin-bottom: 32px;
+      animation: fadeInUp 0.8s ease-out;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-badge::before {
+      content: '';
+      position: absolute;
+      inset: -1px;
+      background: conic-gradient(from 0deg, transparent, rgba(0, 122, 255, 0.4), transparent, transparent);
+      border-radius: 100px;
+      animation: badgeRotate 4s linear infinite;
+      z-index: -1;
+    }
+
+    @keyframes badgeRotate {
+      to { transform: rotate(360deg); }
+    }
+
+    .hero-badge .dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--blue);
+      animation: pulse 2s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.5; transform: scale(0.8); }
+    }
+
+    .hero h1 {
+      font-size: clamp(40px, 6vw, 72px);
+      font-weight: 900;
+      line-height: 1.05;
+      letter-spacing: -0.04em;
+      margin-bottom: 24px;
+      animation: fadeInUp 0.8s ease-out 0.1s both;
+    }
+
+    .hero h1 .gradient-text {
+      background: linear-gradient(135deg, var(--blue), var(--cyan));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      background-size: 200% auto;
+      animation: shimmerGradient 4s linear infinite;
+    }
+
+    @keyframes shimmerGradient {
+      0% { background-position: 0% center; }
+      100% { background-position: 200% center; }
+    }
+
+    .hero-description {
+      font-size: clamp(16px, 2vw, 20px);
+      color: var(--text-secondary);
+      line-height: 1.7;
+      margin-bottom: 40px;
+      max-width: 520px;
+      animation: fadeInUp 0.8s ease-out 0.2s both;
+    }
+
+    .hero-actions {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      flex-wrap: wrap;
+      animation: fadeInUp 0.8s ease-out 0.3s both;
+    }
+
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background: var(--blue);
+      color: #fff;
+      padding: 16px 32px;
+      border-radius: 100px;
+      font-size: 16px;
+      font-weight: 700;
+      text-decoration: none;
+      border: none;
+      cursor: pointer;
+      transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) !important;
+      box-shadow: 0 8px 32px rgba(0, 122, 255, 0.3);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 12px 40px rgba(0, 122, 255, 0.45);
+    }
+
+    .btn-primary:active {
+      transform: scale(0.96) !important;
+    }
+
+    .btn-primary svg {
+      width: 20px;
+      height: 20px;
+    }
+
+    .btn-secondary {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: transparent;
+      color: var(--text);
+      padding: 16px 28px;
+      border-radius: 100px;
+      font-size: 16px;
+      font-weight: 600;
+      text-decoration: none;
+      border: 1px solid var(--border);
+      transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) !important;
+    }
+
+    .btn-secondary:hover {
+      border-color: var(--text-secondary);
+      background: rgba(255, 255, 255, 0.04);
+    }
+
+    .btn-secondary:active {
+      transform: scale(0.96) !important;
+    }
+
+    .hero-stats {
+      display: flex;
+      gap: 40px;
+      margin-top: 48px;
+      animation: fadeInUp 0.8s ease-out 0.4s both;
+    }
+
+    .hero-stat {
+      text-align: left;
+    }
+
+    .hero-stat-value {
+      font-size: 28px;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+    }
+
+    .hero-stat-label {
+      font-size: 13px;
+      color: var(--text-tertiary);
+      margin-top: 2px;
+    }
+
+    /* Hero Phone Mockup */
+    .hero-visual {
+      position: relative;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      animation: fadeInUp 1s ease-out 0.3s both;
+    }
+
+    .phone-frame {
+      position: relative;
+      width: 280px;
+      height: 580px;
+      background: #1C1C1E;
+      border-radius: 44px;
+      padding: 12px;
+      box-shadow:
+        0 0 0 1px rgba(255, 255, 255, 0.1),
+        0 40px 80px rgba(0, 0, 0, 0.5),
+        0 0 120px rgba(0, 122, 255, 0.1);
+    }
+
+    .phone-screen {
+      width: 100%;
+      height: 100%;
+      background: #000;
+      border-radius: 34px;
+      overflow: hidden;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .phone-notch {
+      width: 120px;
+      height: 28px;
+      background: #000;
+      border-radius: 0 0 20px 20px;
+      margin: 0 auto;
+      position: relative;
+      z-index: 10;
+    }
+
+    .phone-app {
+      flex: 1;
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .phone-cluster-title {
+      font-size: 11px;
+      color: var(--text-secondary);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      align-self: flex-start;
+    }
+
+    .phone-cluster-vis {
+      position: relative;
+      width: 180px;
+      height: 180px;
+      margin: 8px 0;
+    }
+
+    .phone-node {
+      position: absolute;
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 10px;
+      font-weight: 700;
+      color: #000;
+      animation: nodeGlow 3s ease-in-out infinite;
+    }
+
+    .phone-node.beacon { background: var(--blue); top: 0; left: 50%; transform: translateX(-50%); animation-delay: 0s; }
+    .phone-node.pulse-node { background: var(--cyan); top: 30%; right: 0; animation-delay: -0.5s; }
+    .phone-node.echo { background: var(--purple); bottom: 15%; right: 10%; animation-delay: -1s; }
+    .phone-node.accent-node { background: var(--orange); bottom: 15%; left: 10%; animation-delay: -1.5s; }
+    .phone-node.shadow { background: var(--text-tertiary); top: 30%; left: 0; animation-delay: -2s; }
+
+    .phone-node-line {
+      position: absolute;
+      background: rgba(0, 122, 255, 0.2);
+      height: 1px;
+      transform-origin: left center;
+    }
+
+    @keyframes nodeGlow {
+      0%, 100% { box-shadow: 0 0 8px rgba(0, 122, 255, 0.3); }
+      50% { box-shadow: 0 0 20px rgba(0, 122, 255, 0.6); }
+    }
+
+    .phone-sync-bar {
+      width: 100%;
+      background: var(--bg-card);
+      border-radius: 10px;
+      padding: 10px 12px;
+    }
+
+    .phone-sync-label {
+      font-size: 9px;
+      color: var(--text-tertiary);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 4px;
+    }
+
+    .phone-sync-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .phone-sync-score {
+      font-size: 24px;
+      font-weight: 800;
+      font-family: 'JetBrains Mono', monospace;
+      color: var(--blue);
+      line-height: 1;
+    }
+
+    .phone-sync-status {
+      font-size: 10px;
+      color: var(--green);
+      font-weight: 600;
+    }
+
+    .phone-play-btn {
+      width: 100%;
+      padding: 12px;
+      background: var(--blue);
+      border-radius: 100px;
+      text-align: center;
+      font-weight: 700;
+      font-size: 13px;
+      color: #fff;
+      margin-top: auto;
+    }
+
+    /* Floating cards around the phone */
+    .floating-card {
+      position: absolute;
+      background: rgba(17, 17, 19, 0.9);
+      backdrop-filter: blur(24px);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 16px;
+      padding: 14px 18px;
+      animation: float 6s ease-in-out infinite;
+      z-index: 5;
+      transition: all 0.3s ease;
+    }
+
+    .floating-card:hover {
+      transform: translateY(-4px) scale(1.05);
+    }
+
+    .floating-card-1 { top: 60px; right: -40px; animation-delay: 0s; }
+    .floating-card-2 { bottom: 120px; left: -50px; animation-delay: -2s; }
+    .floating-card-3 { bottom: 40px; right: -30px; animation-delay: -4s; }
+
+    .floating-card .fc-icon { font-size: 20px; margin-bottom: 6px; }
+    .floating-card .fc-title { font-size: 12px; font-weight: 600; margin-bottom: 2px; }
+    .floating-card .fc-value { font-size: 11px; color: var(--text-secondary); }
+    .floating-card .fc-value.blue { color: var(--blue); }
+    .floating-card .fc-value.purple { color: var(--purple); }
+    .floating-card .fc-value.cyan { color: var(--cyan); }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-12px); }
+    }
+
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ---- WHAT IS SECTION ---- */
+    .what-is {
+      position: relative;
+      z-index: 1;
+      padding: 120px 0;
+    }
+
+    .what-is .container {
+      text-align: center;
+    }
+
+    .what-is-quote {
+      font-size: clamp(24px, 4vw, 44px);
+      font-weight: 700;
+      line-height: 1.3;
+      letter-spacing: -0.02em;
+      max-width: 900px;
+      margin: 0 auto 24px;
+    }
+
+    .what-is-quote .highlight {
+      background: linear-gradient(135deg, var(--blue), var(--cyan));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      background-size: 200% auto;
+      animation: shimmerGradient 4s linear infinite;
+    }
+
+    .what-is-sub {
+      font-size: 18px;
+      color: var(--text-secondary);
+      max-width: 700px;
+      margin: 0 auto;
+      line-height: 1.7;
+    }
+
+    /* ---- HOW IT WORKS ---- */
+    .how-it-works {
+      position: relative;
+      z-index: 1;
+      padding: 120px 0;
+    }
+
+    .how-header {
+      text-align: center;
+      margin-bottom: 80px;
+    }
+
+    .how-header .section-subtitle { margin: 0 auto; }
+
+    .how-steps {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 24px;
+    }
+
+    .how-step {
+      text-align: center;
+      position: relative;
+      transition: all 0.3s ease;
+    }
+
+    .how-step:hover { transform: translateY(-4px); }
+
+    .how-step-number {
+      width: 56px;
+      height: 56px;
+      border-radius: 50%;
+      background: var(--bg-card);
+      border: 2px solid var(--blue);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 22px;
+      font-weight: 800;
+      font-family: 'JetBrains Mono', monospace;
+      color: var(--blue);
+      margin: 0 auto 20px;
+      transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    .how-step:hover .how-step-number {
+      transform: scale(1.1);
+      box-shadow: 0 0 24px rgba(0, 122, 255, 0.15);
+    }
+
+    .how-step h3 { font-size: 17px; font-weight: 700; margin-bottom: 8px; }
+    .how-step p { font-size: 14px; color: var(--text-secondary); line-height: 1.6; }
+
+    /* ---- STUDIO SECTION ---- */
+    .studio {
+      position: relative;
+      z-index: 1;
+      padding: 120px 0;
+    }
+
+    .studio-header {
+      text-align: center;
+      margin-bottom: 80px;
+    }
+
+    .studio-header .section-subtitle { margin: 0 auto; }
+
+    .studio-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 20px;
+    }
+
+    .studio-card {
+      background: var(--bg-card);
+      border: 1px solid rgba(255, 255, 255, 0.04);
+      border-radius: var(--radius-md);
+      padding: 40px 32px;
+      transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+      position: relative;
+      overflow: hidden;
+      transform-style: preserve-3d;
+    }
+
+    .studio-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--blue), transparent);
+      opacity: 0;
+      transition: opacity 0.4s;
+    }
+
+    .studio-card:hover {
+      background: var(--bg-card-hover);
+      border-color: rgba(255, 255, 255, 0.08);
+      transform: translateY(-4px);
+      box-shadow: 0 24px 64px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(0, 122, 255, 0.08);
+    }
+
+    .studio-card:hover::before { opacity: 1; }
+
+    .studio-icon {
+      width: 56px;
+      height: 56px;
+      border-radius: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 28px;
+      margin-bottom: 24px;
+    }
+
+    .studio-card h3 {
+      font-size: 22px;
+      font-weight: 700;
+      margin-bottom: 12px;
+      letter-spacing: -0.01em;
+    }
+
+    .studio-card p {
+      font-size: 15px;
+      color: var(--text-secondary);
+      line-height: 1.7;
+    }
+
+    .studio-card .studio-tag {
+      display: inline-block;
+      margin-top: 16px;
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      padding: 4px 12px;
+      border-radius: 100px;
+      background: var(--blue-dim);
+      color: var(--blue);
+    }
+
+    /* ---- FEATURES SECTION ---- */
+    .features {
+      position: relative;
+      z-index: 1;
+      padding: 120px 0;
+    }
+
+    .features-header {
+      text-align: center;
+      margin-bottom: 80px;
+    }
+
+    .features-header .section-subtitle { margin: 0 auto; }
+
+    /* Feature category header */
+    .feature-category {
+      margin-bottom: 48px;
+    }
+
+    .feature-category-title {
+      font-size: 24px;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .feature-category-title .cat-icon {
+      font-size: 28px;
+    }
+
+    .feature-category-subtitle {
+      font-size: 15px;
+      color: var(--text-secondary);
+      margin-bottom: 24px;
+    }
+
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+      margin-bottom: 80px;
+    }
+
+    .feature-card {
+      background: var(--bg-card);
+      border: 1px solid rgba(255, 255, 255, 0.04);
+      border-radius: var(--radius-md);
+      padding: 28px 24px;
+      transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+      position: relative;
+      overflow: hidden;
+      transform-style: preserve-3d;
+      will-change: transform;
+    }
+
+    .feature-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--blue), transparent);
+      opacity: 0;
+      transition: opacity 0.4s;
+    }
+
+    .feature-card:hover {
+      background: var(--bg-card-hover);
+      border-color: rgba(255, 255, 255, 0.08);
+      transform: translateY(-4px);
+      box-shadow: 0 24px 64px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(0, 122, 255, 0.08);
+    }
+
+    .feature-card:hover::before { opacity: 1; }
+
+    .feature-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 22px;
+      margin-bottom: 16px;
+    }
+
+    .feature-icon.blue { background: var(--blue-dim); }
+    .feature-icon.indigo { background: var(--indigo-dim); }
+    .feature-icon.orange { background: rgba(255, 149, 0, 0.12); }
+    .feature-icon.purple { background: rgba(191, 90, 242, 0.12); }
+    .feature-icon.cyan { background: rgba(100, 210, 255, 0.12); }
+    .feature-icon.pink { background: rgba(255, 55, 95, 0.12); }
+    .feature-icon.green { background: rgba(48, 209, 88, 0.12); }
+    .feature-icon.yellow { background: rgba(255, 214, 10, 0.12); }
+    .feature-icon.red { background: rgba(255, 59, 48, 0.12); }
+
+    .feature-card h3 {
+      font-size: 16px;
+      font-weight: 700;
+      margin-bottom: 8px;
+      letter-spacing: -0.01em;
+    }
+
+    .feature-card p {
+      font-size: 13px;
+      color: var(--text-secondary);
+      line-height: 1.6;
+    }
+
+    .feature-card .pro-badge {
+      display: inline-block;
+      font-size: 9px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      background: linear-gradient(135deg, var(--indigo), var(--purple));
+      color: #fff;
+      padding: 2px 7px;
+      border-radius: 6px;
+      margin-left: 6px;
+      vertical-align: middle;
+    }
+
+    /* ---- USE CASES ---- */
+    .use-cases {
+      position: relative;
+      z-index: 1;
+      padding: 120px 0;
+    }
+
+    .use-cases-header {
+      text-align: center;
+      margin-bottom: 80px;
+    }
+
+    .use-cases-header .section-subtitle { margin: 0 auto; }
+
+    .use-cases-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+    }
+
+    .use-case-card {
+      background: var(--bg-card);
+      border: 1px solid rgba(255, 255, 255, 0.04);
+      border-radius: var(--radius-md);
+      padding: 32px 24px;
+      text-align: center;
+      transition: all 0.4s ease;
+    }
+
+    .use-case-card:hover {
+      border-color: rgba(255, 255, 255, 0.08);
+      transform: translateY(-4px);
+      box-shadow: 0 16px 48px rgba(0, 0, 0, 0.3);
+    }
+
+    .use-case-icon {
+      font-size: 40px;
+      margin-bottom: 16px;
+    }
+
+    .use-case-card h3 {
+      font-size: 17px;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+
+    .use-case-card p {
+      font-size: 13px;
+      color: var(--text-secondary);
+      line-height: 1.6;
+    }
+
+    /* ---- SAFETY SECTION ---- */
+    .safety-section {
+      position: relative;
+      z-index: 1;
+      padding: 120px 0;
+    }
+
+    .safety-card {
+      background: linear-gradient(135deg, rgba(0, 122, 255, 0.06), rgba(100, 210, 255, 0.04));
+      border: 1px solid rgba(0, 122, 255, 0.12);
+      border-radius: var(--radius-lg);
+      padding: 80px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+      transition: all 0.5s ease;
+    }
+
+    .safety-card:hover {
+      border-color: rgba(0, 122, 255, 0.25);
+      box-shadow: 0 0 60px rgba(0, 122, 255, 0.05);
+    }
+
+    .safety-card::before {
+      content: '';
+      position: absolute;
+      top: -100px;
+      right: -100px;
+      width: 300px;
+      height: 300px;
+      background: radial-gradient(circle, rgba(0, 122, 255, 0.08), transparent);
+      border-radius: 50%;
+    }
+
+    .safety-icon { font-size: 56px; margin-bottom: 24px; }
+
+    .safety-card .section-title { margin-bottom: 16px; }
+    .safety-card .section-subtitle { margin: 0 auto 40px; }
+
+    .safety-features {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+      text-align: left;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    .safety-feat {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      font-size: 14px;
+      font-weight: 500;
+    }
+
+    .safety-feat .check {
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      background: rgba(0, 122, 255, 0.15);
+      color: var(--blue);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      font-weight: 700;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+
+    /* ---- PRICING ---- */
+    .pricing {
+      position: relative;
+      z-index: 1;
+      padding: 120px 0;
+    }
+
+    .pricing-header {
+      text-align: center;
+      margin-bottom: 64px;
+    }
+
+    .pricing-header .section-subtitle { margin: 0 auto; }
+
+    .pricing-cards {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+      max-width: 960px;
+      margin: 0 auto;
+    }
+
+    .pricing-card {
+      background: var(--bg-card);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      border-radius: var(--radius-md);
+      padding: 36px 28px;
+      position: relative;
+      transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+      transform-style: preserve-3d;
+      will-change: transform;
+    }
+
+    .pricing-card.featured {
+      background: linear-gradient(180deg, rgba(0, 122, 255, 0.08), var(--bg-card));
+      border-color: rgba(0, 122, 255, 0.25);
+      transform: scale(1.05);
+    }
+
+    .pricing-card.featured::before {
+      content: 'Best Value';
+      position: absolute;
+      top: -12px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--blue);
+      color: #fff;
+      font-size: 11px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      padding: 4px 16px;
+      border-radius: 100px;
+    }
+
+    .pricing-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 24px 64px rgba(0, 0, 0, 0.4);
+    }
+
+    .pricing-card.featured:hover {
+      transform: scale(1.05) translateY(-4px);
+    }
+
+    .pricing-plan-name {
+      font-size: 16px;
+      font-weight: 600;
+      color: var(--text-secondary);
+      margin-bottom: 12px;
+    }
+
+    .pricing-price {
+      font-size: 40px;
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      margin-bottom: 4px;
+    }
+
+    .pricing-price span {
+      font-size: 16px;
+      font-weight: 500;
+      color: var(--text-secondary);
+    }
+
+    .pricing-note {
+      font-size: 13px;
+      color: var(--text-tertiary);
+      margin-bottom: 24px;
+    }
+
+    .pricing-features {
+      list-style: none;
+      margin-bottom: 28px;
+    }
+
+    .pricing-features li {
+      font-size: 14px;
+      color: var(--text-secondary);
+      padding: 8px 0;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .pricing-features li::before {
+      content: '\2713';
+      color: var(--blue);
+      font-weight: 700;
+      font-size: 14px;
+    }
+
+    .pricing-features li.disabled {
+      color: var(--text-tertiary);
+    }
+
+    .pricing-features li.disabled::before {
+      content: '\2014';
+      color: var(--text-tertiary);
+    }
+
+    .pricing-btn {
+      display: block;
+      width: 100%;
+      text-align: center;
+      padding: 14px;
+      border-radius: 100px;
+      font-size: 15px;
+      font-weight: 700;
+      text-decoration: none;
+      transition: all 0.3s ease;
+      border: none;
+      cursor: pointer;
+    }
+
+    .pricing-btn-outline {
+      background: transparent;
+      border: 1px solid var(--border);
+      color: var(--text);
+    }
+
+    .pricing-btn-outline:hover { border-color: var(--text-secondary); }
+
+    .pricing-btn-primary {
+      background: var(--blue);
+      color: #fff;
+      box-shadow: 0 4px 20px rgba(0, 122, 255, 0.3);
+    }
+
+    .pricing-btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 32px rgba(0, 122, 255, 0.4);
+    }
+
+    /* ---- TESTIMONIALS ---- */
+    .testimonials {
+      position: relative;
+      z-index: 1;
+      padding: 120px 0;
+    }
+
+    .testimonials-header {
+      text-align: center;
+      margin-bottom: 64px;
+    }
+
+    .testimonials-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+    }
+
+    .testimonial-card {
+      background: var(--bg-card);
+      border: 1px solid rgba(255, 255, 255, 0.04);
+      border-radius: var(--radius-md);
+      padding: 28px;
+      transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+      transform-style: preserve-3d;
+      will-change: transform;
+    }
+
+    .testimonial-card:hover {
+      transform: translateY(-4px);
+      border-color: rgba(255, 255, 255, 0.08);
+      box-shadow: 0 16px 48px rgba(0, 0, 0, 0.3);
+    }
+
+    .testimonial-stars {
+      color: var(--yellow);
+      font-size: 14px;
+      margin-bottom: 16px;
+      letter-spacing: 2px;
+    }
+
+    .testimonial-text {
+      font-size: 15px;
+      color: var(--text-secondary);
+      line-height: 1.7;
+      margin-bottom: 20px;
+    }
+
+    .testimonial-author {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .testimonial-avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--blue), var(--cyan));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+      font-weight: 700;
+      color: #fff;
+    }
+
+    .testimonial-name { font-size: 14px; font-weight: 600; }
+    .testimonial-handle { font-size: 12px; color: var(--text-tertiary); }
+
+    /* ---- FAQ ---- */
+    .faq {
+      position: relative;
+      z-index: 1;
+      padding: 120px 0;
+    }
+
+    .faq-header {
+      text-align: center;
+      margin-bottom: 64px;
+    }
+
+    .faq-header .section-subtitle { margin: 0 auto; }
+
+    .faq-grid {
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    .faq-item {
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    }
+
+    .faq-question {
+      width: 100%;
+      background: none;
+      border: none;
+      color: var(--text);
+      font-family: 'Inter', sans-serif;
+      font-size: 17px;
+      font-weight: 600;
+      text-align: left;
+      padding: 24px 0;
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+      transition: color 0.2s;
+    }
+
+    .faq-question:hover { color: var(--blue); }
+
+    .faq-question .faq-chevron {
+      font-size: 20px;
+      transition: transform 0.3s ease;
+      color: var(--text-tertiary);
+      flex-shrink: 0;
+    }
+
+    .faq-item.open .faq-question .faq-chevron { transform: rotate(45deg); }
+
+    .faq-answer {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.4s ease, padding 0.4s ease;
+    }
+
+    .faq-item.open .faq-answer {
+      max-height: 300px;
+    }
+
+    .faq-answer-inner {
+      padding-bottom: 24px;
+      font-size: 15px;
+      color: var(--text-secondary);
+      line-height: 1.7;
+    }
+
+    /* ---- CTA ---- */
+    .final-cta {
+      position: relative;
+      z-index: 1;
+      padding: 120px 0;
+    }
+
+    .cta-card {
+      background: linear-gradient(135deg, rgba(0, 122, 255, 0.08), rgba(100, 210, 255, 0.05));
+      border: 1px solid rgba(0, 122, 255, 0.15);
+      border-radius: var(--radius-xl);
+      padding: 80px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+      transition: all 0.5s ease;
+    }
+
+    .cta-card:hover {
+      border-color: rgba(0, 122, 255, 0.25);
+      box-shadow: 0 0 60px rgba(0, 122, 255, 0.05);
+    }
+
+    .cta-card::before {
+      content: '';
+      position: absolute;
+      top: -150px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 600px;
+      height: 600px;
+      background: radial-gradient(circle, rgba(0, 122, 255, 0.06), transparent);
+      border-radius: 50%;
+    }
+
+    .cta-card .section-title { position: relative; }
+    .cta-card .section-subtitle { margin: 0 auto 40px; position: relative; }
+
+    .cta-actions {
+      display: flex;
+      justify-content: center;
+      gap: 16px;
+      flex-wrap: wrap;
+      position: relative;
+    }
+
+    .cta-note {
+      font-size: 13px;
+      color: var(--text-tertiary);
+      margin-top: 20px;
+      position: relative;
+    }
+
+    /* ---- FOOTER ---- */
+    footer {
+      position: relative;
+      z-index: 1;
+      border-top: 1px solid rgba(255, 255, 255, 0.04);
+      padding: 48px 0;
+    }
+
+    footer .container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 24px;
+    }
+
+    .footer-left {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .footer-logo-icon {
+      width: 28px;
+      height: 28px;
+      border-radius: 8px;
+      object-fit: cover;
+    }
+
+    .footer-copy {
+      font-size: 13px;
+      color: var(--text-tertiary);
+    }
+
+    .footer-links {
+      display: flex;
+      gap: 24px;
+      list-style: none;
+    }
+
+    .footer-links a {
+      color: var(--text-secondary);
+      text-decoration: none;
+      font-size: 13px;
+      transition: color 0.2s;
+    }
+
+    .footer-links a:hover { color: var(--text); }
+
+    /* ---- SCROLL PROGRESS ---- */
+    .scroll-progress {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 0%;
+      height: 2px;
+      background: linear-gradient(90deg, var(--blue), var(--cyan), var(--blue));
+      background-size: 300% 100%;
+      animation: gradientFlow 4s linear infinite;
+      z-index: 10000;
+      border-radius: 0 1px 1px 0;
+      box-shadow: 0 0 12px rgba(0, 122, 255, 0.15), 0 0 4px var(--blue);
+    }
+
+    @keyframes gradientFlow {
+      0% { background-position: 0% 0; }
+      100% { background-position: 300% 0; }
+    }
+
+    /* Smooth Page Entrance */
+    body {
+      animation: pageReveal 0.8s cubic-bezier(0.16, 1, 0.3, 1) both;
+    }
+
+    @keyframes pageReveal {
+      from { opacity: 0; filter: blur(4px); }
+      to { opacity: 1; filter: blur(0); }
+    }
+
+    /* ---- SCROLL ANIMATIONS ---- */
+    .reveal {
+      opacity: 0;
+      transform: translateY(30px);
+      filter: blur(6px);
+      transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+      filter: blur(0);
+    }
+
+    /* ---- GLASS NOISE TEXTURE ---- */
+    body::after {
+      content: '';
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      pointer-events: none;
+      z-index: 9999;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.015'/%3E%3C/svg%3E");
+      background-repeat: repeat;
+      opacity: 0.4;
+    }
+
+    /* Custom Scrollbar */
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.08); border-radius: 3px; }
+    ::-webkit-scrollbar-thumb:hover { background: rgba(255, 255, 255, 0.16); }
+
+    /* Selection */
+    ::selection { background: rgba(0, 122, 255, 0.3); color: #fff; }
+
+    /* Focus Visible */
+    *:focus-visible { outline: 2px solid var(--blue); outline-offset: 2px; border-radius: 4px; }
+
+    /* Smooth link transitions */
+    a, button { transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1); }
+
+    /* ---- RESPONSIVE ---- */
+    @media (max-width: 1024px) {
+      .features-grid { grid-template-columns: repeat(2, 1fr); }
+      .studio-grid { grid-template-columns: 1fr; }
+      .use-cases-grid { grid-template-columns: repeat(2, 1fr); }
+      .pricing-cards { grid-template-columns: repeat(2, 1fr); }
+      .pricing-card:last-child {
+        grid-column: span 2;
+        max-width: 400px;
+        margin: 0 auto;
+      }
+      .safety-features { grid-template-columns: repeat(2, 1fr); }
+      .how-steps { grid-template-columns: repeat(3, 1fr); }
+    }
+
+    @media (max-width: 768px) {
+      .hero .container {
+        grid-template-columns: 1fr;
+        text-align: center;
+        gap: 40px;
+      }
+      .hero-description { margin: 0 auto 40px; }
+      .hero-actions { justify-content: center; }
+      .hero-stats { justify-content: center; }
+      .nav-links { display: none; }
+      .nav-links.show {
+        display: flex;
+        flex-direction: column;
+        position: absolute;
+        top: 64px;
+        left: 0;
+        right: 0;
+        background: rgba(0, 0, 0, 0.95);
+        backdrop-filter: blur(24px);
+        padding: 24px;
+        gap: 16px;
+        border-bottom: 1px solid var(--border);
+      }
+      .nav-mobile-toggle { display: block; }
+      .features-grid { grid-template-columns: 1fr; }
+      .studio-grid { grid-template-columns: 1fr; }
+      .use-cases-grid { grid-template-columns: 1fr; }
+      .how-steps { grid-template-columns: repeat(2, 1fr); }
+      .pricing-cards {
+        grid-template-columns: 1fr;
+        max-width: 400px;
+        margin: 0 auto;
+      }
+      .pricing-card:last-child { grid-column: span 1; max-width: none; }
+      .pricing-card.featured { transform: none; }
+      .pricing-card.featured:hover { transform: translateY(-4px); }
+      .testimonials-grid { grid-template-columns: 1fr; }
+      .safety-card { padding: 48px 24px; }
+      .safety-features { grid-template-columns: 1fr; }
+      .cta-card { padding: 48px 24px; }
+      .floating-card { display: none; }
+    }
+
+    @media (max-width: 480px) {
+      .how-steps { grid-template-columns: 1fr; }
+      .hero-stats { flex-direction: column; gap: 16px; }
+    }
+  </style>
+</head>
+<body>
+<div class="scroll-progress"></div>
+
+  <!-- Animated Background -->
+  <div class="bg-glow">
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+    <div class="orb orb-3"></div>
+  </div>
+
+  <!-- Navigation -->
+  <nav>
+    <div class="container">
+      <a href="#" class="nav-logo">
+        <img class="nav-logo-icon" src="../icons/cluxter.png" alt="CLUXTER">
+        <span class="nav-logo-text">CLUXTER</span>
+      </a>
+      <ul class="nav-links">
+        <li><a href="#studio">Studio</a></li>
+        <li><a href="#features">Features</a></li>
+        <li><a href="#pricing">Pricing</a></li>
+        <li><a href="#faq">FAQ</a></li>
+        <li><a href="#download" class="nav-cta">Download</a></li>
+      </ul>
+      <button class="nav-mobile-toggle" onclick="document.querySelector('.nav-links').classList.toggle('show')" aria-label="Menu">&#9776;</button>
+    </div>
+  </nav>
+
+  <!-- A) HERO -->
+  <section class="hero" id="hero">
+    <div class="container">
+      <div class="hero-content">
+        <div class="hero-badge">
+          <span class="dot"></span>
+          Available on the App Store
+        </div>
+        <h1>
+          One cluster.<br>
+          <span class="gradient-text">Infinite light.</span>
+        </h1>
+        <p class="hero-description">
+          CLUXTER turns multiple iPhones and iPads into a synchronized light cluster &mdash; a distributed orchestration system where every device has a role, every flash has a purpose, and every performance is unrepeatable.
+        </p>
+        <div class="hero-actions">
+          <a href="#download" class="btn-primary">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.71 19.5C17.88 20.74 17 21.95 15.66 21.97C14.32 21.99 13.89 21.18 12.37 21.18C10.84 21.18 10.37 21.95 9.1 21.99C7.79 22.03 6.8 20.68 5.96 19.47C4.25 16.97 2.94 12.45 4.7 9.39C5.57 7.87 7.13 6.91 8.82 6.88C10.1 6.86 11.32 7.75 12.11 7.75C12.89 7.75 14.37 6.68 15.92 6.84C16.57 6.87 18.39 7.1 19.56 8.82C19.47 8.88 17.39 10.1 17.41 12.63C17.44 15.65 20.06 16.66 20.09 16.67C20.06 16.74 19.67 18.11 18.71 19.5ZM13 3.5C13.73 2.67 14.94 2.04 15.94 2C16.07 3.17 15.6 4.35 14.9 5.19C14.21 6.04 13.07 6.7 11.95 6.61C11.8 5.46 12.36 4.26 13 3.5Z"/></svg>
+            Download Free
+          </a>
+          <a href="#features" class="btn-secondary">Explore Features</a>
+        </div>
+        <div class="hero-stats">
+          <div class="hero-stat">
+            <div class="hero-stat-value">12</div>
+            <div class="hero-stat-label">Languages</div>
+          </div>
+          <div class="hero-stat">
+            <div class="hero-stat-value">12+</div>
+            <div class="hero-stat-label">Devices per Cluster</div>
+          </div>
+          <div class="hero-stat">
+            <div class="hero-stat-value">100%</div>
+            <div class="hero-stat-label">Offline &amp; On-Device</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="hero-visual">
+        <!-- Phone Mockup -->
+        <div class="phone-frame">
+          <div class="phone-screen">
+            <div class="phone-notch"></div>
+            <div class="phone-app">
+              <div class="phone-cluster-title">Active Cluster &bull; 5 Nodes</div>
+              <div class="phone-cluster-vis">
+                <div class="phone-node beacon">B</div>
+                <div class="phone-node pulse-node">P</div>
+                <div class="phone-node echo">E</div>
+                <div class="phone-node accent-node">A</div>
+                <div class="phone-node shadow">S</div>
+              </div>
+              <div class="phone-sync-bar">
+                <div class="phone-sync-label">Sync Health</div>
+                <div class="phone-sync-row">
+                  <div class="phone-sync-score">97</div>
+                  <div class="phone-sync-status">&#9679; All nodes synced</div>
+                </div>
+              </div>
+              <div class="phone-play-btn">&#9654; Play Scene</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Floating Cards -->
+        <div class="floating-card floating-card-1">
+          <div class="fc-icon">&#9889;</div>
+          <div class="fc-title">Beacon Node</div>
+          <div class="fc-value blue">Leading cluster</div>
+        </div>
+        <div class="floating-card floating-card-2">
+          <div class="fc-icon">&#127912;</div>
+          <div class="fc-title">Scene</div>
+          <div class="fc-value purple">Aurora Wave</div>
+        </div>
+        <div class="floating-card floating-card-3">
+          <div class="fc-icon">&#128274;</div>
+          <div class="fc-title">Sync</div>
+          <div class="fc-value cyan">&lt;2ms latency</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- B) WHAT IS CLUXTER? -->
+  <section class="what-is reveal">
+    <div class="container">
+      <span class="section-label">What Is CLUXTER?</span>
+      <p class="what-is-quote">
+        Think of it as an <span class="highlight">orchestra of light</span> &mdash; each device is an instrument, each scene is a composition, and the cluster is the ensemble.
+      </p>
+      <p class="what-is-sub">
+        CLUXTER is a distributed light orchestration system for iOS and iPadOS. Place multiple iPhones and iPads in a room, and they self-organize into a synchronized cluster &mdash; each device assuming a unique role (Beacon, Pulse, Echo, Accent, Shadow). Using screen color, torch intensity, and precise timing, the cluster performs coordinated light patterns that no single device could achieve alone. No server. No internet. No wires. Just light, perfectly synchronized.
+      </p>
+    </div>
+  </section>
+
+  <!-- C) HOW IT WORKS -->
+  <section class="how-it-works">
+    <div class="how-header reveal">
+      <span class="section-label">Simple</span>
+      <h2 class="section-title">How CLUXTER works</h2>
+      <p class="section-subtitle">From download to performance in under two minutes. No accounts. No internet. No configuration.</p>
+    </div>
+    <div class="container">
+      <div class="how-steps reveal">
+        <div class="how-step">
+          <div class="how-step-number">1</div>
+          <h3>Open &amp; Discover</h3>
+          <p>Launch CLUXTER on each device. They automatically find each other over local networking and form a cluster.</p>
+        </div>
+        <div class="how-step">
+          <div class="how-step-number">2</div>
+          <h3>Light Handshake</h3>
+          <p>Devices exchange blink patterns to confirm identity. You see the handshake happen in real light &mdash; no abstract pairing screens.</p>
+        </div>
+        <div class="how-step">
+          <div class="how-step-number">3</div>
+          <h3>Roles Assigned</h3>
+          <p>The cluster self-organizes. Each device gets a role: Beacon (leader), Pulse, Echo, Accent, or Shadow &mdash; based on position and capability.</p>
+        </div>
+        <div class="how-step">
+          <div class="how-step-number">4</div>
+          <h3>Choose a Scene</h3>
+          <p>Pick from built-in scenes or create your own in CLUXTER Studio. The scene adapts to your cluster size automatically.</p>
+        </div>
+        <div class="how-step">
+          <div class="how-step-number">5</div>
+          <h3>Perform</h3>
+          <p>Hit play. The cluster performs in perfect sync. Enable Zero-UI Mode and the screens disappear &mdash; only light remains.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- D) CLUXTER STUDIO FOR iPAD -->
+  <section class="studio" id="studio">
+    <div class="studio-header reveal">
+      <span class="section-label">iPad Experience</span>
+      <h2 class="section-title">CLUXTER Studio</h2>
+      <p class="section-subtitle">A professional scene creation environment designed for iPad. Think Logic Pro, but for light.</p>
+    </div>
+    <div class="container">
+      <div class="studio-grid reveal">
+        <div class="studio-card">
+          <div class="studio-icon" style="background: var(--blue-dim);">&#127912;</div>
+          <h3>Scene Builder / Timeline Studio</h3>
+          <p>An iPad-first, Logic Pro-inspired timeline editor. Drag and drop light events onto per-node tracks. Control color, intensity, torch, timing, and transitions across every device in your cluster with frame-level precision.</p>
+          <span class="studio-tag">iPad Optimized</span>
+        </div>
+        <div class="studio-card">
+          <div class="studio-icon" style="background: rgba(191, 90, 242, 0.12);">&#128302;</div>
+          <h3>Scene Simulation</h3>
+          <p>Preview your entire scene on a single device before deploying to the cluster. See how each node will behave, visualized as a spatial map with real-time color and intensity rendering &mdash; no cluster needed.</p>
+          <span class="studio-tag">Single-Device Preview</span>
+        </div>
+        <div class="studio-card">
+          <div class="studio-icon" style="background: rgba(255, 214, 10, 0.12);">&#127917;</div>
+          <h3>Rehearsal Mode</h3>
+          <p>Run your scene at half brightness across the full cluster. Test timing, transitions, and spatial effects without blinding anyone. Perfect for dialing in complex multi-device choreography before the real performance.</p>
+          <span class="studio-tag">Half Brightness</span>
+        </div>
+        <div class="studio-card">
+          <div class="studio-icon" style="background: rgba(255, 55, 95, 0.12);">&#9210;</div>
+          <h3>Scene Recording &amp; Replay</h3>
+          <p>Record every parameter of a live cluster performance as data (not video). Capture the exact timing, colors, and intensities. Then replay it perfectly or fork it into new variations. Every performance becomes a reusable asset.</p>
+          <span class="studio-tag">Data Capture</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- E) COMPLETE FEATURE BREAKDOWN -->
+  <section class="features" id="features">
+    <div class="features-header reveal">
+      <span class="section-label">Features</span>
+      <h2 class="section-title">Every feature, no asterisks</h2>
+      <p class="section-subtitle">A complete breakdown of every capability in CLUXTER. Not "and more" &mdash; this is all of it.</p>
+    </div>
+    <div class="container">
+
+    <div class="feature-category">
+      <h3 class="feature-category-title reveal"><span class="cat-icon">&#128279;</span> Cluster &amp; Sync</h3>
+      <p class="feature-category-subtitle reveal">The distributed engine that makes multi-device orchestration possible.</p>
+      <div class="features-grid">
+        <div class="feature-card reveal">
+          <div class="feature-icon blue">&#128279;</div>
+          <h3>Adaptive Cluster Strategy</h3>
+          <p>Devices self-organize with automatic topology discovery. No manual pairing &mdash; just open the app and the cluster forms itself, choosing the optimal structure for the number and positions of devices.</p>
+        </div>
+        <div class="feature-card reveal">
+          <div class="feature-icon cyan">&#127917;</div>
+          <h3>Role-Based Nodes</h3>
+          <p>Each device is assigned a distinct role: Beacon (leader), Pulse (rhythm), Echo (response), Accent (highlight), or Shadow (ambient). Roles determine behavior, timing, and light character.</p>
+        </div>
+        <div class="feature-card reveal">
+          <div class="feature-icon purple">&#128260;</div>
+          <h3>Dynamic Role Morphing</h3>
+          <p>Roles are not static. During scene execution, devices can shift roles &mdash; a Pulse node becomes an Accent, an Echo transforms into a Shadow &mdash; creating evolving, organic light compositions.</p>
+        </div>
+        <div class="feature-card reveal">
+          <div class="feature-icon indigo">&#9201;</div>
+          <h3>Scheduled Sync</h3>
+          <p>NTP-inspired timestamp-based clock synchronization. Every node aligns to a shared clock with sub-millisecond precision, ensuring light events fire simultaneously across the entire cluster.</p>
+        </div>
+        <div class="feature-card reveal">
+          <div class="feature-icon orange">&#127754;</div>
+          <h3>Temporal Elasticity <span class="pro-badge">Pro</span></h3>
+          <p>Network latency is not a bug &mdash; it is a creative tool. Intentional delay between nodes creates natural wave and ripple effects that feel organic rather than mechanical.</p>
+        </div>
+        <div class="feature-card reveal">
+          <div class="feature-icon green">&#128200;</div>
+          <h3>Degradation by Design</h3>
+          <p>As the cluster grows beyond optimal size, quality reduces gracefully &mdash; simpler patterns, wider timing tolerances &mdash; so the experience never breaks, it just adapts.</p>
+        </div>
+        <div class="feature-card reveal">
+          <div class="feature-icon pink">&#128147;</div>
+          <h3>Sync Health Score</h3>
+          <p>A real-time 0&ndash;100 score visible on every device. Monitor cluster synchronization quality at a glance. Know instantly if a node is drifting or the network is straining.</p>
+        </div>
+        <div class="feature-card reveal">
+          <div class="feature-icon blue">&#128737;</div>
+          <h3>Fail-Soft Nodes</h3>
+          <p>If a device disconnects, it does not go dark. It continues playing the last known pattern autonomously until it reconnects, ensuring the visual experience never abruptly breaks.</p>
+        </div>
+        <div class="feature-card reveal">
+          <div class="feature-icon cyan">&#127911;</div>
+          <h3>Leader Participation</h3>
+          <p>The Beacon node does not just coordinate &mdash; it plays. Unlike traditional conductor architectures, the leader is a full participant in the light performance.</p>
+        </div>
+        <div class="feature-card reveal">
+          <div class="feature-icon purple">&#128372;</div>
+          <h3>Silent Conductor Mode <span class="pro-badge">Pro</span></h3>
+          <p>For advanced setups: the conductor device controls the cluster without emitting any light itself. Pure orchestration from behind the scenes, invisible to the audience.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="feature-category">
+      <h3 class="feature-category-title reveal"><span class="cat-icon">&#128400;</span> Interaction &amp; Experience</h3>
+      <p class="feature-category-subtitle reveal">How humans and devices communicate through light, gesture, and presence.</p>
+      <div class="features-grid">
+        <div class="feature-card reveal">
+          <div class="feature-icon blue">&#129309;</div>
+          <h3>Light Handshake</h3>
+          <p>Two devices trade blink patterns to confirm identity. A visible, physical handshake made of light &mdash; no abstract QR codes or pairing screens needed.</p>
+        </div>
+        <div class="feature-card reveal">
+          <div class="feature-icon indigo">&#128499;</div>
+          <h3>Silent Voting</h3>
+          <p>Nodes vote via brightness level. Want the cluster to decide something? Each device expresses its vote through light intensity &mdash; a democratic protocol built into the visual language.</p>
+        </div>
+        <div class="feature-card reveal">
+          <div class="feature-icon purple">&#128065;</div>
+          <h3>Eyes-Closed Mode</h3>
+          <p>Torch-only, screen off, no visual UI. Place devices face-down and they communicate purely through their torch LEDs. For environments where screen glow would be distracting.</p>
+        </div>
+        <div class="feature-card reveal">
+          <div class="feature-icon cyan">&#10024;</div>
+          <h3>Zero-UI Mode</h3>
+          <p>The app disappears entirely. No buttons, no controls, no interface &mdash; only light remains. The ultimate performance mode where technology becomes invisible.</p>
+        </div>
+        <div class="feature-card reveal">
+          <div class="feature-icon orange">&#128400;</div>
+          <h3>Gesture-as-Signal</h3>
+          <p>Shake or tap a device to trigger cluster-wide events. A physical shake becomes a broadcast signal that ripples through the entire cluster as a coordinated light response.</p>
+        </div>
+        <div class="feature-card reveal">
+          <div class="feature-icon pink">&#128225;</div>
+          <h3>Proximity Intelligence <span class="pro-badge">Pro</span></h3>
+          <p>Spatial awareness enables wave effects. Devices understand their relative positions and use that knowledge to create light that moves through physical space.</p>
+        </div>
+        <div class="feature-card reveal">
+          <div class="feature-icon blue">&#128694;</div>
+          <h3>Human Proximity Waves <span class="pro-badge">Pro</span></h3>
+          <p>Light follows human movement. Using device sensors, the cluster detects when someone moves near a device and triggers cascading light responses that track the person.</p>
+        </div>
+        <div class="feature-card reveal">
+          <div class="feature-icon green">&#128147;</div>
+          <h3>Cluster Heartbeat</h3>
+          <p>A periodic sync pulse visible across the entire cluster. Like a shared heartbeat, every device flashes in unison at regular intervals to maintain cohesion and confirm liveness.</p>
+        </div>
+        <div class="feature-card reveal">
+          <div class="feature-icon red">&#9889;</div>
+          <h3>Cluster Tension</h3>
+          <p>Nodes can express disagreement through light. When sync drifts or roles conflict, devices show visible tension through flickering or color shifts &mdash; making the system state tangible.</p>
+        </div>
+        <div class="feature-card reveal">
+          <div class="feature-icon indigo">&#128992;</div>
+          <h3>Collective Stillness</h3>
+          <p>All nodes hold absolute stillness together. A coordinated moment of perfect, unwavering light &mdash; no flicker, no drift &mdash; that requires more precision than any animation.</p>
+        </div>
+        <div class="feature-card reveal">
+          <div class="feature-icon purple">&#127761;</div>
+          <h3>Shared Silence Mode</h3>
+          <p>Coordinated darkness as expression. Every device goes dark simultaneously, creating a moment of collective silence. The absence of light becomes as powerful as its presence.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="feature-category">
+      <h3 class="feature-category-title reveal"><span class="cat-icon">&#127912;</span> Scene System</h3>
+      <p class="feature-category-subtitle reveal">Tools for creating, testing, recording, and evolving light compositions.</p>
+      <div class="features-grid">
+        <div class="feature-card reveal">
+          <div class="feature-icon blue">&#127912;</div>
+          <h3>Scene Builder / Timeline Studio</h3>
+          <p>iPad-first, Logic Pro-inspired timeline editor for creating complex multi-device light choreographies with per-node tracks and frame-level control.</p>
+        </div>
+        <div class="feature-card reveal">
+          <div class="feature-icon purple">&#128302;</div>
+          <h3>Scene Simulation</h3>
+          <p>Preview any scene on a single device. A spatial visualization shows exactly how each node will behave &mdash; no cluster assembly required for design iteration.</p>
+        </div>
+        <div class="feature-card reveal">
+          <div class="feature-icon yellow">&#128294;</div>
+          <h3>Torch Preview (Safety-Capped)</h3>
+          <p>Test torch output safely during scene design. Intensity is automatically capped during preview to protect eyes and prevent thermal issues while still showing relative brightness.</p>
+        </div>
+        <div class="feature-card reveal">
+          <div class="feature-icon orange">&#127917;</div>
+          <h3>Rehearsal Mode</h3>
+          <p>Run scenes at half brightness across the full cluster. Test all timing and spatial effects without the full intensity. Essential for complex performances.</p>
+        </div>
+        <div class="feature-card reveal">
+          <div class="feature-icon pink">&#9210;</div>
+          <h3>Scene Recording</h3>
+          <p>Capture every parameter of a live performance as data, not video. Record the exact timing, color, and intensity of every node for perfect reproduction.</p>
+        </div>
+        <div class="feature-card reveal">
+          <div class="feature-icon cyan">&#9654;</div>
+          <h3>Scene Replay</h3>
+          <p>Re-execute any recorded scene with perfect fidelity. Every flash, every color shift, every transition plays back exactly as it happened originally.</p>
+        </div>
+        <div class="feature-card reveal">
+          <div class="feature-icon green">&#128256;</div>
+          <h3>Scene Variants <span class="pro-badge">Pro</span></h3>
+          <p>Auto-adapt any scene to different cluster sizes. A scene designed for 8 devices intelligently scales down to 3 or up to 12, preserving the essential character.</p>
+        </div>
+        <div class="feature-card reveal">
+          <div class="feature-icon blue">&#127899;</div>
+          <h3>Live Scene Tweaking <span class="pro-badge">Pro</span></h3>
+          <p>Modify parameters during active playback. Adjust intensity, speed, color temperature, and timing in real-time without stopping the performance.</p>
+        </div>
+        <div class="feature-card reveal">
+          <div class="feature-icon indigo">&#128268;</div>
+          <h3>Scene Forking <span class="pro-badge">Pro</span></h3>
+          <p>Branch any scene into variations. Take a scene you love, fork it, and explore different creative directions without losing the original.</p>
+        </div>
+        <div class="feature-card reveal">
+          <div class="feature-icon orange">&#128168;</div>
+          <h3>Scene Stress Test <span class="pro-badge">Pro</span></h3>
+          <p>Test scenes under simulated adverse conditions &mdash; high latency, dropped nodes, clock drift. Know how your scene will perform in imperfect real-world environments.</p>
+        </div>
+        <div class="feature-card reveal">
+          <div class="feature-icon purple">&#129516;</div>
+          <h3>Scene DNA</h3>
+          <p>Every scene gets a unique fingerprint based on its parameters. Compare scenes, detect duplicates, and track lineage across forks and variations.</p>
+        </div>
+        <div class="feature-card reveal">
+          <div class="feature-icon pink">&#128123;</div>
+          <h3>Scene Ghosts <span class="pro-badge">Pro</span></h3>
+          <p>Overlay a previous scene iteration as a transparent ghost layer while editing. See exactly what changed between versions for precise creative refinement.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="feature-category">
+      <h3 class="feature-category-title reveal"><span class="cat-icon">&#128274;</span> Safety &amp; Trust</h3>
+      <p class="feature-category-subtitle reveal">Protection, verification, and emergency systems built into every layer.</p>
+      <div class="features-grid">
+        <div class="feature-card reveal">
+          <div class="feature-icon blue">&#128274;</div>
+          <h3>Verified Cluster</h3>
+          <p>A shared secret handshake ensures only authorized devices can join. Visible light confirmation makes spoofing impossible.</p>
+        </div>
+        <div class="feature-card reveal">
+          <div class="feature-icon green">&#128200;</div>
+          <h3>Trust Gradient</h3>
+          <p>Trust levels build over session history. New devices start with limited capabilities and earn full access through consistent, verified participation.</p>
+        </div>
+        <div class="feature-card reveal">
+          <div class="feature-icon red">&#128683;</div>
+          <h3>Cluster Lockdown</h3>
+          <p>Prevent unauthorized joins at any time. Lock the cluster with a single tap and no new devices can enter until you explicitly unlock.</p>
+        </div>
+        <div class="feature-card reveal">
+          <div class="feature-icon orange">&#9888;</div>
+          <h3>Emergency Authority Override</h3>
+          <p>Any single node can trigger a safety lockdown. One tap on any device immediately brings the entire cluster to a safe state. No hierarchy required.</p>
+        </div>
+        <div class="feature-card reveal">
+          <div class="feature-icon pink">&#128680;</div>
+          <h3>Directional SOS Gradient</h3>
+          <p>An SOS pattern with spatial direction. The cluster creates a light gradient that points toward the nearest exit, using device positions for directional guidance.</p>
+        </div>
+        <div class="feature-card reveal">
+          <div class="feature-icon green">&#128998;</div>
+          <h3>Safe Corridor</h3>
+          <p>Emergency exit lighting. Devices along a path illuminate sequentially to create a visible safe corridor guiding people toward exits during emergencies.</p>
+        </div>
+        <div class="feature-card reveal">
+          <div class="feature-icon indigo">&#128737;</div>
+          <h3>Guardian Nodes</h3>
+          <p>Designate specific devices as safety monitors. Guardian nodes watch for dangerous patterns, thermal spikes, and photosensitivity risks across the entire cluster.</p>
+        </div>
+        <div class="feature-card reveal">
+          <div class="feature-icon yellow">&#128161;</div>
+          <h3>Photosensitivity Protection</h3>
+          <p>Flash rate is hard-capped at 3Hz across the entire system. No scene, no bug, no edge case can ever exceed the medically safe flash frequency.</p>
+        </div>
+        <div class="feature-card reveal">
+          <div class="feature-icon orange">&#127777;</div>
+          <h3>Thermal Awareness</h3>
+          <p>Every device monitors its own temperature. If a device gets too warm, CLUXTER automatically reduces torch intensity and screen brightness to prevent overheating.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="feature-category">
+      <h3 class="feature-category-title reveal"><span class="cat-icon">&#129504;</span> Advanced / Meta</h3>
+      <p class="feature-category-subtitle reveal">Emergent behaviors, cluster personality, and the deeper system intelligence.</p>
+      <div class="features-grid">
+        <div class="feature-card reveal">
+          <div class="feature-icon blue">&#129504;</div>
+          <h3>Cluster Memory</h3>
+          <p>The cluster remembers past configurations. Reassemble the same devices and CLUXTER recalls their previous roles, positions, and preferred scenes.</p>
+        </div>
+        <div class="feature-card reveal">
+          <div class="feature-icon purple">&#9200;</div>
+          <h3>Cluster Aging <span class="pro-badge">Pro</span></h3>
+          <p>Behavior evolves over time. A cluster that has performed together many times develops subtle variations &mdash; smoother transitions, tighter sync &mdash; like a band that has played together for years.</p>
+        </div>
+        <div class="feature-card reveal">
+          <div class="feature-icon yellow">&#128161;</div>
+          <h3>Light Scarcity Mode <span class="pro-badge">Pro</span></h3>
+          <p>A limited light budget creates value. Each node has a finite amount of light to spend per scene, forcing creative decisions about when and where to use it.</p>
+        </div>
+        <div class="feature-card reveal">
+          <div class="feature-icon orange">&#128176;</div>
+          <h3>Light Economy <span class="pro-badge">Pro</span></h3>
+          <p>Light as a shared resource. Nodes can trade, pool, and redistribute light budget across the cluster, creating a micro-economy of visual expression.</p>
+        </div>
+        <div class="feature-card reveal">
+          <div class="feature-icon cyan">&#129516;</div>
+          <h3>Cluster Fingerprint</h3>
+          <p>Every cluster combination produces a unique light signature. The same scene looks subtly different on every cluster, making each performance genuinely one-of-a-kind.</p>
+        </div>
+        <div class="feature-card reveal">
+          <div class="feature-icon green">&#128260;</div>
+          <h3>No-Repeat Guarantee</h3>
+          <p>The pattern engine tracks history. CLUXTER ensures that within a session, the same exact pattern never repeats, keeping every moment fresh and unpredictable.</p>
+        </div>
+        <div class="feature-card reveal">
+          <div class="feature-icon indigo">&#127754;</div>
+          <h3>Latency-as-Effect <span class="pro-badge">Pro</span></h3>
+          <p>Intentional delay between nodes creates natural wave and cascade effects. What other systems would hide as a flaw, CLUXTER uses as a creative tool.</p>
+        </div>
+        <div class="feature-card reveal">
+          <div class="feature-icon pink">&#128148;</div>
+          <h3>Failure Ceremony</h3>
+          <p>When a device disconnects, it does not just vanish. The cluster performs a graceful disconnect ritual &mdash; a visual farewell that acknowledges the departing node.</p>
+        </div>
+        <div class="feature-card reveal">
+          <div class="feature-icon blue">&#128175;</div>
+          <h3>Cluster Signature Reveal</h3>
+          <p>The cluster can reveal its unique identity through a synchronized display. A visual fingerprint that proves this specific combination of devices performed together.</p>
+        </div>
+        <div class="feature-card reveal">
+          <div class="feature-icon purple">&#127760;</div>
+          <h3>Social Physics <span class="pro-badge">Pro</span></h3>
+          <p>Node behavior is influenced by neighbors. Nearby devices subtly affect each other's patterns, creating emergent behavior that no single node was programmed to produce.</p>
+        </div>
+        <div class="feature-card reveal">
+          <div class="feature-icon orange">&#128164;</div>
+          <h3>Shared Fatigue</h3>
+          <p>The cluster slows together over time. As a session extends, the light becomes calmer, softer, more contemplative &mdash; mimicking the natural energy arc of a live performance.</p>
+        </div>
+        <div class="feature-card reveal">
+          <div class="feature-icon cyan">&#128123;</div>
+          <h3>Light Afterimage</h3>
+          <p>A ghost of the previous light state persists briefly. When a pattern changes, the old state fades slowly rather than cutting instantly, creating visual depth and continuity.</p>
+        </div>
+      </div>
+    </div>
+    </div>
+  </section>
+
+  <!-- F) USE CASES -->
+  <section class="use-cases">
+    <div class="use-cases-header reveal">
+      <span class="section-label">Use Cases</span>
+      <h2 class="section-title">Light for every context</h2>
+      <p class="section-subtitle">From art installations to emergency signaling &mdash; CLUXTER adapts to any environment.</p>
+    </div>
+    <div class="container">
+      <div class="use-cases-grid reveal">
+        <div class="use-case-card">
+          <div class="use-case-icon">&#127912;</div>
+          <h3>Performance Artists</h3>
+          <p>Create immersive light choreographies for stage performances, dance shows, and live art. Zero-UI Mode makes the technology invisible.</p>
+        </div>
+        <div class="use-case-card">
+          <div class="use-case-icon">&#128992;</div>
+          <h3>Wellness &amp; Meditation</h3>
+          <p>Guided breathing through light. Collective Stillness and Shared Silence create contemplative environments for group meditation and yoga.</p>
+        </div>
+        <div class="use-case-card">
+          <div class="use-case-icon">&#9917;</div>
+          <h3>Sports Events</h3>
+          <p>Transform stadium sections into synchronized light shows. Fans become the display. Cluster Heartbeat unifies thousands into a single visual pulse.</p>
+        </div>
+        <div class="use-case-card">
+          <div class="use-case-icon">&#127878;</div>
+          <h3>Events &amp; Celebrations</h3>
+          <p>Weddings, concerts, festivals. Distribute phones across tables and they perform coordinated light shows. No setup, no equipment rental.</p>
+        </div>
+        <div class="use-case-card">
+          <div class="use-case-icon">&#127963;</div>
+          <h3>Museums &amp; Galleries</h3>
+          <p>Interactive installations where visitor devices join the artwork. Human Proximity Waves make the art respond to presence and movement.</p>
+        </div>
+        <div class="use-case-card">
+          <div class="use-case-icon">&#127891;</div>
+          <h3>Education</h3>
+          <p>Teach distributed systems, networking, and physics through visible light. Students see synchronization, latency, and topology in real-time.</p>
+        </div>
+        <div class="use-case-card">
+          <div class="use-case-icon">&#128680;</div>
+          <h3>Emergency Signaling</h3>
+          <p>Safe Corridor and Directional SOS create visible guidance in emergencies. Any group with phones can create coordinated safety lighting instantly.</p>
+        </div>
+        <div class="use-case-card">
+          <div class="use-case-icon">&#127775;</div>
+          <h3>Night Photography</h3>
+          <p>Use the cluster as a programmable multi-point light source. Control color, intensity, and timing of each device for complex long-exposure shots.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- G) SAFETY & RELIABILITY -->
+  <section class="safety-section">
+    <div class="container">
+      <div class="safety-card reveal">
+        <div class="safety-icon">&#128737;</div>
+        <h2 class="section-title">Safety is not optional</h2>
+        <p class="section-subtitle">
+          CLUXTER was built with safety as a foundational constraint, not an afterthought. Every feature has been designed to protect users, respect physiology, and handle failure gracefully.
+        </p>
+        <div class="safety-features">
+          <div class="safety-feat"><span class="check">&#10003;</span> Photosensitivity hard cap: max 3Hz flash rate</div>
+          <div class="safety-feat"><span class="check">&#10003;</span> Thermal monitoring per device</div>
+          <div class="safety-feat"><span class="check">&#10003;</span> Emergency Authority Override on any node</div>
+          <div class="safety-feat"><span class="check">&#10003;</span> Verified Cluster with shared secret</div>
+          <div class="safety-feat"><span class="check">&#10003;</span> Guardian Nodes as safety monitors</div>
+          <div class="safety-feat"><span class="check">&#10003;</span> Fail-soft: nodes never go dark abruptly</div>
+          <div class="safety-feat"><span class="check">&#10003;</span> Directional SOS with spatial guidance</div>
+          <div class="safety-feat"><span class="check">&#10003;</span> Safe Corridor for emergency exit lighting</div>
+          <div class="safety-feat"><span class="check">&#10003;</span> Torch Preview safety cap during design</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- H) PRICING -->
+  <section class="pricing" id="pricing">
+    <div class="pricing-header reveal">
+      <span class="section-label">Pricing</span>
+      <h2 class="section-title">Start with a 7-day free trial</h2>
+      <p class="section-subtitle">Experience the full cluster before you commit. The Standard plan covers most users. Pro unlocks advanced creative tools.</p>
+    </div>
+    <div class="container">
+      <div class="pricing-cards reveal">
+        <!-- Trial -->
+        <div class="pricing-card">
+          <div class="pricing-plan-name">Free Trial</div>
+          <div class="pricing-price">$0</div>
+          <div class="pricing-note">7 days &middot; Full access</div>
+          <ul class="pricing-features">
+            <li>All Standard features</li>
+            <li>Up to 12 devices</li>
+            <li>Scene Builder access</li>
+            <li>All built-in scenes</li>
+            <li>Safety features included</li>
+            <li class="disabled">Pro scenes &amp; advanced tools</li>
+            <li class="disabled">Scene Stress Test</li>
+          </ul>
+          <a href="#download" class="pricing-btn pricing-btn-outline">Start Free Trial</a>
+        </div>
+        <!-- Standard -->
+        <div class="pricing-card featured">
+          <div class="pricing-plan-name">Standard</div>
+          <div class="pricing-price">$6.99<span>/month</span></div>
+          <div class="pricing-note">Everything you need for live performances</div>
+          <ul class="pricing-features">
+            <li>Unlimited cluster sessions</li>
+            <li>All 5 node roles</li>
+            <li>Scene Builder &amp; Timeline Studio</li>
+            <li>Scene Simulation &amp; Rehearsal</li>
+            <li>Scene Recording &amp; Replay</li>
+            <li>Zero-UI &amp; Eyes-Closed Mode</li>
+            <li>All safety &amp; trust features</li>
+          </ul>
+          <a href="#download" class="pricing-btn pricing-btn-primary">Get Standard</a>
+        </div>
+        <!-- Pro -->
+        <div class="pricing-card">
+          <div class="pricing-plan-name">Pro</div>
+          <div class="pricing-price">$12.99<span>/month</span></div>
+          <div class="pricing-note">Advanced creative &amp; meta features</div>
+          <ul class="pricing-features">
+            <li>Everything in Standard</li>
+            <li>Scene Variants &amp; Forking</li>
+            <li>Live Scene Tweaking</li>
+            <li>Scene Stress Test &amp; Ghosts</li>
+            <li>Temporal Elasticity &amp; Latency-as-Effect</li>
+            <li>Silent Conductor Mode</li>
+            <li>Cluster Aging, Light Economy, Social Physics</li>
+          </ul>
+          <a href="#download" class="pricing-btn pricing-btn-outline">Get Pro</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- I) TESTIMONIALS -->
+  <section class="testimonials">
+    <div class="testimonials-header reveal">
+      <span class="section-label">Community</span>
+      <h2 class="section-title">What people are saying</h2>
+    </div>
+    <div class="container">
+      <div class="testimonials-grid reveal">
+        <div class="testimonial-card">
+          <div class="testimonial-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+          <p class="testimonial-text">"We used 8 iPhones for our dance show opener. The audience had no idea it was phones &mdash; they thought we had a professional light rig. Zero-UI Mode is incredible."</p>
+          <div class="testimonial-author">
+            <div class="testimonial-avatar">M</div>
+            <div>
+              <div class="testimonial-name">Maya R.</div>
+              <div class="testimonial-handle">Choreographer</div>
+            </div>
+          </div>
+        </div>
+        <div class="testimonial-card">
+          <div class="testimonial-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+          <p class="testimonial-text">"The Scene Builder on iPad is genuinely professional. I can compose 12-device scenes with per-node timing. The rehearsal mode at half brightness saved us so much time."</p>
+          <div class="testimonial-author">
+            <div class="testimonial-avatar">K</div>
+            <div>
+              <div class="testimonial-name">Kenji T.</div>
+              <div class="testimonial-handle">Light artist</div>
+            </div>
+          </div>
+        </div>
+        <div class="testimonial-card">
+          <div class="testimonial-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+          <p class="testimonial-text">"I teach distributed systems at university. CLUXTER lets students see synchronization, consensus, and fault tolerance in real-time with devices they already own. Brilliant teaching tool."</p>
+          <div class="testimonial-author">
+            <div class="testimonial-avatar">D</div>
+            <div>
+              <div class="testimonial-name">Dr. Elena P.</div>
+              <div class="testimonial-handle">CS Professor</div>
+            </div>
+          </div>
+        </div>
+        <div class="testimonial-card">
+          <div class="testimonial-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+          <p class="testimonial-text">"Used it at our wedding reception. Put phones on every table, hit play, and the room became a synchronized light show. Our guests were speechless. Best $7 we ever spent."</p>
+          <div class="testimonial-author">
+            <div class="testimonial-avatar">L</div>
+            <div>
+              <div class="testimonial-name">Liam &amp; Sara</div>
+              <div class="testimonial-handle">Newlyweds</div>
+            </div>
+          </div>
+        </div>
+        <div class="testimonial-card">
+          <div class="testimonial-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+          <p class="testimonial-text">"The safety features sold me. I run meditation retreats and the photosensitivity cap and thermal monitoring mean I never have to worry. Shared Silence Mode is profoundly calming."</p>
+          <div class="testimonial-author">
+            <div class="testimonial-avatar">A</div>
+            <div>
+              <div class="testimonial-name">Amara J.</div>
+              <div class="testimonial-handle">Wellness facilitator</div>
+            </div>
+          </div>
+        </div>
+        <div class="testimonial-card">
+          <div class="testimonial-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+          <p class="testimonial-text">"The Sync Health Score is a game changer. I can see in real-time if any device is drifting. And the Failure Ceremony when a phone disconnects? Pure design elegance. This app thinks different."</p>
+          <div class="testimonial-author">
+            <div class="testimonial-avatar">T</div>
+            <div>
+              <div class="testimonial-name">Tom W.</div>
+              <div class="testimonial-handle">iOS developer</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- J) FAQ -->
+  <section class="faq" id="faq">
+    <div class="faq-header reveal">
+      <span class="section-label">FAQ</span>
+      <h2 class="section-title">Frequently asked questions</h2>
+      <p class="section-subtitle">Everything you need to know about CLUXTER, clusters, and light orchestration.</p>
+    </div>
+    <div class="container">
+      <div class="faq-grid reveal">
+        <div class="faq-item">
+          <button class="faq-question" onclick="this.parentElement.classList.toggle('open')">
+            <span>How many devices can CLUXTER support?</span>
+            <span class="faq-chevron">+</span>
+          </button>
+          <div class="faq-answer">
+            <div class="faq-answer-inner">CLUXTER is designed for clusters of up to 12+ devices. The system uses Degradation by Design to gracefully adapt as the cluster grows &mdash; larger clusters may use simplified patterns to maintain sync quality, but the experience never breaks.</div>
+          </div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-question" onclick="this.parentElement.classList.toggle('open')">
+            <span>Do all devices need to be on the same Wi-Fi network?</span>
+            <span class="faq-chevron">+</span>
+          </button>
+          <div class="faq-answer">
+            <div class="faq-answer-inner">Yes, devices discover each other over the local network. No internet connection is required &mdash; CLUXTER is 100% offline. As long as the devices are on the same local network (or using peer-to-peer connectivity), the cluster forms automatically.</div>
+          </div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-question" onclick="this.parentElement.classList.toggle('open')">
+            <span>What happens if a device disconnects mid-performance?</span>
+            <span class="faq-chevron">+</span>
+          </button>
+          <div class="faq-answer">
+            <div class="faq-answer-inner">CLUXTER uses Fail-Soft Nodes: a disconnected device continues playing its last known pattern autonomously rather than going dark. When it reconnects, it gracefully re-syncs with the cluster. The Failure Ceremony provides a visual acknowledgment of the departure.</div>
+          </div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-question" onclick="this.parentElement.classList.toggle('open')">
+            <span>Is CLUXTER safe for people with photosensitivity?</span>
+            <span class="faq-chevron">+</span>
+          </button>
+          <div class="faq-answer">
+            <div class="faq-answer-inner">Absolutely. Photosensitivity protection is a hard system constraint, not a setting. The maximum flash rate is capped at 3Hz across the entire system &mdash; no scene, no bug, no edge case can exceed this. Guardian Nodes provide additional monitoring for sensitive environments.</div>
+          </div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-question" onclick="this.parentElement.classList.toggle('open')">
+            <span>Can I use CLUXTER with a mix of iPhones and iPads?</span>
+            <span class="faq-chevron">+</span>
+          </button>
+          <div class="faq-answer">
+            <div class="faq-answer-inner">Yes. CLUXTER works across any combination of iPhones and iPads running iOS 17 or later. iPads get the full Studio experience with the Scene Builder / Timeline Studio, while iPhones are ideal as performance nodes.</div>
+          </div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-question" onclick="this.parentElement.classList.toggle('open')">
+            <span>What is the difference between Standard and Pro?</span>
+            <span class="faq-chevron">+</span>
+          </button>
+          <div class="faq-answer">
+            <div class="faq-answer-inner">Standard includes everything needed for live performances: all 5 node roles, Scene Builder, Simulation, Rehearsal, Recording, Replay, Zero-UI Mode, and all safety features. Pro adds advanced creative tools: Scene Variants, Forking, Live Tweaking, Stress Test, Ghosts, Temporal Elasticity, Silent Conductor, Cluster Aging, Light Economy, and Social Physics.</div>
+          </div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-question" onclick="this.parentElement.classList.toggle('open')">
+            <span>How does the Scene Builder work?</span>
+            <span class="faq-chevron">+</span>
+          </button>
+          <div class="faq-answer">
+            <div class="faq-answer-inner">The Scene Builder is an iPad-optimized timeline editor inspired by Logic Pro. You create per-node tracks, drag and drop light events (color, intensity, torch, transitions), and control timing with frame-level precision. Preview with Scene Simulation on a single device before deploying to the full cluster.</div>
+          </div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-question" onclick="this.parentElement.classList.toggle('open')">
+            <span>Can the cluster work without a leader?</span>
+            <span class="faq-chevron">+</span>
+          </button>
+          <div class="faq-answer">
+            <div class="faq-answer-inner">The Beacon (leader) role is essential for initial synchronization and scene coordination. However, with Fail-Soft and Leader Participation, if the leader disconnects, nodes continue autonomously. In Silent Conductor Mode, the leader orchestrates without emitting light.</div>
+          </div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-question" onclick="this.parentElement.classList.toggle('open')">
+            <span>What is Zero-UI Mode?</span>
+            <span class="faq-chevron">+</span>
+          </button>
+          <div class="faq-answer">
+            <div class="faq-answer-inner">Zero-UI Mode removes all interface elements from every device in the cluster. No buttons, no status bars, no controls &mdash; only light. The screens display only scene colors and the torches fire as programmed. Technology becomes completely invisible to the audience.</div>
+          </div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-question" onclick="this.parentElement.classList.toggle('open')">
+            <span>Does CLUXTER drain battery quickly?</span>
+            <span class="faq-chevron">+</span>
+          </button>
+          <div class="faq-answer">
+            <div class="faq-answer-inner">CLUXTER is optimized for extended performances. Screen-based scenes use power efficiently, and torch usage is managed by thermal awareness to prevent overheating. A typical 30-minute performance uses approximately 8&ndash;12% battery on most devices.</div>
+          </div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-question" onclick="this.parentElement.classList.toggle('open')">
+            <span>Can I record and share performances?</span>
+            <span class="faq-chevron">+</span>
+          </button>
+          <div class="faq-answer">
+            <div class="faq-answer-inner">Scene Recording captures every parameter as data (not video). You can replay recorded scenes with perfect fidelity, fork them into variations, and share scene files with other CLUXTER users. What you share is the composition, not a recording.</div>
+          </div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-question" onclick="this.parentElement.classList.toggle('open')">
+            <span>What are the node roles?</span>
+            <span class="faq-chevron">+</span>
+          </button>
+          <div class="faq-answer">
+            <div class="faq-answer-inner">Beacon is the cluster leader. Pulse drives the rhythm. Echo provides call-and-response patterns. Accent adds highlights and emphasis. Shadow handles ambient, low-intensity backgrounds. Roles are assigned automatically based on device capability and position, and can morph dynamically during performance.</div>
+          </div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-question" onclick="this.parentElement.classList.toggle('open')">
+            <span>Is there a free version?</span>
+            <span class="faq-chevron">+</span>
+          </button>
+          <div class="faq-answer">
+            <div class="faq-answer-inner">CLUXTER offers a 7-day free trial with full access to all Standard features. After the trial, choose Standard ($6.99/month) for core performance features or Pro ($12.99/month) for advanced creative tools. No feature-limited free tier &mdash; you experience the real product during the trial.</div>
+          </div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-question" onclick="this.parentElement.classList.toggle('open')">
+            <span>How does Cluster Memory work?</span>
+            <span class="faq-chevron">+</span>
+          </button>
+          <div class="faq-answer">
+            <div class="faq-answer-inner">Cluster Memory remembers past configurations. When you reassemble the same combination of devices, CLUXTER recalls their previous roles, relative positions, and preferred scenes. The cluster picks up where it left off, reducing setup time to near zero.</div>
+          </div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-question" onclick="this.parentElement.classList.toggle('open')">
+            <span>What makes CLUXTER different from a simple flashlight sync app?</span>
+            <span class="faq-chevron">+</span>
+          </button>
+          <div class="faq-answer">
+            <div class="faq-answer-inner">CLUXTER is a distributed orchestration system, not a flashlight toggle. It features role-based node architecture, NTP-inspired clock synchronization, a professional scene builder, spatial awareness, emergent behaviors like Social Physics and Cluster Aging, comprehensive safety systems, and a design philosophy where every feature &mdash; from Failure Ceremony to Light Afterimage &mdash; treats light as a medium of expression, not just an on/off switch.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- K) FINAL CTA -->
+  <section class="final-cta" id="download">
+    <div class="container">
+      <div class="cta-card reveal">
+        <span class="section-label">Ready?</span>
+        <h2 class="section-title">Build your first cluster today</h2>
+        <p class="section-subtitle">Download CLUXTER free. Gather your devices. Press play. Watch the light come alive.</p>
+        <div class="cta-actions">
+          <a href="#" class="btn-primary">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.71 19.5C17.88 20.74 17 21.95 15.66 21.97C14.32 21.99 13.89 21.18 12.37 21.18C10.84 21.18 10.37 21.95 9.1 21.99C7.79 22.03 6.8 20.68 5.96 19.47C4.25 16.97 2.94 12.45 4.7 9.39C5.57 7.87 7.13 6.91 8.82 6.88C10.1 6.86 11.32 7.75 12.11 7.75C12.89 7.75 14.37 6.68 15.92 6.84C16.57 6.87 18.39 7.1 19.56 8.82C19.47 8.88 17.39 10.1 17.41 12.63C17.44 15.65 20.06 16.66 20.09 16.67C20.06 16.74 19.67 18.11 18.71 19.5ZM13 3.5C13.73 2.67 14.94 2.04 15.94 2C16.07 3.17 15.6 4.35 14.9 5.19C14.21 6.04 13.07 6.7 11.95 6.61C11.8 5.46 12.36 4.26 13 3.5Z"/></svg>
+            Download on the App Store
+          </a>
+        </div>
+        <p class="cta-note">iOS 17+ &middot; 7-day free trial &middot; No account required &middot; 100% offline</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <div class="container">
+      <div class="footer-left">
+        <img class="footer-logo-icon" src="../icons/cluxter.png" alt="CLUXTER">
+        <span class="footer-copy">&copy; 2026 iOS Craft Studio. All rights reserved.</span>
+      </div>
+      <ul class="footer-links">
+        <li><a href="privacy.html">Privacy Policy</a></li>
+        <li><a href="../">iOS Craft Studio</a></li>
+      </ul>
+    </div>
+  </footer>
+
+<script>
+    // ============================================
+    // CLUXTER INTERACTIONS
+    // ============================================
+
+    // Scroll Progress Bar
+    (function() {
+      var progressBar = document.querySelector('.scroll-progress');
+      if (!progressBar) return;
+      var ticking = false;
+      window.addEventListener('scroll', function() {
+        if (!ticking) {
+          requestAnimationFrame(function() {
+            var scrollTop = window.scrollY;
+            var docHeight = document.documentElement.scrollHeight - window.innerHeight;
+            progressBar.style.width = ((scrollTop / docHeight) * 100) + '%';
+            ticking = false;
+          });
+          ticking = true;
+        }
+      }, { passive: true });
+    })();
+
+    // Scroll Reveal
+    var reveals = document.querySelectorAll('.reveal');
+    var observer = new IntersectionObserver(function(entries) {
+      entries.forEach(function(entry) {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+        }
+      });
+    }, { threshold: 0.1, rootMargin: '0px 0px -60px 0px' });
+    reveals.forEach(function(el) { observer.observe(el); });
+
+    // Smooth nav background on scroll
+    var nav = document.querySelector('nav');
+    window.addEventListener('scroll', function() {
+      if (window.scrollY > 20) {
+        nav.style.borderBottomColor = 'rgba(255,255,255,0.08)';
+        nav.style.background = 'rgba(0, 0, 0, 0.88)';
+      } else {
+        nav.style.borderBottomColor = 'rgba(255,255,255,0.06)';
+        nav.style.background = 'rgba(0, 0, 0, 0.72)';
+      }
+    }, { passive: true });
+
+    // Parallax on Ambient Orbs
+    (function() {
+      var orbs = document.querySelectorAll('.bg-glow .orb');
+      if (!orbs.length) return;
+      var scrollTicking = false;
+      window.addEventListener('scroll', function() {
+        if (!scrollTicking) {
+          requestAnimationFrame(function() {
+            var scrollY = window.scrollY;
+            orbs.forEach(function(orb, i) {
+              var speed = 0.015 + (i * 0.008);
+              orb.style.transform = 'translateY(' + (scrollY * speed) + 'px)';
+            });
+            scrollTicking = false;
+          });
+          scrollTicking = true;
+        }
+      }, { passive: true });
+    })();
+
+    // 3D Card Tilt
+    (function() {
+      var cards = document.querySelectorAll('.feature-card, .pricing-card, .studio-card, .testimonial-card');
+      cards.forEach(function(card) {
+        card.addEventListener('mousemove', function(e) {
+          var rect = card.getBoundingClientRect();
+          var x = e.clientX - rect.left;
+          var y = e.clientY - rect.top;
+          var centerX = rect.width / 2;
+          var centerY = rect.height / 2;
+          var rotateX = ((y - centerY) / centerY) * -2;
+          var rotateY = ((x - centerX) / centerX) * 2;
+          card.style.transform = 'perspective(800px) rotateX(' + rotateX + 'deg) rotateY(' + rotateY + 'deg) translateY(-4px)';
+        });
+        card.addEventListener('mouseleave', function() {
+          card.style.transform = '';
+          card.style.transition = 'transform 0.6s cubic-bezier(0.16, 1, 0.3, 1)';
+          setTimeout(function() { card.style.transition = ''; }, 600);
+        });
+      });
+    })();
+
+    // Animated Sync Score
+    (function() {
+      var scoreEl = document.querySelector('.phone-sync-score');
+      if (!scoreEl) return;
+      var base = 97;
+      setInterval(function() {
+        var jitter = Math.floor(Math.random() * 5) - 2;
+        var val = Math.min(100, Math.max(90, base + jitter));
+        scoreEl.textContent = val;
+      }, 2000);
+    })();
+
+    // Mobile Menu
+    (function() {
+      var toggle = document.querySelector('.nav-mobile-toggle');
+      var navLinks = document.querySelector('.nav-links');
+      if (!toggle || !navLinks) return;
+      toggle.addEventListener('click', function() {
+        navLinks.classList.toggle('show');
+      });
+    })();
+</script>
+
+</body>
+</html>
