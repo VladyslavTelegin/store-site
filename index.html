@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>iOS Craft Studio — Premium iOS Apps</title>
-  <meta name="description" content="iOS Craft Studio crafts premium, privacy-first iOS apps across health intelligence, wellness, creative tools, utilities, and entertainment. Explore fastrum, somniq, stepiq, matchup, beginr, fluxer, unison meditation, roomraid, and cluxter.">
+  <meta name="description" content="iOS Craft Studio crafts premium, privacy-first iOS apps. Explore fastrum — adaptive intermittent fasting with real-time metabolic tracking, 32 languages, and zero data collection.">
   <meta name="theme-color" content="#08080C">
   <link rel="icon" type="image/svg+xml" href="favicon.svg">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -727,29 +727,6 @@
     .card-fastrum::before { background: linear-gradient(90deg, transparent, var(--green), transparent); }
     .card-fastrum .product-glow { background: radial-gradient(ellipse at top right, rgba(48, 209, 88, 0.06), transparent 60%); }
 
-    .card-somniq::before { background: linear-gradient(90deg, transparent, var(--lavender), transparent); }
-    .card-somniq .product-glow { background: radial-gradient(ellipse at top right, rgba(138, 193, 250, 0.06), transparent 60%); }
-
-    .card-stepiq::before { background: linear-gradient(90deg, transparent, var(--sage), transparent); }
-    .card-stepiq .product-glow { background: radial-gradient(ellipse at top right, rgba(125, 166, 125, 0.06), transparent 60%); }
-
-    .card-matchup::before { background: linear-gradient(90deg, transparent, var(--indigo), transparent); }
-    .card-matchup .product-glow { background: radial-gradient(ellipse at top right, rgba(79, 70, 229, 0.06), transparent 60%); }
-
-    .card-beginr::before { background: linear-gradient(90deg, transparent, #34C759, transparent); }
-    .card-beginr .product-glow { background: radial-gradient(ellipse at top right, rgba(52, 199, 89, 0.06), transparent 60%); }
-
-    .card-fluxer::before { background: linear-gradient(90deg, transparent, var(--blue), transparent); }
-    .card-fluxer .product-glow { background: radial-gradient(ellipse at top right, rgba(0, 122, 255, 0.06), transparent 60%); }
-
-    .card-unison::before { background: linear-gradient(90deg, transparent, var(--amber), transparent); }
-    .card-unison .product-glow { background: radial-gradient(ellipse at top right, rgba(212, 160, 86, 0.06), transparent 60%); }
-
-    .card-roomraid::before { background: linear-gradient(90deg, transparent, var(--red), transparent); }
-    .card-roomraid .product-glow { background: radial-gradient(ellipse at top right, rgba(255, 59, 48, 0.06), transparent 60%); }
-
-    .card-cluxter::before { background: linear-gradient(90deg, transparent, var(--blue), transparent); }
-    .card-cluxter .product-glow { background: radial-gradient(ellipse at top right, rgba(0, 122, 255, 0.06), transparent 60%); }
 
     /* Card top area with phone mockup */
     .product-card-top {
@@ -840,333 +817,23 @@
       to { transform: rotate(360deg); }
     }
 
-    /* somniq phone screen */
-    .screen-somniq {
-      background: linear-gradient(180deg, #0D1525, #0A0E1A);
-    }
-
-    .screen-somniq .sleep-score {
-      font-size: 22px;
-      font-weight: 900;
-      color: var(--lavender);
-      line-height: 1;
-    }
-
-    .screen-somniq .sleep-label {
-      font-size: 6px;
-      color: rgba(138, 193, 250, 0.6);
-      text-transform: uppercase;
-      letter-spacing: 1px;
-      margin-top: 2px;
-    }
-
-    .screen-somniq .sleep-bars {
-      display: flex;
-      gap: 2px;
-      align-items: flex-end;
-      margin-top: 10px;
-      height: 20px;
-    }
-
-    .screen-somniq .sleep-bar {
-      width: 5px;
-      border-radius: 2px;
-      animation: barGrow 2s ease-in-out infinite;
-    }
-
-    .screen-somniq .sleep-bar:nth-child(1) { height: 60%; background: var(--lavender); animation-delay: 0s; }
-    .screen-somniq .sleep-bar:nth-child(2) { height: 80%; background: var(--teal); animation-delay: 0.2s; }
-    .screen-somniq .sleep-bar:nth-child(3) { height: 45%; background: var(--lavender); animation-delay: 0.4s; }
-    .screen-somniq .sleep-bar:nth-child(4) { height: 90%; background: var(--teal); animation-delay: 0.6s; }
-    .screen-somniq .sleep-bar:nth-child(5) { height: 70%; background: var(--lavender); animation-delay: 0.8s; }
-    .screen-somniq .sleep-bar:nth-child(6) { height: 55%; background: var(--teal); animation-delay: 1s; }
 
     @keyframes barGrow {
       0%, 100% { transform: scaleY(1); }
       50% { transform: scaleY(0.7); }
     }
 
-    /* stepiq phone screen */
-    .screen-stepiq {
-      background: linear-gradient(180deg, #0F1A0F, #0D0D0C);
-    }
-
-    .screen-stepiq .step-indicator {
-      width: 50px;
-      height: 50px;
-      border-radius: 50%;
-      border: 3px solid rgba(125, 166, 125, 0.3);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      position: relative;
-    }
-
-    .screen-stepiq .step-check {
-      font-size: 18px;
-      color: var(--sage);
-    }
-
-    .screen-stepiq .step-label {
-      font-size: 6px;
-      color: rgba(125, 166, 125, 0.6);
-      text-transform: uppercase;
-      letter-spacing: 1px;
-      margin-top: 6px;
-    }
-
-    .screen-stepiq .step-indicator::after {
-      content: '';
-      position: absolute;
-      inset: -3px;
-      border-radius: 50%;
-      border: 3px solid transparent;
-      border-top-color: var(--sage);
-      animation: stepSpin 3s linear infinite;
-    }
 
     @keyframes stepSpin {
       to { transform: rotate(360deg); }
     }
 
-    /* matchup phone screen */
-    .screen-matchup {
-      background: linear-gradient(180deg, #0D0E24, #0A0B1A);
-    }
-
-    .screen-matchup .match-cards {
-      display: flex;
-      gap: 4px;
-    }
-
-    .screen-matchup .match-card-mini {
-      width: 18px;
-      height: 24px;
-      border-radius: 4px;
-      background: linear-gradient(135deg, var(--indigo), #6C63FF);
-      animation: cardFlip 3s ease-in-out infinite;
-      box-shadow: 0 2px 8px rgba(79, 70, 229, 0.3);
-    }
-
-    .screen-matchup .match-card-mini:nth-child(2) {
-      animation-delay: 0.5s;
-      background: linear-gradient(135deg, #22C55E, #16A34A);
-      box-shadow: 0 2px 8px rgba(34, 197, 94, 0.3);
-    }
-
-    .screen-matchup .match-card-mini:nth-child(3) {
-      animation-delay: 1s;
-    }
-
-    .screen-matchup .match-label {
-      font-size: 6px;
-      color: rgba(79, 70, 229, 0.6);
-      text-transform: uppercase;
-      letter-spacing: 1px;
-      margin-top: 8px;
-    }
-
-    .screen-matchup .match-players {
-      font-size: 8px;
-      font-weight: 700;
-      color: var(--indigo);
-      margin-top: 4px;
-    }
 
     @keyframes cardFlip {
       0%, 100% { transform: rotateY(0deg); }
       50% { transform: rotateY(180deg); }
     }
 
-    /* beginr phone screen */
-    .screen-beginr {
-      background: linear-gradient(180deg, #0C0C0E, #1A1A1E);
-    }
-    .screen-beginr .beginr-timer {
-      font-size: 24px;
-      font-weight: 300;
-      font-family: 'JetBrains Mono', monospace;
-      color: #34C759;
-      letter-spacing: 2px;
-    }
-    .screen-beginr .beginr-label {
-      font-size: 6px;
-      color: rgba(52, 199, 89, 0.6);
-      text-transform: uppercase;
-      letter-spacing: 1.5px;
-      margin-top: 4px;
-    }
-
-    /* fluxer phone screen */
-    .screen-fluxer {
-      background: linear-gradient(180deg, #060A14, #0A1020);
-    }
-    .screen-fluxer .fluxer-arrow {
-      font-size: 28px;
-      color: var(--blue);
-      animation: fluxerPulse 2s ease-in-out infinite;
-    }
-    .screen-fluxer .fluxer-label {
-      font-size: 6px;
-      color: rgba(0, 122, 255, 0.6);
-      text-transform: uppercase;
-      letter-spacing: 1px;
-      margin-top: 6px;
-    }
-    .screen-fluxer .fluxer-progress {
-      width: 50px;
-      height: 3px;
-      background: rgba(0, 122, 255, 0.2);
-      border-radius: 2px;
-      margin-top: 8px;
-      overflow: hidden;
-    }
-    .screen-fluxer .fluxer-progress-bar {
-      width: 65%;
-      height: 100%;
-      background: var(--blue);
-      border-radius: 2px;
-      animation: fluxerProgress 3s ease-in-out infinite;
-    }
-    @keyframes fluxerPulse {
-      0%, 100% { transform: translateY(0); opacity: 1; }
-      50% { transform: translateY(-4px); opacity: 0.7; }
-    }
-    @keyframes fluxerProgress {
-      0% { width: 0%; }
-      50% { width: 80%; }
-      100% { width: 100%; }
-    }
-
-    /* unison phone screen */
-    .screen-unison {
-      background: linear-gradient(180deg, #0A0808, #120E0C);
-    }
-    .screen-unison .unison-circle {
-      width: 50px;
-      height: 50px;
-      border-radius: 50%;
-      border: 2px solid rgba(212, 160, 86, 0.3);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      animation: unisonBreathe 4s ease-in-out infinite;
-    }
-    .screen-unison .unison-inner {
-      width: 20px;
-      height: 20px;
-      border-radius: 50%;
-      background: radial-gradient(circle, var(--amber), rgba(212, 160, 86, 0.3));
-      animation: unisonBreathe 4s ease-in-out infinite;
-    }
-    .screen-unison .unison-label {
-      font-size: 6px;
-      color: rgba(212, 160, 86, 0.6);
-      text-transform: uppercase;
-      letter-spacing: 1px;
-      margin-top: 6px;
-    }
-    @keyframes unisonBreathe {
-      0%, 100% { transform: scale(1); }
-      50% { transform: scale(1.15); }
-    }
-
-    /* roomraid phone screen */
-    .screen-roomraid {
-      background: linear-gradient(180deg, #0C0808, #1A0E0E);
-    }
-    .screen-roomraid .roomraid-crosshair {
-      width: 44px;
-      height: 44px;
-      border: 2px solid rgba(255, 59, 48, 0.4);
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      position: relative;
-      animation: roomraidScan 3s ease-in-out infinite;
-    }
-    .screen-roomraid .roomraid-crosshair::before,
-    .screen-roomraid .roomraid-crosshair::after {
-      content: '';
-      position: absolute;
-      background: var(--red);
-    }
-    .screen-roomraid .roomraid-crosshair::before {
-      width: 1px;
-      height: 14px;
-    }
-    .screen-roomraid .roomraid-crosshair::after {
-      width: 14px;
-      height: 1px;
-    }
-    .screen-roomraid .roomraid-label {
-      font-size: 6px;
-      color: rgba(255, 59, 48, 0.6);
-      text-transform: uppercase;
-      letter-spacing: 1px;
-      margin-top: 6px;
-    }
-    .screen-roomraid .roomraid-score {
-      font-size: 8px;
-      font-weight: 700;
-      color: var(--red);
-      margin-top: 2px;
-    }
-    @keyframes roomraidScan {
-      0%, 100% { transform: scale(1); border-color: rgba(255, 59, 48, 0.4); }
-      50% { transform: scale(1.1); border-color: rgba(255, 59, 48, 0.8); }
-    }
-
-    /* cluxter phone screen */
-    .screen-cluxter {
-      background: linear-gradient(180deg, #020a18, #000000);
-    }
-
-    .screen-cluxter .cluxter-nodes {
-      display: flex;
-      gap: 4px;
-      justify-content: center;
-      flex-wrap: wrap;
-      width: 60px;
-    }
-
-    .screen-cluxter .cluxter-node {
-      width: 14px;
-      height: 14px;
-      border-radius: 3px;
-      border: 1.5px solid rgba(0, 122, 255, 0.6);
-      background: rgba(0, 122, 255, 0.15);
-      animation: cluxterPulse 2s ease-in-out infinite;
-    }
-
-    .screen-cluxter .cluxter-node:nth-child(1) { animation-delay: 0s; }
-    .screen-cluxter .cluxter-node:nth-child(2) { animation-delay: 0.3s; }
-    .screen-cluxter .cluxter-node:nth-child(3) { animation-delay: 0.6s; }
-    .screen-cluxter .cluxter-node:nth-child(4) { animation-delay: 0.15s; background: rgba(0, 122, 255, 0.3); }
-    .screen-cluxter .cluxter-node:nth-child(5) { animation-delay: 0.45s; }
-    .screen-cluxter .cluxter-node:nth-child(6) { animation-delay: 0.75s; }
-    .screen-cluxter .cluxter-node:nth-child(7) { animation-delay: 0.2s; }
-
-    .screen-cluxter .cluxter-label {
-      font-size: 6px;
-      color: rgba(0, 122, 255, 0.6);
-      margin-top: 6px;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-    }
-
-    .screen-cluxter .cluxter-status {
-      font-size: 8px;
-      font-weight: 700;
-      color: var(--blue);
-      margin-top: 2px;
-    }
-
-    @keyframes cluxterPulse {
-      0%, 100% { opacity: 0.5; transform: scale(1); }
-      50% { opacity: 1; transform: scale(1.1); border-color: rgba(0, 122, 255, 1); }
-    }
 
     /* Card info area */
     .product-card-info {
@@ -1196,14 +863,6 @@
     }
 
     .card-fastrum .product-icon { box-shadow: 0 4px 20px rgba(48, 209, 88, 0.2); }
-    .card-somniq .product-icon { box-shadow: 0 4px 20px rgba(138, 193, 250, 0.15); }
-    .card-stepiq .product-icon { box-shadow: 0 4px 20px rgba(125, 166, 125, 0.15); }
-    .card-matchup .product-icon { box-shadow: 0 4px 20px rgba(79, 70, 229, 0.2); }
-    .card-beginr .product-icon { box-shadow: 0 4px 20px rgba(52, 199, 89, 0.2); }
-    .card-fluxer .product-icon { box-shadow: 0 4px 20px rgba(0, 122, 255, 0.2); }
-    .card-unison .product-icon { box-shadow: 0 4px 20px rgba(212, 160, 86, 0.2); }
-    .card-roomraid .product-icon { box-shadow: 0 4px 20px rgba(255, 59, 48, 0.2); }
-    .card-cluxter .product-icon { box-shadow: 0 4px 20px rgba(0, 122, 255, 0.25); }
 
     .product-name-group {
       display: flex;
@@ -1244,11 +903,6 @@
       border: 1px solid rgba(48, 209, 88, 0.2);
     }
 
-    .card-somniq .featured-badge {
-      background: rgba(138, 193, 250, 0.1);
-      color: var(--lavender);
-      border: 1px solid rgba(138, 193, 250, 0.2);
-    }
 
     /* Star rating */
     .product-rating {
@@ -1269,14 +923,6 @@
     }
 
     .card-fastrum .product-star { color: var(--green); }
-    .card-somniq .product-star { color: var(--lavender); }
-    .card-stepiq .product-star { color: var(--sage); }
-    .card-matchup .product-star { color: var(--indigo); }
-    .card-beginr .product-star { color: #34C759; }
-    .card-fluxer .product-star { color: var(--blue); }
-    .card-unison .product-star { color: var(--amber); }
-    .card-roomraid .product-star { color: var(--red); }
-    .card-cluxter .product-star { color: var(--blue); }
 
     .product-rating-text {
       font-size: 12px;
@@ -1325,14 +971,6 @@
     }
 
     .card-fastrum .feature-dot { background: var(--green); }
-    .card-somniq .feature-dot { background: var(--lavender); }
-    .card-stepiq .feature-dot { background: var(--sage); }
-    .card-matchup .feature-dot { background: var(--indigo); }
-    .card-beginr .feature-dot { background: #34C759; }
-    .card-fluxer .feature-dot { background: var(--blue); }
-    .card-unison .feature-dot { background: var(--amber); }
-    .card-roomraid .feature-dot { background: var(--red); }
-    .card-cluxter .feature-dot { background: var(--blue); }
 
     /* Key differentiator */
     .product-key-diff {
@@ -1352,53 +990,6 @@
       color: var(--green);
     }
 
-    .card-somniq .product-key-diff {
-      background: rgba(138, 193, 250, 0.06);
-      border: 1px solid rgba(138, 193, 250, 0.1);
-      color: var(--lavender);
-    }
-
-    .card-stepiq .product-key-diff {
-      background: rgba(125, 166, 125, 0.06);
-      border: 1px solid rgba(125, 166, 125, 0.1);
-      color: var(--sage);
-    }
-
-    .card-matchup .product-key-diff {
-      background: rgba(79, 70, 229, 0.06);
-      border: 1px solid rgba(79, 70, 229, 0.1);
-      color: var(--indigo);
-    }
-
-    .card-beginr .product-key-diff {
-      background: rgba(52, 199, 89, 0.06);
-      border: 1px solid rgba(52, 199, 89, 0.1);
-      color: #34C759;
-    }
-
-    .card-fluxer .product-key-diff {
-      background: rgba(0, 122, 255, 0.06);
-      border: 1px solid rgba(0, 122, 255, 0.1);
-      color: var(--blue);
-    }
-
-    .card-unison .product-key-diff {
-      background: rgba(212, 160, 86, 0.06);
-      border: 1px solid rgba(212, 160, 86, 0.1);
-      color: var(--amber);
-    }
-
-    .card-roomraid .product-key-diff {
-      background: rgba(255, 59, 48, 0.06);
-      border: 1px solid rgba(255, 59, 48, 0.1);
-      color: var(--red);
-    }
-
-    .card-cluxter .product-key-diff {
-      background: rgba(0, 122, 255, 0.06);
-      border: 1px solid rgba(0, 122, 255, 0.1);
-      color: var(--blue);
-    }
 
     .key-diff-icon {
       font-size: 16px;
@@ -1428,14 +1019,6 @@
     }
 
     .card-fastrum .product-cta { color: var(--green); }
-    .card-somniq .product-cta { color: var(--lavender); }
-    .card-stepiq .product-cta { color: var(--sage); }
-    .card-matchup .product-cta { color: var(--indigo); }
-    .card-beginr .product-cta { color: #34C759; }
-    .card-fluxer .product-cta { color: var(--blue); }
-    .card-unison .product-cta { color: var(--amber); }
-    .card-roomraid .product-cta { color: var(--red); }
-    .card-cluxter .product-cta { color: var(--blue); }
 
     .product-cta .arrow {
       font-size: 18px;
@@ -2260,11 +1843,6 @@
     }
 
     .card-fastrum::after { background: radial-gradient(circle at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(48, 209, 88, 0.08), transparent 50%); }
-    .card-somniq::after { background: radial-gradient(circle at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(138, 193, 250, 0.08), transparent 50%); }
-    .card-stepiq::after { background: radial-gradient(circle at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(125, 166, 125, 0.08), transparent 50%); }
-    .card-matchup::after { background: radial-gradient(circle at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(79, 70, 229, 0.08), transparent 50%); }
-    .card-beginr::after { background: radial-gradient(circle at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(52, 199, 89, 0.08), transparent 50%); }
-    .card-cluxter::after { background: radial-gradient(circle at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(0, 122, 255, 0.08), transparent 50%); }
 
     .product-card:hover::after {
       opacity: 1;
@@ -2540,14 +2118,6 @@
           <button class="nav-apps-btn" aria-expanded="false" aria-haspopup="true">Apps <span class="chevron"></span></button>
           <div class="nav-apps-dropdown" role="menu">
             <a href="fastrum/" role="menuitem"><img class="nav-app-icon" src="icons/fastrum.png" alt="fastrum">fastrum</a>
-            <a href="somniq/" role="menuitem"><img class="nav-app-icon" src="icons/somniq.png" alt="somniq">somniq</a>
-            <a href="stepiq/" role="menuitem"><img class="nav-app-icon" src="icons/stepiq.png" alt="stepiq">stepiq</a>
-            <a href="matchup/" role="menuitem"><img class="nav-app-icon" src="icons/matchup.png" alt="matchup">matchup</a>
-            <a href="beginr/" role="menuitem"><img class="nav-app-icon" src="icons/beginr.png" alt="beginr">beginr</a>
-            <a href="fluxer/" role="menuitem"><img class="nav-app-icon" src="icons/fluxer.png" alt="Fluxer">Fluxer</a>
-            <a href="unison-meditation/" role="menuitem"><img class="nav-app-icon" src="icons/unison.png" alt="Unison Meditation">Unison Meditation</a>
-            <a href="roomraid/" role="menuitem"><img class="nav-app-icon" src="icons/roomraid.png" alt="RoomRaid">RoomRaid</a>
-            <a href="cluxter/" role="menuitem"><img class="nav-app-icon" src="icons/cluxter.png" alt="CLUXTER">CLUXTER</a>
           </div>
         </li>
       </ul>
@@ -2561,25 +2131,25 @@
     <div class="hero-inner">
       <div class="hero-badge">
         <span class="dot"></span>
-        8 Apps on the App Store
+        1 App on the App Store
       </div>
       <h1>
         <span class="line-top">Premium iOS apps.</span>
         <span class="hero-rotating">
-          <span class="hero-rotating-sizer">Intelligence.</span>
-          <span class="hero-rotating-word">Intelligence.</span>
+          <span class="hero-rotating-sizer">Wellness.</span>
           <span class="hero-rotating-word">Wellness.</span>
-          <span class="hero-rotating-word">Play.</span>
-          <span class="hero-rotating-word">Utilities.</span>
+          <span class="hero-rotating-word">Fasting.</span>
+          <span class="hero-rotating-word">Health.</span>
+          <span class="hero-rotating-word">Privacy.</span>
         </span>
       </h1>
       <p class="hero-sub">
-        iOS Craft Studio crafts privacy-first iOS experiences across health intelligence, wellness, and entertainment. Every app runs 100% on your device. No accounts. No servers. No compromise.
+        iOS Craft Studio crafts privacy-first iOS experiences focused on health and wellness. Every app runs 100% on your device. No accounts. No servers. No compromise.
       </p>
       <div class="hero-stats">
         <div class="hero-stat">
-          <div class="hero-stat-value"><span class="counter-animate" data-target="8">0</span></div>
-          <div class="hero-stat-label">Apps</div>
+          <div class="hero-stat-value"><span class="counter-animate" data-target="1">0</span></div>
+          <div class="hero-stat-label">App</div>
         </div>
         <div class="hero-stat-divider"></div>
         <div class="hero-stat">
@@ -2588,7 +2158,7 @@
         </div>
         <div class="hero-stat-divider"></div>
         <div class="hero-stat">
-          <div class="hero-stat-value"><span class="counter-animate" data-target="8">0</span>+</div>
+          <div class="hero-stat-value"><span class="counter-animate" data-target="32">0</span>+</div>
           <div class="hero-stat-label">Languages</div>
         </div>
         <div class="hero-stat-divider"></div>
@@ -2609,141 +2179,6 @@
   <section class="products-section" id="products">
     <div class="container">
       <div class="cat-label reveal">Explore Our Products</div>
-
-      <!-- Category: Intelligence -->
-      <div class="cat-section reveal">
-        <div class="cat-header">
-          <div class="cat-icon intelligence">&#129504;</div>
-          <div class="cat-name">Intelligence</div>
-          <div class="cat-desc">Apps that make sense of your health data</div>
-        </div>
-        <div class="products-grid stagger-reveal">
-
-          <!-- somniq -->
-          <a href="somniq/" class="product-card card-somniq">
-            <div class="product-glow"></div>
-            <div class="product-card-top">
-              <div class="phone-mockup">
-                <div class="phone-notch"></div>
-                <div class="phone-screen screen-somniq">
-                  <div class="sleep-score">87</div>
-                  <div class="sleep-label">readiness</div>
-                  <div class="sleep-bars">
-                    <div class="sleep-bar"></div>
-                    <div class="sleep-bar"></div>
-                    <div class="sleep-bar"></div>
-                    <div class="sleep-bar"></div>
-                    <div class="sleep-bar"></div>
-                    <div class="sleep-bar"></div>
-                  </div>
-                </div>
-              </div>
-              <div class="product-card-info">
-                <div class="product-header">
-                  <img class="product-icon" src="icons/somniq.png" alt="somniq">
-                  <div class="product-name-group">
-                    <div class="product-name">somniq</div>
-                    <div class="product-tagline">Sleep Intelligence</div>
-                  </div>
-                  <span class="featured-badge">Featured</span>
-                </div>
-                <div class="product-rating">
-                  <div class="product-stars">
-                    <span class="product-star">&#9733;</span>
-                    <span class="product-star">&#9733;</span>
-                    <span class="product-star">&#9733;</span>
-                    <span class="product-star">&#9733;</span>
-                    <span class="product-star">&#9733;</span>
-                  </div>
-                  <span class="product-rating-text">Sleep Intelligence</span>
-                </div>
-                <p class="product-desc">Transforms raw sleep data into actionable intelligence. Know why your sleep changed, what caused it, and what to do today.</p>
-              </div>
-            </div>
-            <div class="product-card-bottom">
-              <div class="product-key-diff">
-                <span class="key-diff-icon">&#128161;</span>
-                Readiness prediction with explainable logic
-              </div>
-              <div class="product-features">
-                <div class="product-feature"><div class="feature-dot"></div>Readiness Score</div>
-                <div class="product-feature"><div class="feature-dot"></div>Behavior Impact Analysis</div>
-                <div class="product-feature"><div class="feature-dot"></div>Personalized Action Plans</div>
-                <div class="product-feature"><div class="feature-dot"></div>Recovery Windows</div>
-                <div class="product-feature"><div class="feature-dot"></div>Apple Watch Tracking</div>
-                <div class="product-feature"><div class="feature-dot"></div>HealthKit Integration</div>
-                <div class="product-feature"><div class="feature-dot"></div>Sleep Stage Analysis</div>
-                <div class="product-feature"><div class="feature-dot"></div>Trend Visualization</div>
-                <div class="product-feature"><div class="feature-dot"></div>8+ Languages</div>
-                <div class="product-feature"><div class="feature-dot"></div>Widgets &amp; Complications</div>
-              </div>
-              <div class="product-card-footer">
-                <div class="product-cta">Explore somniq <span class="arrow">&rarr;</span></div>
-                <div class="product-price">Free &middot; Pro from $6.99/mo</div>
-              </div>
-            </div>
-          </a>
-
-          <!-- stepiq -->
-          <a href="stepiq/" class="product-card card-stepiq">
-            <div class="product-glow"></div>
-            <div class="product-card-top">
-              <div class="phone-mockup">
-                <div class="phone-notch"></div>
-                <div class="phone-screen screen-stepiq">
-                  <div class="step-indicator">
-                    <span class="step-check">&#10003;</span>
-                  </div>
-                  <div class="step-label">enough</div>
-                </div>
-              </div>
-              <div class="product-card-info">
-                <div class="product-header">
-                  <img class="product-icon" src="icons/stepiq.png" alt="stepiq">
-                  <div class="product-name-group">
-                    <div class="product-name">stepiq</div>
-                    <div class="product-tagline">Walk Enough. Not More.</div>
-                  </div>
-                </div>
-                <div class="product-rating">
-                  <div class="product-stars">
-                    <span class="product-star">&#9733;</span>
-                    <span class="product-star">&#9733;</span>
-                    <span class="product-star">&#9733;</span>
-                    <span class="product-star">&#9733;</span>
-                    <span class="product-star">&#9733;</span>
-                  </div>
-                  <span class="product-rating-text">Walking Assessment</span>
-                </div>
-                <p class="product-desc">Answers one question: do I need to walk more today, or can I stop? Personal baseline. Context-aware. No guilt.</p>
-              </div>
-            </div>
-            <div class="product-card-bottom">
-              <div class="product-key-diff">
-                <span class="key-diff-icon">&#127919;</span>
-                3 simple states: Move, Almost, Enough
-              </div>
-              <div class="product-features">
-                <div class="product-feature"><div class="feature-dot"></div>3 Simple States</div>
-                <div class="product-feature"><div class="feature-dot"></div>Personal Baseline</div>
-                <div class="product-feature"><div class="feature-dot"></div>Workout Context</div>
-                <div class="product-feature"><div class="feature-dot"></div>Recovery Aware</div>
-                <div class="product-feature"><div class="feature-dot"></div>Apple Watch</div>
-                <div class="product-feature"><div class="feature-dot"></div>HealthKit Integration</div>
-                <div class="product-feature"><div class="feature-dot"></div>Adaptive Goals</div>
-                <div class="product-feature"><div class="feature-dot"></div>8+ Languages</div>
-                <div class="product-feature"><div class="feature-dot"></div>Widgets</div>
-                <div class="product-feature"><div class="feature-dot"></div>No Guilt Design</div>
-              </div>
-              <div class="product-card-footer">
-                <div class="product-cta">Explore stepiq <span class="arrow">&rarr;</span></div>
-                <div class="product-price">Free &middot; Pro from $4.99/mo</div>
-              </div>
-            </div>
-          </a>
-
-        </div>
-      </div>
 
       <!-- Category: Wellness -->
       <div class="cat-section reveal">
@@ -2813,408 +2248,6 @@
             </div>
           </a>
 
-          <!-- unison -->
-          <a href="unison-meditation/" class="product-card card-unison">
-            <div class="product-glow"></div>
-            <div class="product-card-top">
-              <div class="phone-mockup">
-                <div class="phone-notch"></div>
-                <div class="phone-screen screen-unison">
-                  <div class="unison-circle">
-                    <div class="unison-inner"></div>
-                  </div>
-                  <div class="unison-label">breathe</div>
-                </div>
-              </div>
-              <div class="product-card-info">
-                <div class="product-header">
-                  <img class="product-icon" src="icons/unison.png" alt="Unison Meditation">
-                  <div class="product-name-group">
-                    <div class="product-name">Unison Meditation</div>
-                    <div class="product-tagline">Meditate Together</div>
-                  </div>
-                </div>
-                <div class="product-rating">
-                  <div class="product-stars">
-                    <span class="product-star">&#9733;</span>
-                    <span class="product-star">&#9733;</span>
-                    <span class="product-star">&#9733;</span>
-                    <span class="product-star">&#9733;</span>
-                    <span class="product-star">&#9733;</span>
-                  </div>
-                  <span class="product-rating-text">Group Meditation</span>
-                </div>
-                <p class="product-desc">Synchronized group meditation sessions over local Wi-Fi. No cloud. No accounts. Just sit together in the same room and meditate in perfect sync.</p>
-              </div>
-            </div>
-            <div class="product-card-bottom">
-              <div class="product-key-diff">
-                <span class="key-diff-icon">&#128992;</span>
-                Peer-to-peer group sync &mdash; no internet needed
-              </div>
-              <div class="product-features">
-                <div class="product-feature"><div class="feature-dot"></div>Group Sessions</div>
-                <div class="product-feature"><div class="feature-dot"></div>P2P Sync</div>
-                <div class="product-feature"><div class="feature-dot"></div>Custom Timers</div>
-                <div class="product-feature"><div class="feature-dot"></div>Bell Sounds</div>
-                <div class="product-feature"><div class="feature-dot"></div>Session History</div>
-                <div class="product-feature"><div class="feature-dot"></div>Ambient Sounds</div>
-                <div class="product-feature"><div class="feature-dot"></div>Solo Mode</div>
-                <div class="product-feature"><div class="feature-dot"></div>Zero Servers</div>
-                <div class="product-feature"><div class="feature-dot"></div>No Account</div>
-                <div class="product-feature"><div class="feature-dot"></div>Works Offline</div>
-              </div>
-              <div class="product-card-footer">
-                <div class="product-cta">Explore Unison Meditation <span class="arrow">&rarr;</span></div>
-                <div class="product-price">Free &middot; Premium $2.99/mo</div>
-              </div>
-            </div>
-          </a>
-
-        </div>
-      </div>
-
-      <!-- Category: Productivity -->
-      <div class="cat-section reveal">
-        <div class="cat-header">
-          <div class="cat-icon wellness">&#9654;</div>
-          <div class="cat-name">Productivity</div>
-          <div class="cat-desc">Tools for starting, not optimizing</div>
-        </div>
-        <div class="products-grid single stagger-reveal">
-
-          <!-- beginr -->
-          <a href="beginr/" class="product-card card-beginr">
-            <div class="product-glow"></div>
-            <div class="product-card-top">
-              <div class="phone-mockup">
-                <div class="phone-notch"></div>
-                <div class="phone-screen screen-beginr">
-                  <div class="beginr-timer">5:00</div>
-                  <div class="beginr-label">start</div>
-                </div>
-              </div>
-              <div class="product-card-info">
-                <div class="product-header">
-                  <img class="product-icon" src="icons/beginr.png" alt="beginr">
-                  <div class="product-name-group">
-                    <div class="product-name">beginr</div>
-                    <div class="product-tagline">You Only Need to Start</div>
-                  </div>
-                </div>
-                <div class="product-rating">
-                  <div class="product-stars">
-                    <span class="product-star">&#9733;</span>
-                    <span class="product-star">&#9733;</span>
-                    <span class="product-star">&#9733;</span>
-                    <span class="product-star">&#9733;</span>
-                    <span class="product-star">&#9733;</span>
-                  </div>
-                  <span class="product-rating-text">Productivity Timer</span>
-                </div>
-                <p class="product-desc">A 5-minute timer that helps you start. No configuration, no goals, no guilt. Psychology-backed anti-procrastination in its purest form.</p>
-              </div>
-            </div>
-            <div class="product-card-bottom">
-              <div class="product-key-diff">
-                <span class="key-diff-icon">&#9654;</span>
-                5-minute non-configurable cycles &mdash; starting is the only goal
-              </div>
-              <div class="product-features">
-                <div class="product-feature"><div class="feature-dot"></div>5-Minute Cycles</div>
-                <div class="product-feature"><div class="feature-dot"></div>Stop-First Design</div>
-                <div class="product-feature"><div class="feature-dot"></div>No Streaks</div>
-                <div class="product-feature"><div class="feature-dot"></div>No Gamification</div>
-                <div class="product-feature"><div class="feature-dot"></div>Daily Reminders</div>
-                <div class="product-feature"><div class="feature-dot"></div>Home Widget</div>
-                <div class="product-feature"><div class="feature-dot"></div>Theme Options</div>
-                <div class="product-feature"><div class="feature-dot"></div>Zero Servers</div>
-                <div class="product-feature"><div class="feature-dot"></div>No Analytics</div>
-                <div class="product-feature"><div class="feature-dot"></div>iOS 17+</div>
-              </div>
-              <div class="product-card-footer">
-                <div class="product-cta">Explore beginr <span class="arrow">&rarr;</span></div>
-                <div class="product-price">Free &middot; Pro from $1.99/mo</div>
-              </div>
-            </div>
-          </a>
-
-        </div>
-      </div>
-
-      <!-- Category: Utilities -->
-      <div class="cat-section reveal">
-        <div class="cat-header">
-          <div class="cat-icon utilities">&#128268;</div>
-          <div class="cat-name">Utilities</div>
-          <div class="cat-desc">Tools that just work</div>
-        </div>
-        <div class="products-grid single stagger-reveal">
-
-          <!-- fluxer -->
-          <a href="fluxer/" class="product-card card-fluxer">
-            <div class="product-glow"></div>
-            <div class="product-card-top">
-              <div class="phone-mockup">
-                <div class="phone-notch"></div>
-                <div class="phone-screen screen-fluxer">
-                  <div class="fluxer-arrow">&#8593;</div>
-                  <div class="fluxer-label">sending</div>
-                  <div class="fluxer-progress"><div class="fluxer-progress-bar"></div></div>
-                </div>
-              </div>
-              <div class="product-card-info">
-                <div class="product-header">
-                  <img class="product-icon" src="icons/fluxer.png" alt="Fluxer">
-                  <div class="product-name-group">
-                    <div class="product-name">Fluxer</div>
-                    <div class="product-tagline">P2P File Transfer</div>
-                  </div>
-                </div>
-                <div class="product-rating">
-                  <div class="product-stars">
-                    <span class="product-star">&#9733;</span>
-                    <span class="product-star">&#9733;</span>
-                    <span class="product-star">&#9733;</span>
-                    <span class="product-star">&#9733;</span>
-                    <span class="product-star">&#9733;</span>
-                  </div>
-                  <span class="product-rating-text">File Transfer</span>
-                </div>
-                <p class="product-desc">Send files directly between devices. No cloud, no upload, no waiting. Peer-to-peer over Bluetooth and Wi-Fi. Works in airplane mode.</p>
-              </div>
-            </div>
-            <div class="product-card-bottom">
-              <div class="product-key-diff">
-                <span class="key-diff-icon">&#128225;</span>
-                Direct device-to-device &mdash; files never touch a server
-              </div>
-              <div class="product-features">
-                <div class="product-feature"><div class="feature-dot"></div>P2P Transfer</div>
-                <div class="product-feature"><div class="feature-dot"></div>Bluetooth + Wi-Fi</div>
-                <div class="product-feature"><div class="feature-dot"></div>Any File Type</div>
-                <div class="product-feature"><div class="feature-dot"></div>Transfer History</div>
-                <div class="product-feature"><div class="feature-dot"></div>Encrypted</div>
-                <div class="product-feature"><div class="feature-dot"></div>Works Offline</div>
-                <div class="product-feature"><div class="feature-dot"></div>No Account</div>
-                <div class="product-feature"><div class="feature-dot"></div>Zero Servers</div>
-                <div class="product-feature"><div class="feature-dot"></div>Airplane Mode</div>
-                <div class="product-feature"><div class="feature-dot"></div>Fast Compression</div>
-              </div>
-              <div class="product-card-footer">
-                <div class="product-cta">Explore Fluxer <span class="arrow">&rarr;</span></div>
-                <div class="product-price">3-day trial &middot; $5.99 one-time</div>
-              </div>
-            </div>
-          </a>
-
-        </div>
-      </div>
-
-      <!-- Category: Creative -->
-      <div class="cat-section reveal">
-        <div class="cat-header">
-          <div class="cat-icon creative" style="background:rgba(0,122,255,0.1);color:var(--blue);">&#128161;</div>
-          <div class="cat-name">Creative</div>
-          <div class="cat-desc">Tools for light, space, and performance</div>
-        </div>
-        <div class="products-grid stagger-reveal">
-
-          <!-- cluxter -->
-          <a href="cluxter/" class="product-card card-cluxter">
-            <div class="product-glow"></div>
-            <div class="product-card-top">
-              <div class="phone-mockup">
-                <div class="phone-notch"></div>
-                <div class="phone-screen screen-cluxter">
-                  <div class="cluxter-nodes">
-                    <div class="cluxter-node"></div>
-                    <div class="cluxter-node"></div>
-                    <div class="cluxter-node"></div>
-                    <div class="cluxter-node"></div>
-                    <div class="cluxter-node"></div>
-                    <div class="cluxter-node"></div>
-                    <div class="cluxter-node"></div>
-                  </div>
-                  <div class="cluxter-label">cluster</div>
-                  <div class="cluxter-status">7 nodes synced</div>
-                </div>
-              </div>
-              <div class="product-card-info">
-                <div class="product-header">
-                  <img class="product-icon" src="icons/cluxter.png" alt="CLUXTER">
-                  <div class="product-name-group">
-                    <div class="product-name">CLUXTER</div>
-                    <div class="product-tagline">Distributed Light Cluster</div>
-                  </div>
-                </div>
-                <div class="product-rating">
-                  <div class="product-stars">
-                    <span class="product-star">&#9733;</span>
-                    <span class="product-star">&#9733;</span>
-                    <span class="product-star">&#9733;</span>
-                    <span class="product-star">&#9733;</span>
-                    <span class="product-star">&#9733;</span>
-                  </div>
-                  <span class="product-rating-text">Light Orchestration</span>
-                </div>
-                <p class="product-desc">Turn multiple iPhones and iPads into a synchronized light cluster. Peer-to-peer, offline, no server. Professional scene builder with timeline studio.</p>
-              </div>
-            </div>
-            <div class="product-card-bottom">
-              <div class="product-key-diff">
-                <span class="key-diff-icon">&#128308;</span>
-                Distributed light orchestration &mdash; multiple devices, one synchronized system
-              </div>
-              <div class="product-features">
-                <div class="product-feature"><div class="feature-dot"></div>P2P Cluster Sync</div>
-                <div class="product-feature"><div class="feature-dot"></div>Scene Builder</div>
-                <div class="product-feature"><div class="feature-dot"></div>Timeline Studio</div>
-                <div class="product-feature"><div class="feature-dot"></div>Role-Based Nodes</div>
-                <div class="product-feature"><div class="feature-dot"></div>Rehearsal Mode</div>
-                <div class="product-feature"><div class="feature-dot"></div>Safety System</div>
-                <div class="product-feature"><div class="feature-dot"></div>100% Offline</div>
-                <div class="product-feature"><div class="feature-dot"></div>12 Languages</div>
-                <div class="product-feature"><div class="feature-dot"></div>iPad Optimized</div>
-                <div class="product-feature"><div class="feature-dot"></div>Up to 12 Devices</div>
-              </div>
-              <div class="product-card-footer">
-                <div class="product-cta">Explore CLUXTER <span class="arrow">&rarr;</span></div>
-                <div class="product-price">7-day trial &middot; Standard $6.99 &middot; Pro $12.99</div>
-              </div>
-            </div>
-          </a>
-
-        </div>
-      </div>
-
-      <!-- Category: Play -->
-      <div class="cat-section reveal">
-        <div class="cat-header">
-          <div class="cat-icon play">&#127918;</div>
-          <div class="cat-name">Play</div>
-          <div class="cat-desc">Games for real-life moments</div>
-        </div>
-        <div class="products-grid stagger-reveal">
-
-          <!-- matchup -->
-          <a href="matchup/" class="product-card card-matchup">
-            <div class="product-glow"></div>
-            <div class="product-card-top">
-              <div class="phone-mockup">
-                <div class="phone-notch"></div>
-                <div class="phone-screen screen-matchup">
-                  <div class="match-cards">
-                    <div class="match-card-mini"></div>
-                    <div class="match-card-mini"></div>
-                    <div class="match-card-mini"></div>
-                  </div>
-                  <div class="match-label">party mode</div>
-                  <div class="match-players">4 players</div>
-                </div>
-              </div>
-              <div class="product-card-info">
-                <div class="product-header">
-                  <img class="product-icon" src="icons/matchup.png" alt="matchup">
-                  <div class="product-name-group">
-                    <div class="product-name">matchup</div>
-                    <div class="product-tagline">Guess the Secret Rule</div>
-                  </div>
-                </div>
-                <div class="product-rating">
-                  <div class="product-stars">
-                    <span class="product-star">&#9733;</span>
-                    <span class="product-star">&#9733;</span>
-                    <span class="product-star">&#9733;</span>
-                    <span class="product-star">&#9733;</span>
-                    <span class="product-star">&#9733;</span>
-                  </div>
-                  <span class="product-rating-text">Party Game</span>
-                </div>
-                <p class="product-desc">The party game where one player makes the rules and everyone else tries to crack them. Offline multiplayer via Bluetooth. No internet needed.</p>
-              </div>
-            </div>
-            <div class="product-card-bottom">
-              <div class="product-key-diff">
-                <span class="key-diff-icon">&#128225;</span>
-                Bluetooth multiplayer -- zero internet required
-              </div>
-              <div class="product-features">
-                <div class="product-feature"><div class="feature-dot"></div>Bluetooth Multiplayer</div>
-                <div class="product-feature"><div class="feature-dot"></div>Single Device Mode</div>
-                <div class="product-feature"><div class="feature-dot"></div>60+ Curated Rules</div>
-                <div class="product-feature"><div class="feature-dot"></div>2-16 Players</div>
-                <div class="product-feature"><div class="feature-dot"></div>Custom Rule Creator</div>
-                <div class="product-feature"><div class="feature-dot"></div>Family Safe Content</div>
-                <div class="product-feature"><div class="feature-dot"></div>No Internet Needed</div>
-                <div class="product-feature"><div class="feature-dot"></div>Multiple Categories</div>
-                <div class="product-feature"><div class="feature-dot"></div>Score Tracking</div>
-                <div class="product-feature"><div class="feature-dot"></div>Quick Rounds</div>
-              </div>
-              <div class="product-card-footer">
-                <div class="product-cta">Explore matchup <span class="arrow">&rarr;</span></div>
-                <div class="product-price">Free &middot; Pro $4.99 one-time</div>
-              </div>
-            </div>
-          </a>
-
-          <!-- roomraid -->
-          <a href="roomraid/" class="product-card card-roomraid">
-            <div class="product-glow"></div>
-            <div class="product-card-top">
-              <div class="phone-mockup">
-                <div class="phone-notch"></div>
-                <div class="phone-screen screen-roomraid">
-                  <div class="roomraid-crosshair"></div>
-                  <div class="roomraid-label">scanning</div>
-                  <div class="roomraid-score">3 critters</div>
-                </div>
-              </div>
-              <div class="product-card-info">
-                <div class="product-header">
-                  <img class="product-icon" src="icons/roomraid.png" alt="RoomRaid">
-                  <div class="product-name-group">
-                    <div class="product-name">RoomRaid</div>
-                    <div class="product-tagline">AR Party Game</div>
-                  </div>
-                </div>
-                <div class="product-rating">
-                  <div class="product-stars">
-                    <span class="product-star">&#9733;</span>
-                    <span class="product-star">&#9733;</span>
-                    <span class="product-star">&#9733;</span>
-                    <span class="product-star">&#9733;</span>
-                    <span class="product-star">&#9733;</span>
-                  </div>
-                  <span class="product-rating-text">AR Party Game</span>
-                </div>
-                <p class="product-desc">Your room is the arena. Hunt augmented-reality critters hiding behind real furniture. Solo, party, and team modes. Camera stays on-device.</p>
-              </div>
-            </div>
-            <div class="product-card-bottom">
-              <div class="product-key-diff">
-                <span class="key-diff-icon">&#128248;</span>
-                AR gameplay in your actual room &mdash; camera data never leaves device
-              </div>
-              <div class="product-features">
-                <div class="product-feature"><div class="feature-dot"></div>AR Gameplay</div>
-                <div class="product-feature"><div class="feature-dot"></div>6 Critter Types</div>
-                <div class="product-feature"><div class="feature-dot"></div>Solo Mode</div>
-                <div class="product-feature"><div class="feature-dot"></div>Party Mode</div>
-                <div class="product-feature"><div class="feature-dot"></div>Team Mode</div>
-                <div class="product-feature"><div class="feature-dot"></div>Room Mapping</div>
-                <div class="product-feature"><div class="feature-dot"></div>No Internet</div>
-                <div class="product-feature"><div class="feature-dot"></div>Family Friendly</div>
-                <div class="product-feature"><div class="feature-dot"></div>Sound Effects</div>
-                <div class="product-feature"><div class="feature-dot"></div>Score Tracking</div>
-              </div>
-              <div class="product-card-footer">
-                <div class="product-cta">Explore RoomRaid <span class="arrow">&rarr;</span></div>
-                <div class="product-price">Free &middot; Full Game $6.99</div>
-              </div>
-            </div>
-          </a>
-
         </div>
       </div>
 
@@ -3228,7 +2261,7 @@
     <div class="container">
       <div class="section-header reveal">
         <div class="section-divider"></div>
-        <div class="section-label">What connects our apps</div>
+        <div class="section-label">What drives our work</div>
         <h2 class="section-title">Built on shared <span class="gradient">principles</span></h2>
         <p class="section-subtitle">Every iOS Craft Studio app follows the same philosophy. Four values that shape every decision, every feature, every line of code.</p>
       </div>
@@ -3331,12 +2364,12 @@
       </div>
       <div class="numbers-grid stagger-reveal">
         <div class="number-card">
-          <div class="number-value gradient"><span class="counter-animate" data-target="8">0</span></div>
-          <div class="number-label">Apps on the App Store</div>
-          <div class="number-sublabel">Intelligence, Wellness, Productivity, Utilities, Play</div>
+          <div class="number-value gradient"><span class="counter-animate" data-target="1">0</span></div>
+          <div class="number-label">App on the App Store</div>
+          <div class="number-sublabel">Wellness</div>
         </div>
         <div class="number-card">
-          <div class="number-value gradient"><span class="counter-animate" data-target="8">0</span>+</div>
+          <div class="number-value gradient"><span class="counter-animate" data-target="32">0</span>+</div>
           <div class="number-label">Languages supported</div>
           <div class="number-sublabel">And counting</div>
         </div>
@@ -3426,7 +2459,7 @@
       <div class="section-header reveal">
         <div class="section-divider"></div>
         <div class="section-label">From the maker</div>
-        <h2 class="section-title">One developer. <span class="gradient">Eight apps.</span></h2>
+        <h2 class="section-title">One developer. <span class="gradient">One app.</span></h2>
       </div>
       <div class="maker-content reveal">
         <div class="maker-avatar">vt</div>
@@ -3437,13 +2470,6 @@
         <div class="maker-role">Independent iOS Developer</div>
         <div class="maker-apps">
           <img class="maker-app-icon" src="icons/fastrum.png" alt="fastrum">
-          <img class="maker-app-icon" src="icons/somniq.png" alt="somniq">
-          <img class="maker-app-icon" src="icons/stepiq.png" alt="stepiq">
-          <img class="maker-app-icon" src="icons/matchup.png" alt="matchup">
-          <img class="maker-app-icon" src="icons/beginr.png" alt="beginr">
-          <img class="maker-app-icon" src="icons/fluxer.png" alt="Fluxer">
-          <img class="maker-app-icon" src="icons/unison.png" alt="Unison Meditation">
-          <img class="maker-app-icon" src="icons/roomraid.png" alt="RoomRaid">
         </div>
       </div>
     </div>
@@ -3460,13 +2486,6 @@
       </div>
       <ul class="footer-links">
         <li><a href="fastrum/">fastrum</a></li>
-        <li><a href="somniq/">somniq</a></li>
-        <li><a href="stepiq/">stepiq</a></li>
-        <li><a href="matchup/">matchup</a></li>
-        <li><a href="beginr/">beginr</a></li>
-        <li><a href="fluxer/">fluxer</a></li>
-        <li><a href="unison-meditation/">unison meditation</a></li>
-        <li><a href="roomraid/">roomraid</a></li>
       </ul>
     </div>
   </footer>
