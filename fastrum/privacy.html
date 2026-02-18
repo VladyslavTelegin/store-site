@@ -297,7 +297,7 @@
       <p class="subtitle">
         fastrum was built with a zero-server architecture. Your fasting data never leaves your device. This policy explains exactly what we access, why, and what we don't do.
       </p>
-      <p class="effective">Effective Date: January 1, 2026 &middot; Last Updated: January 1, 2026</p>
+      <p class="effective">Effective Date: January 1, 2026 &middot; Last Updated: February 18, 2026</p>
     </div>
 
     <div class="privacy-content">
@@ -309,6 +309,7 @@
           <li><a href="#data-collected">Data We Access</a></li>
           <li><a href="#data-not-collected">Data We Do Not Collect</a></li>
           <li><a href="#healthkit">Apple HealthKit</a></li>
+          <li><a href="#ai-nutrition">AI Nutrition Feature</a></li>
           <li><a href="#processing">How Data Is Processed</a></li>
           <li><a href="#storage">Data Storage</a></li>
           <li><a href="#third-parties">Third Parties</a></li>
@@ -378,10 +379,20 @@
             <td>Daily water intake tracking</td>
             <td><span class="badge-no">No</span></td>
           </tr>
+          <tr>
+            <td>Food Photos</td>
+            <td>AI nutrition analysis (if you use this feature)</td>
+            <td>See Section 5</td>
+          </tr>
+          <tr>
+            <td>Progress Photos</td>
+            <td>Visual body tracking</td>
+            <td><span class="badge-no">No</span></td>
+          </tr>
         </tbody>
       </table>
 
-      <p>All of this data is stored locally on your device using Apple's SwiftData framework. None of it is transmitted anywhere.</p>
+      <p>All user data (except food photos during AI analysis &mdash; see Section 5) is stored locally on your device using Apple's SwiftData framework and is never transmitted to our servers.</p>
 
       <h2 id="data-not-collected">3. Data We Do Not Collect</h2>
 
@@ -392,13 +403,13 @@
         <li>Device identifiers, advertising IDs, or fingerprints</li>
         <li>Location data</li>
         <li>Usage analytics or behavioral telemetry</li>
-        <li>Crash reports (we do not use any crash reporting SDK)</li>
+        <li>Crash reports containing personal data (any crash diagnostics are anonymous and handled by Apple)</li>
         <li>Any data from other apps on your device</li>
         <li>Your HealthKit data via any network transmission</li>
       </ul>
 
       <div class="highlight-box">
-        <p>We have no analytics SDK, no tracking pixels, no server logs, and no user database. We literally cannot identify you.</p>
+        <p>We have no tracking pixels, no server logs, and no user database. We cannot identify you. The only network communication occurs when you actively use the AI nutrition feature (see Section 5).</p>
       </div>
 
       <h2 id="healthkit">4. Apple HealthKit</h2>
@@ -413,7 +424,33 @@
         <li><strong>Not transferred.</strong> HealthKit data accessed by fastrum is processed entirely on-device and is never transmitted over any network.</li>
       </ul>
 
-      <h2 id="processing">5. How Data Is Processed</h2>
+      <h2 id="ai-nutrition">5. AI Nutrition Feature</h2>
+
+      <p>fastrum includes an optional AI-powered nutrition feature that can estimate calories and macronutrients from food photos. This is the <strong>only feature</strong> that involves data leaving your device.</p>
+
+      <h3>How It Works</h3>
+      <p>
+        When you take a photo of your meal for nutrition analysis, the image is sent to a processing service for real-time analysis. The image is compressed (max 512px, JPEG quality 0.7) before transmission to minimize data size.
+      </p>
+
+      <h3>What Happens to Your Photos</h3>
+      <ul>
+        <li><strong>Real-time processing only.</strong> Photos are analyzed in real-time and are not stored on any server after analysis is complete.</li>
+        <li><strong>No personal identifiers.</strong> No user ID, device ID, or personal information is sent with the photo.</li>
+        <li><strong>Results returned immediately.</strong> Calorie and macronutrient estimates are returned to your device and stored locally.</li>
+        <li><strong>Optional feature.</strong> You can use fastrum without ever using AI nutrition analysis. Manual food entry and voice input are available as alternatives.</li>
+      </ul>
+
+      <h3>USDA Food Data</h3>
+      <p>
+        fastrum may also query the <strong>USDA Food Data Central</strong> (FDC) public database to verify and enrich nutrition estimates. These are anonymous queries to a public U.S. government API containing no personal data.
+      </p>
+
+      <div class="highlight-box">
+        <p>Both the AI analysis and USDA lookup features can be disabled via remote configuration. You can also simply choose not to use them &mdash; they are entirely optional.</p>
+      </div>
+
+      <h2 id="processing">6. How Data Is Processed</h2>
 
       <p>All data processing in fastrum happens locally on your iPhone or Apple Watch:</p>
 
@@ -433,10 +470,10 @@
       </p>
 
       <div class="highlight-box">
-        <p>There are no network calls for data processing. fastrum works fully offline after installation.</p>
+        <p>All core fasting features work fully offline. The only network calls occur when you actively use the AI nutrition photo feature or USDA food lookup (both optional).</p>
       </div>
 
-      <h2 id="storage">6. Data Storage</h2>
+      <h2 id="storage">7. Data Storage</h2>
 
       <p>All app data is stored using Apple's SwiftData framework in a local database on your device. This data is:</p>
 
@@ -449,21 +486,26 @@
 
       <p>We do not operate any servers, databases, or cloud storage. There is no "account" to delete because no account exists.</p>
 
-      <h2 id="third-parties">7. Third Parties</h2>
+      <h2 id="third-parties">8. Third Parties</h2>
 
-      <p>fastrum does not share data with any third parties. Specifically:</p>
+      <p>fastrum does not share personal data with third parties. Specifically:</p>
 
       <ul>
-        <li><strong>No analytics providers</strong> (no Google Analytics, Mixpanel, Amplitude, or similar)</li>
         <li><strong>No advertising networks</strong> (no ads of any kind)</li>
-        <li><strong>No crash reporting services</strong> (no Firebase Crashlytics, Sentry, or similar)</li>
         <li><strong>No social integrations</strong> (no Facebook SDK, no social login)</li>
         <li><strong>No data brokers</strong></li>
+        <li><strong>No personal data sharing</strong></li>
       </ul>
 
-      <p>The only external service fastrum communicates with is the <strong>Apple App Store</strong> for subscription verification, which is handled entirely by Apple's StoreKit 2 framework and subject to <a href="https://www.apple.com/legal/privacy/" style="color:var(--green)">Apple's Privacy Policy</a>.</p>
+      <p>The external services fastrum may communicate with are:</p>
 
-      <h2 id="subscriptions">8. Subscriptions &amp; Payments</h2>
+      <ul>
+        <li><strong>Apple App Store</strong> &mdash; for subscription verification, handled entirely by Apple's StoreKit 2 framework and subject to <a href="https://www.apple.com/legal/privacy/" style="color:var(--green)">Apple's Privacy Policy</a>.</li>
+        <li><strong>AI Processing Service</strong> &mdash; only when you actively use the AI nutrition photo feature. Food photos are sent for analysis and not stored (see Section 5).</li>
+        <li><strong>USDA Food Data Central</strong> &mdash; anonymous queries to a public U.S. government database for nutrition data verification. No personal data is included in these queries.</li>
+      </ul>
+
+      <h2 id="subscriptions">9. Subscriptions &amp; Payments</h2>
 
       <p>fastrum offers optional Pro subscriptions through the Apple App Store. All payment processing is handled by Apple. We do not have access to your payment information, credit card number, or Apple ID.</p>
 
@@ -474,13 +516,13 @@
         <li>Manage or cancel subscriptions through Settings &gt; Apple ID &gt; Subscriptions</li>
       </ul>
 
-      <h2 id="children">9. Children's Privacy</h2>
+      <h2 id="children">10. Children's Privacy</h2>
 
       <p>
         fastrum is not directed at children under 13 (or the applicable age in your jurisdiction). We do not knowingly collect personal information from children. Since fastrum collects no personal information from any user, this concern is inherently mitigated by our architecture.
       </p>
 
-      <h2 id="your-rights">10. Your Rights</h2>
+      <h2 id="your-rights">11. Your Rights</h2>
 
       <p>Because fastrum operates with a zero-server, on-device-only architecture:</p>
 
@@ -496,7 +538,7 @@
         For users in the European Union, California, or other jurisdictions with specific privacy regulations (GDPR, CCPA, etc.): fastrum's architecture means we are not a data controller or processor of your personal data in any networked sense. All data remains under your control on your device.
       </p>
 
-      <h2 id="changes">11. Changes to This Policy</h2>
+      <h2 id="changes">12. Changes to This Policy</h2>
 
       <p>
         If we make material changes to this privacy policy, we will update this page and the "Last Updated" date above. Since fastrum does not collect email addresses, we cannot notify you via email. We encourage you to review this policy periodically.
@@ -506,7 +548,7 @@
         Our core commitment &mdash; that your data stays on your device and is never transmitted to us or any third party &mdash; will not change. If we ever change our architecture in a way that affects this commitment, we will require your explicit consent through an in-app prompt before any data leaves your device.
       </p>
 
-      <h2 id="contact">12. Contact</h2>
+      <h2 id="contact">13. Contact</h2>
 
       <p>If you have questions about this privacy policy or fastrum's data practices, please reach out:</p>
 
@@ -525,7 +567,7 @@
   <footer>
     <div class="container">
       <p class="footer-copy">
-        &copy; 2026 iOS Craft Studio. All rights reserved. &middot; <a href="index.html">fastrum Home</a> &middot; <a href="../">iOS Craft Studio</a>
+        &copy; 2026 iOS Craft Studio. All rights reserved. &middot; <a href="index.html">fastrum Home</a> &middot; <a href="terms.html">Terms of Service</a> &middot; <a href="../">iOS Craft Studio</a>
       </p>
     </div>
   </footer>
